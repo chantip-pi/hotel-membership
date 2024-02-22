@@ -29,7 +29,7 @@ class _SignInPageState extends State<SignInPage> {
       backgroundColor: AppTheme.backgroundColor,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -46,12 +46,15 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _buildSignInText() {
-    return const Text(
-      "Sign in",
-      style: TextStyle(
-        fontWeight: FontWeight.w900,
-        color: Colors.black,
-        fontSize: 30,
+    return const Padding(
+      padding: EdgeInsets.only(bottom: 30),
+      child: Text(
+        "Sign in",
+        style: TextStyle(
+          fontWeight: FontWeight.w900,
+          color: Colors.black,
+          fontSize: 30,
+        ),
       ),
     );
   }
@@ -61,7 +64,7 @@ class _SignInPageState extends State<SignInPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
         controller: emailController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: 'Email Address',
           hintText: 'helloworld@gmail.com',
           hintStyle: TextStyle(color: Colors.grey),
@@ -87,7 +90,8 @@ class _SignInPageState extends State<SignInPage> {
         controller: passwordController,
         decoration: InputDecoration(
           labelText: 'Password',
-          labelStyle: TextStyle(fontSize: 18, color: Colors.black),
+          labelStyle: const TextStyle(fontSize: 18, 
+                      color: Colors.black),
           suffixIcon: GestureDetector(
             onTap: _togglePasswordVisibility,
             child: Icon(
@@ -98,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           contentPadding: const EdgeInsets.fromLTRB(12, 20, 12, 12),
           border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: AppTheme.primaryColor,
               width: 2.0,
@@ -136,7 +140,7 @@ class _SignInPageState extends State<SignInPage> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16
                   ),
                 ),
               ),
@@ -152,9 +156,14 @@ class _SignInPageState extends State<SignInPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text("Don’t have an account? "),
-        Text(
-          "Sign up",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        GestureDetector(
+          onTap: () => Navigator.pushNamed(context, "/sign-up"),
+          child: const Text(
+            "Sign up",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,  
+              decoration: TextDecoration.underline),
+          ),
         ),
       ],
     );
