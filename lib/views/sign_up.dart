@@ -23,22 +23,13 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  
-
   bool _obscureText = true;
   late DateTime _selectedDate = DateTime.now();
 
-   @override
+  @override
   void initState() {
     super.initState();
     selectedGender = 'Male';
-  }
-
-  void _signIn() {
-    String name = nameController.text;
-    String surname = surnameController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
   }
 
   void _togglePasswordVisibility() {
@@ -58,9 +49,9 @@ class _SignUpPageState extends State<SignUpPage> {
           data: ThemeData.light().copyWith(
             primaryColor: AppTheme.primaryColor, // Head background
             hintColor: AppTheme.secondaryColor, // Text on head
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
                 primary: AppTheme.primaryColor), // Text on days
-            buttonTheme: ButtonThemeData(
+            buttonTheme: const ButtonThemeData(
                 textTheme:
                     ButtonTextTheme.primary), // OK/Cancel button text color
           ),
@@ -130,8 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Form(
               key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                children: [
+              child: Column(children: [
                 _buildNameTextField(),
                 _buildSurnameTextField(),
                 _buildEmailTextField(),
@@ -155,29 +145,28 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-        controller: nameController,
-        decoration: const InputDecoration(
-          labelText: 'Name',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
+          controller: nameController,
+          decoration: const InputDecoration(
+            labelText: 'Name',
+            labelStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppTheme.primaryColor,
+                width: 2.0,
+              ),
             ),
           ),
-        ),
-         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your name.';
-          }
-          return null;
-         }
-      ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your name.';
+            }
+            return null;
+          }),
     );
   }
 
@@ -185,29 +174,28 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-        controller: surnameController,
-        decoration: const InputDecoration(
-          labelText: 'Surname',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
+          controller: surnameController,
+          decoration: const InputDecoration(
+            labelText: 'Surname',
+            labelStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppTheme.primaryColor,
+                width: 2.0,
+              ),
             ),
           ),
-        ),
-         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your surname.';
-          }
-           return null; 
-         }
-      ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your surname.';
+            }
+            return null;
+          }),
     );
   }
 
@@ -229,7 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: AppTheme.primaryColor, 
+              color: AppTheme.primaryColor,
               width: 2.0,
             ),
           ),
@@ -323,30 +311,29 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-        controller: phoneController,
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-          labelText: 'Phone Number',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
+          controller: phoneController,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            labelText: 'Phone Number',
+            labelStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppTheme.primaryColor,
+                width: 2.0,
+              ),
             ),
           ),
-        ),
-         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your phone number.';
-          }
-           return null; 
-         }
-      ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your phone number.';
+            }
+            return null;
+          }),
     );
   }
 
@@ -354,30 +341,30 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-        controller: birthdateController,
-        readOnly: true,
-        onTap: () => _selectDate(context),
-        decoration: const InputDecoration(
-          labelText: 'Birthdate',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          suffixIcon: Icon(Icons.calendar_today),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
+          controller: birthdateController,
+          readOnly: true,
+          onTap: () => _selectDate(context),
+          decoration: const InputDecoration(
+            labelText: 'Birthdate',
+            labelStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+            suffixIcon: Icon(Icons.calendar_today),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppTheme.primaryColor,
+                width: 2.0,
+              ),
             ),
           ),
-        ),
-         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your birthdate.';
-          }
-         }
-      ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your birthdate.';
+            }
+            return null;
+          }),
     );
   }
 
@@ -435,7 +422,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         ),
-         validator: (value) {
+        validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter your citizen ID.';
           }
@@ -501,6 +488,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
+                  // TODO add user
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

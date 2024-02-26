@@ -14,7 +14,7 @@ class _SignInPageState extends State<SignInPage> {
   void _signIn() {
     String email = emailController.text;
     String password = passwordController.text;
-    // Perform sign-in logic here
+    // TODO Perform sign-in logic here
   }
 
   void _togglePasswordVisibility() {
@@ -22,6 +22,8 @@ class _SignInPageState extends State<SignInPage> {
       _obscureText = !_obscureText;
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
