@@ -120,7 +120,6 @@ class _SignUpPageState extends State<SignUpPage> {
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Form(
               key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(children: [
                 _buildNameTextField(),
                 _buildSurnameTextField(),
@@ -426,7 +425,7 @@ class _SignUpPageState extends State<SignUpPage> {
           if (value == null || value.isEmpty) {
             return 'Please enter your citizen ID.';
           }
-          if (value.length < 13) {
+          if (value.length != 13) {
             return 'Invalid citizen ID.';
           }
           return null;
