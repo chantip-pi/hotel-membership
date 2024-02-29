@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project/views/benefits.dart';
+import 'package:project/views/home_page.dart';
+import 'package:project/views/profile.dart';
 import 'package:project/views/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/views/sign_up.dart';
@@ -19,10 +22,13 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.poppinsTextTheme(),
           useMaterial3: true,
         ),
-        initialRoute: '/sign-in',
+        initialRoute: '/home-page',
         routes: {
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
+          '/home-page': (context) => HomePage(),
+          '/benefits': (context) => Benefits(),
+          '/profile': (context) => Profile(),
           }
           );
   }
