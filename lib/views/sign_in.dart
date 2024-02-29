@@ -14,7 +14,7 @@ class _SignInPageState extends State<SignInPage> {
   void _signIn() {
     String email = emailController.text;
     String password = passwordController.text;
-    // Perform sign-in logic here
+    // TODO Perform sign-in logic here
   }
 
   void _togglePasswordVisibility() {
@@ -22,6 +22,7 @@ class _SignInPageState extends State<SignInPage> {
       _obscureText = !_obscureText;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class _SignInPageState extends State<SignInPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildSignInText(),
               _buildEmailTextField(),
@@ -47,7 +48,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildSignInText() {
     return const Padding(
-      padding: EdgeInsets.only(bottom: 30),
+      padding: EdgeInsets.only(bottom: 30,top: 150),
       child: Text(
         "Sign in",
         style: TextStyle(
