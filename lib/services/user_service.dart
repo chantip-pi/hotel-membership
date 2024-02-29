@@ -16,7 +16,6 @@ class UserService {
     required DateTime birthdate,
   }) async {
     await _firestore.collection('users').doc(uid).set({
-      'uid': uid,
       'name': name,
       'surname': surname,
       'phone': phone,
@@ -25,6 +24,7 @@ class UserService {
       'address': address,
       'birthdate': birthdate,
       'memberID': _generateRandomID(),
+      'points': 1000
     });
   }
 

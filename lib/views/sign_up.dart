@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project/services/user_service';
+import 'package:project/services/user_service.dart';
 import 'package:project/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -47,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
     String uid = userCredential.user?.uid ?? "";
 
     UserService().addUserDetails(
-      uid: uid, 
+      uid: uid,
       name: nameController.text.trim(),
       surname:  surnameController.text.trim(),
       phone:  phoneController.text.trim(),
