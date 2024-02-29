@@ -45,6 +45,7 @@ class UserService {
     }
   }
 
+  // Get user details by memberID
   Future<Map<String, dynamic>?> getUserByMemberID(String memberID) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -64,7 +65,7 @@ class UserService {
       return null;
     }
   }
-
+  // generatememberID
     String _generateRandomID() {
     final Random random = Random();
     const String chars = '0123456789';

@@ -8,8 +8,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
 
   Future<String?> _signIn(String email, String password) async {
@@ -19,19 +19,23 @@ class _SignInPageState extends State<SignInPage> {
 
     var uid = credential.user?.uid;
     if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
+      //TODO implement staff app
       print("Staff has Sign In");
     } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
+      //TODO implement admin app
       print("Admin has Sign In");
     } else {
+      //TODO implement go to homepage
       print("User has Sign In");
     }
     return uid;
+
   } on FirebaseAuthException catch (e) {
     String errorMessage = "An error occurred. Please try again.";
     if (e.code == 'invalid-credential') {
       errorMessage = "Incorrect Email or Password. Please try again.";
     } 
-
+    
     // Show error using SnackBar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -90,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
-        controller: emailController,
+        controller: _emailController,
         decoration: const InputDecoration(
           labelText: 'Email Address',
           hintText: 'helloworld@gmail.com',
@@ -114,7 +118,7 @@ class _SignInPageState extends State<SignInPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
-        controller: passwordController,
+        controller: _passwordController,
         decoration: InputDecoration(
           labelText: 'Password',
           labelStyle: const TextStyle(fontSize: 18, color: Colors.black),
@@ -161,7 +165,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               onPressed: () async {
                 var uid = await _signIn(
-                    emailController.text, passwordController.text);
+                    _emailController.text, _passwordController.text);
               },
               child: const Center(
                 child: Text(
