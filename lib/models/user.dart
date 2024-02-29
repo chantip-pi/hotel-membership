@@ -1,27 +1,11 @@
 import 'dart:math';
 
 class User {
-  String name;
-  String surname;
-  String email;
-  String password;
-  String phone;
-  String citizenID;
-  String address;
-  DateTime birthdate;
-  String gender;
+  String uid;
   String memberID;
 
   User({
-    required this.name,
-    required this.surname,
-    required this.email,
-    required this.password,
-    required this.phone,
-    required this.citizenID,
-    required this.address,
-    required this.birthdate,
-    required this.gender,
+    required this.uid,
     String? memberID, // Allow memberID to be nullable
   }) : memberID = memberID ?? _generateRandomID(12); // If memberID is null, generate a default one
 

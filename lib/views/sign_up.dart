@@ -1,3 +1,8 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project/theme.dart';
@@ -17,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController citizenIDController = TextEditingController();
-  TextEditingController addresssController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
   String selectedGender = '';
 
@@ -38,12 +43,63 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  Future<void> _signUp(String email, String password) async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    String uid = userCredential.user?.uid ?? "";
+
+    addUserDetails(
+        uid,
+        nameController.text.trim(),
+        surnameController.text.trim(),
+        phoneController.text.trim(),
+        selectedGender.trim(),
+        citizenIDController.text.trim(),
+        addressController.text.trim(),
+        _selectedDate);
+  }
+
+  Future<void> addUserDetails(
+      String uid,
+      String name,
+      String surname,
+      String phone,
+      String gender,
+      String citizenID,
+      String address,
+      DateTime birthdate) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      "uid": uid,
+      "name": name,
+      "surname": surname,
+      "phone": phone,
+      "gender": gender,
+      "citizenID": citizenID,
+      "address": address,
+      "birthdate": birthdate,
+      "memberID": _generateRandomID()
+    });
+  }
+
+  String _generateRandomID() {
+    final Random random = Random();
+    const String chars = '0123456789';
+    String result = '';
+
+    for (int i = 0; i < 16; i++) {
+      result += chars[random.nextInt(chars.length)];
+    }
+
+    return result;
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2104),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -438,7 +494,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
-        controller: addresssController,
+        controller: addressController,
         maxLines: 4,
         maxLength: 300,
         decoration: const InputDecoration(
@@ -485,10 +541,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
-                  // TODO add user
-                  Navigator.pop(context);
+                  try {
+                    await _signUp(emailController.text.trim(),
+                        passwordController.text.trim());
+                    Navigator.pop(context);
+                  } catch (e) {
+                    print('Signup failed: $e');
+                  }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
