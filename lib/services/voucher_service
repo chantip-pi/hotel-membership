@@ -1,0 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class VoucherService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<List<QueryDocumentSnapshot>> getAllVouchers() async {
+    QuerySnapshot querySnapshot = await _firestore.collection('vouchers').get();
+    return querySnapshot.docs;
+  }
+
+  Stream<QuerySnapshot> getUserVouchers(String userID) {
+    return _firestore.collection('users').doc(userID).collection('userVouchers').snapshots();
+  }
+
+  Future<void> redeemVoucher(String userID, String voucherDocId) async {
+    // Update the user's voucher document with redeemed = true
+    await _firestore.collection('users').doc(userID).collection('userVouchers').doc(voucherDocId).update({
+      'redeemed': true,
+    });
+
+    // Perform additional actions as needed when a voucher is redeemed
+  }
+}
