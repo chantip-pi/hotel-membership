@@ -1,10 +1,7 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project/services/user_service';
 import 'package:project/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -49,50 +46,17 @@ class _SignUpPageState extends State<SignUpPage> {
 
     String uid = userCredential.user?.uid ?? "";
 
-    addUserDetails(
-        uid,
-        nameController.text.trim(),
-        surnameController.text.trim(),
-        phoneController.text.trim(),
-        selectedGender.trim(),
-        citizenIDController.text.trim(),
-        addressController.text.trim(),
-        _selectedDate);
+    UserService().addUserDetails(
+      uid: uid, 
+      name: nameController.text.trim(),
+      surname:  surnameController.text.trim(),
+      phone:  phoneController.text.trim(),
+      gender: selectedGender.trim(),
+      citizenID: citizenIDController.text.trim(), 
+      address:  addressController.text.trim(),
+      birthdate: _selectedDate);
   }
 
-  Future<void> addUserDetails(
-      String uid,
-      String name,
-      String surname,
-      String phone,
-      String gender,
-      String citizenID,
-      String address,
-      DateTime birthdate) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      "uid": uid,
-      "name": name,
-      "surname": surname,
-      "phone": phone,
-      "gender": gender,
-      "citizenID": citizenID,
-      "address": address,
-      "birthdate": birthdate,
-      "memberID": _generateRandomID()
-    });
-  }
-
-  String _generateRandomID() {
-    final Random random = Random();
-    const String chars = '0123456789';
-    String result = '';
-
-    for (int i = 0; i < 16; i++) {
-      result += chars[random.nextInt(chars.length)];
-    }
-
-    return result;
-  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(

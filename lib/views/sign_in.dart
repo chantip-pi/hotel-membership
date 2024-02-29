@@ -13,28 +13,36 @@ class _SignInPageState extends State<SignInPage> {
   bool _obscureText = true;
 
   Future<String?> _signIn(String email, String password) async {
-    try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      
-      var uid = credential.user?.uid;
-      // if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
-      //   print("Staff has Sign In");
-      // } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
-      //   print("Admin has Sign In");
-      // } else {
-      //   print("User has Sign In");
-      // }
-      return uid;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print("No user found for that email.");
-      } else if (e.code == 'wrong password') {
-        print("Wrong password provided for that user.");
-      }
+  try {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    var uid = credential.user?.uid;
+    if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
+      print("Staff has Sign In");
+    } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
+      print("Admin has Sign In");
+    } else {
+      print("User has Sign In");
     }
+    return uid;
+  } on FirebaseAuthException catch (e) {
+    String errorMessage = "An error occurred. Please try again.";
+    if (e.code == 'invalid-credential') {
+      errorMessage = "Incorrect Email or Password. Please try again.";
+    } 
+
+    // Show error using SnackBar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ),
+    );
+
     return null;
   }
+}
 
   void _togglePasswordVisibility() {
     setState(() {
