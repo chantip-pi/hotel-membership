@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project/services/user_service.dart';
 import 'package:project/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -10,15 +12,15 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController surnameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _surnameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   TextEditingController citizenIDController = TextEditingController();
-  TextEditingController addresssController = TextEditingController();
-  TextEditingController birthdateController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _birthdateController = TextEditingController();
   String selectedGender = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -38,12 +40,30 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  Future<void> _signUp(String email, String password) async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    String uid = userCredential.user?.uid ?? "";
+
+    UserService().addUserDetails(
+      uid: uid,
+      name: _nameController.text.trim(),
+      surname:  _surnameController.text.trim(),
+      phone:  _phoneController.text.trim(),
+      gender: selectedGender.trim(),
+      citizenID: citizenIDController.text.trim(), 
+      address:  _addressController.text.trim(),
+      birthdate: _selectedDate);
+  }
+
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2104),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -63,7 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        birthdateController.text =
+        _birthdateController.text =
             DateFormat('dd MMM yyyy').format(_selectedDate);
       });
     }
@@ -144,7 +164,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: nameController,
+          controller: _nameController,
           decoration: const InputDecoration(
             labelText: 'Name',
             labelStyle: TextStyle(
@@ -173,7 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: surnameController,
+          controller: _surnameController,
           decoration: const InputDecoration(
             labelText: 'Surname',
             labelStyle: TextStyle(
@@ -202,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-        controller: emailController,
+        controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           labelText: 'Email Address',
@@ -239,7 +259,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
-        controller: passwordController,
+        controller: _passwordController,
         decoration: InputDecoration(
           labelText: 'Password',
           labelStyle: const TextStyle(fontSize: 18, color: Colors.black),
@@ -279,7 +299,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
-        controller: confirmPasswordController,
+        controller: _confirmPasswordController,
         decoration: const InputDecoration(
           labelText: 'Confirm Password',
           labelStyle: TextStyle(fontSize: 18, color: Colors.black),
@@ -297,7 +317,7 @@ class _SignUpPageState extends State<SignUpPage> {
           if (value == null || value.isEmpty) {
             return 'Please confirm your password.';
           }
-          if (value != passwordController.text) {
+          if (value != _passwordController.text) {
             return 'Passwords do not match.';
           }
           return null;
@@ -310,7 +330,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: phoneController,
+          controller: _phoneController,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             labelText: 'Phone Number',
@@ -340,7 +360,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: birthdateController,
+          controller: _birthdateController,
           readOnly: true,
           onTap: () => _selectDate(context),
           decoration: const InputDecoration(
@@ -438,7 +458,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
-        controller: addresssController,
+        controller: _addressController,
         maxLines: 4,
         maxLength: 300,
         decoration: const InputDecoration(
@@ -485,10 +505,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
-                  // TODO add user
-                  Navigator.pop(context);
+                  try {
+                    await _signUp(_emailController.text.trim(),
+                        _passwordController.text.trim());
+                    Navigator.pop(context);
+                  } catch (e) {
+                    print('Signup failed: $e');
+                  }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
