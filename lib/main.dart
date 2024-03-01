@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/views/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/firebase_options.dart';
+import 'package:project/views/staff_pages/add-point.dart';
+import 'package:project/views/staff_pages/redeem-voucher.dart';
+import 'package:project/views/staff_pages/staff_home_page.dart';
 
 
 void main() {
@@ -33,6 +36,9 @@ class MyApp extends StatelessWidget {
         routes: {
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
+          '/staff-home-page': (context) => StaffHomePage(),
+          '/add-point': (context) => AddPoint(),
+          '/staff-redeem': (context) => StaffRedeem()
           }
           );
   }

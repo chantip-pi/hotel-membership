@@ -20,6 +20,7 @@ class _SignInPageState extends State<SignInPage> {
     var uid = credential.user?.uid;
     if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
       //TODO implement staff app
+       Navigator.pushNamed(context,"/staff-home-page");
       print("Staff has Sign In");
     } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
       //TODO implement admin app
