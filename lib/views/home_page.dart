@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // Add symmetric padding
+        padding: const EdgeInsets.all(16.0),
         child: Container(
           color: AppTheme.backgroundColor,
           width: double.infinity,

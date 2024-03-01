@@ -15,15 +15,7 @@ class _BenefitsState extends State<Benefits> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: true,
         title: Text(
           'Membership Benefits',
           style: TextStyle(

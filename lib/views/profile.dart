@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/theme.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({Key? key});
+  Profile({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class Profile extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: MediaQuery.of(context).padding.top),
-                  ProfileImage(),
+                  _ProfileImage(),
                 ],
               ),
             ),
@@ -57,19 +57,19 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(top: 10)),
-                    ProfileInfo(title: 'Name-Surname', value: 'John Smith'),
-                    ProfileInfo(title: 'Gender', value: 'Male'),
-                    ProfileInfo(title: 'Email', value: 'john@gmail.com'),
-                    ProfileInfo(title: 'Phone Number', value: '09xxxxxxxx'),
-                    ProfileInfo(title: 'Birth Date', value: '20 Feb 1993'),
-                    ProfileInfo(title: 'Address', value: '50 NgamWongwan road, LadYao,Chatuchak, Bangkok, 10900'),
+                    _ProfileInfo(title: 'Name-Surname', value: 'John Smith'),
+                    _ProfileInfo(title: 'Gender', value: 'Male'),
+                    _ProfileInfo(title: 'Email', value: 'john@gmail.com'),
+                    _ProfileInfo(title: 'Phone Number', value: '09xxxxxxxx'),
+                    _ProfileInfo(title: 'Birth Date', value: '20 Feb 1993'),
+                    _ProfileInfo(title: 'Address', value: '50 NgamWongwan road, LadYao,Chatuchak, Bangkok, 10900'),
                     SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Sign out action
+                          // Sign out
                         },
                         child: Text(
                           'Sign out',
@@ -100,54 +100,37 @@ class Profile extends StatelessWidget {
   }
 }
 
-class ProfileImage extends StatelessWidget {
-  const ProfileImage({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipOval(
-      child: Image.asset(
-        'assets/images/profile.png',
-        width: 150,
-        height: 150,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
+Widget _ProfileImage() {
+  return ClipOval(
+    child: Image.asset(
+      'assets/images/profile.png',
+      width: 150,
+      height: 150,
+      fit: BoxFit.cover,
+    ),
+  );
 }
 
-class ProfileInfo extends StatelessWidget {
-  final String title;
-  final String value;
-
-  const ProfileInfo({
-    required this.title,
-    required this.value,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+Widget _ProfileInfo({required String title, required String value}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
-        SizedBox(height: 8),
-        Text(
-          value,
-          style: TextStyle(fontSize: 16),
-        ),
-        Divider(
-          color: AppTheme.primaryColor,
-          thickness: 1.0,
-        ),
-      ],
-    );
-  }
+      ),
+      SizedBox(height: 8),
+      Text(
+        value,
+        style: TextStyle(fontSize: 16),
+      ),
+      Divider(
+        color: AppTheme.primaryColor,
+        thickness: 1.0,
+      ),
+    ],
+  );
 }
