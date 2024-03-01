@@ -4,6 +4,9 @@ import 'package:project/theme.dart';
 class Profile extends StatelessWidget {
   Profile({Key? key});
 
+// TODO add padding at the end
+// TODO reposition profile image
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +67,7 @@ class Profile extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Sign out
+                          //TODO Sign out
                         },
                         child: Text(
                           'Sign out',

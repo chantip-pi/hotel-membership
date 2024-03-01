@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+//TODO change it to be responsive (use expand, phone size * ratio)
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key});
 
