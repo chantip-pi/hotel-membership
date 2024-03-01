@@ -10,15 +10,7 @@ class Profile extends StatelessWidget {
       color: AppTheme.backgroundColor,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        automaticallyImplyLeading: true,
           title: Text(
             'Profile',
             style: TextStyle(
@@ -26,6 +18,9 @@ class Profile extends StatelessWidget {
             ),
           ),
           centerTitle: true,
+            iconTheme: IconThemeData(
+            color: Colors.white, 
+          ),
           backgroundColor: AppTheme.primaryColor,
         ),
         body: Stack(

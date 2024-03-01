@@ -23,6 +23,9 @@ class _BenefitsState extends State<Benefits> {
           ),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white, 
+        ),
         backgroundColor: AppTheme.primaryColor,
       ),
       body: Padding(
@@ -74,6 +77,7 @@ class _BenefitsState extends State<Benefits> {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
               ),

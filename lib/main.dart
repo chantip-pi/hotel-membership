@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/views/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/firebase_options.dart';
-
+import 'package:project/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,16 +31,22 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           textTheme: GoogleFonts.poppinsTextTheme(),
           useMaterial3: true,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: Colors.black,
+            selectedItemColor: AppTheme.primaryColor, 
+            unselectedItemColor: Colors.white,
+          ),
         ),
-        initialRoute: '/home-page',
+        initialRoute: '/nav-bar',
         routes: {
+          '/nav-bar':(context) => BottomNavBar(),
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
           '/home-page': (context) => HomePage(),
           '/benefits': (context) => Benefits(),
           '/profile': (context) => Profile(),
-          }
-          );
+        }
+    );
   }
 }
 
@@ -52,7 +58,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
