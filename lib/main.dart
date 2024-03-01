@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:project/firebase_options.dart';
 import 'package:project/views/staff_pages/add-point.dart';
 import 'package:project/views/staff_pages/redeem-voucher.dart';
+import 'package:project/views/staff_pages/scan_member.dart';
 import 'package:project/views/staff_pages/staff_home_page.dart';
 
 
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
           '/sign-up': (context) => SignUpPage(),
           '/staff-home-page': (context) => StaffHomePage(),
           '/add-point': (context) => AddPoint(),
-          '/staff-redeem': (context) => StaffRedeem()
+          '/staff-redeem': (context) => StaffRedeem(),
+          '/scan-member': (context) => ScanMember()
           }
           );
   }

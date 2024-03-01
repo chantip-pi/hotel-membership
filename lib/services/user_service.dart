@@ -65,6 +65,26 @@ class UserService {
     }
   }
 
+
+  Future<Map<String, dynamic>?> getUserByMemberId(String memberID) async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('users')
+        .where('memberID', isEqualTo: memberID)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first.data() as Map<String, dynamic>;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print("Error getting user details by memberID: $e");
+    return null;
+  }
+}
+
 }
 
 

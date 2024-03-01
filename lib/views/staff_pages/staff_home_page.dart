@@ -26,7 +26,7 @@ class StaffHomePage extends StatelessWidget {
                 child: StaffButton(
                   iconPath: 'assets/icons/qr.svg',
                   label: 'ADD POINT',
-                  routeName: '/add-point',
+                  routeName: '/scan-member',
                 ),
               ),
               Expanded(
