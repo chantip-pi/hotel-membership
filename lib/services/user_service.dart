@@ -3,6 +3,8 @@ import 'dart:math';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<String> _docIDs = [];
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   // Add a new user to Firestore
   Future<void> addUserDetails({
@@ -28,45 +30,8 @@ class UserService {
     });
   }
 
-  // Get user details by UID
-  Future<Map<String, dynamic>?> getUserByUid(String uid) async {
-    try {
-      DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(uid).get();
-
-      if (userSnapshot.exists) {
-        return userSnapshot.data() as Map<String, dynamic>;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      // Handle any potential errors
-      print("Error getting user details: $e");
-      return null;
-    }
-  }
-
-  // Get user details by memberID
-  Future<Map<String, dynamic>?> getUserByMemberID(String memberID) async {
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('users')
-          .where('memberID', isEqualTo: memberID)
-          .limit(1)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.data() as Map<String, dynamic>;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      // Handle any potential errors
-      print("Error getting user details by memberID: $e");
-      return null;
-    }
-  }
   // generatememberID
-    String _generateRandomID() {
+  String _generateRandomID() {
     final Random random = Random();
     const String chars = '0123456789';
     String result = '';
@@ -75,6 +40,31 @@ class UserService {
     }
     return result;
   }
+
+
+  Future getAllUserIDs() async {
+    await _firestore.collection('users').get().then(
+      (snapshot) => snapshot.docs.forEach((element) {
+        print(element.reference);
+        _docIDs.add(element.reference.id);
+      }));
+  }
+
+   Future<Map<String, dynamic>?> getUserById(String userId) async {
+    try {
+      DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(userId).get();
+
+      if (userSnapshot.exists) {
+        return userSnapshot.data() as Map<String, dynamic>;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error getting user details by ID: $e");
+      return null;
+    }
+  }
+
 }
 
 
