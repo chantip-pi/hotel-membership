@@ -11,6 +11,7 @@ class UserService {
     required String uid,
     required String name,
     required String surname,
+    required String email,
     required String phone,
     required String gender,
     required String citizenID,
@@ -21,6 +22,7 @@ class UserService {
       'name': name,
       'surname': surname,
       'phone': phone,
+      'email': email,
       'gender': gender,
       'citizenID': citizenID,
       'address': address,
@@ -63,6 +65,48 @@ class UserService {
       print("Error getting user details by ID: $e");
       return null;
     }
+  }
+
+
+  Future<Map<String, dynamic>?> getUserByMemberId(String memberID) async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('users')
+        .where('memberID', isEqualTo: memberID)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first.data() as Map<String, dynamic>;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print("Error getting user details by memberID: $e");
+    return null;
+  }
+}
+
+Future<void> updateUserPoints(String memberID, int newPoints) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .where('memberID', isEqualTo: memberID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentReference userRef = querySnapshot.docs.first.reference;
+        await userRef.update({'points': newPoints});
+
+        print('Points updated successfully.');
+      } else {
+        print('User not found with memberID: $memberID');
+      }
+    } catch (e) {
+      print('Error updating points: $e');
+    }
+    
   }
 
 }

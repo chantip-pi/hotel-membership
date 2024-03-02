@@ -19,7 +19,7 @@ class _SignInPageState extends State<SignInPage> {
 
     var uid = credential.user?.uid;
     if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
-      //TODO implement staff app
+       Navigator.pushNamed(context,"/staff-home-page");
       print("Staff has Sign In");
     } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
       //TODO implement admin app
@@ -58,18 +58,20 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _buildSignInText(),
-              _buildEmailTextField(),
-              _buildPasswordTextField(),
-              _buildSignInButton(),
-              _buildSignUpPrompt(),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildSignInText(),
+                _buildEmailTextField(),
+                _buildPasswordTextField(),
+                _buildSignInButton(),
+                _buildSignUpPrompt(),
+              ],
+            ),
           ),
         ),
       ),
@@ -96,7 +98,7 @@ class _SignInPageState extends State<SignInPage> {
       child: TextField(
         controller: _emailController,
         decoration: const InputDecoration(
-          labelText: 'Email Address',
+          labelText: 'Email',
           hintText: 'helloworld@gmail.com',
           hintStyle: TextStyle(color: Colors.grey),
           labelStyle: TextStyle(fontSize: 18, color: Colors.black),
@@ -164,7 +166,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
               onPressed: () async {
-                var uid = await _signIn(
+                await _signIn(
                     _emailController.text, _passwordController.text);
               },
               child: const Center(
