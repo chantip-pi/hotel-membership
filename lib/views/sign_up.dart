@@ -50,6 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
       uid: uid,
       name: _nameController.text.trim(),
       surname:  _surnameController.text.trim(),
+      email: _emailController.text.trim(),
       phone:  _phoneController.text.trim(),
       gender: selectedGender.trim(),
       citizenID: citizenIDController.text.trim(), 

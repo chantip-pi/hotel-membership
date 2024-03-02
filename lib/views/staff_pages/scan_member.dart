@@ -31,7 +31,7 @@ class _ScanMemberState extends State<ScanMember> {
     );
   }
 
-     Widget _buildButton() {
+  Widget _buildButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(

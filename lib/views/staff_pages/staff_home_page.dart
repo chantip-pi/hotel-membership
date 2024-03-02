@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project/theme.dart';
@@ -13,6 +14,14 @@ class StaffHomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {FirebaseAuth.instance.signOut();
+            Navigator.pop(context);
+            },
+            icon: Icon(Icons.exit_to_app),
+          ),
+        ],
       ),
       body: Container(
         alignment: Alignment.topCenter,
