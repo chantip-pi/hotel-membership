@@ -32,8 +32,9 @@ class _AddPointSuccessState extends State<AddPointSuccess> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         title: const Text("Continue Adding",
-        style: TextStyle(color: Colors.white,fontSize: 12)),
+         title: const Text("Continue Scanning",
+        style: TextStyle(color: Colors.white,fontSize: 16)),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),

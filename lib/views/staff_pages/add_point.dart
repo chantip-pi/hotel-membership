@@ -37,6 +37,7 @@ class _AddPointState extends State<AddPoint> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
@@ -90,13 +91,11 @@ class _AddPointState extends State<AddPoint> {
                           ),
                         );
                       } else {
-                       userNotFound = true;
                        return _userNotFoundDisplay();
                       }
                     }
                   },
                 ),
-                if (userNotFound) 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
