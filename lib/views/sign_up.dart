@@ -353,7 +353,7 @@ class _SignUpPageState extends State<SignUpPage> {
             if (value == null || value.isEmpty) {
               return 'Please enter your phone number.';
             }
-            if (!numberRegex.hasMatch(value)) {
+            if (!numberRegex.hasMatch(value) && value.length != 10) {
               return 'Invalid input. Please enter a valid number.';
             }
             return null;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/theme.dart';
+import 'package:project/utils/format_string.dart';
 
 class AddPoint extends StatefulWidget {
   const AddPoint({super.key});
@@ -81,9 +82,9 @@ class _AddPointState extends State<AddPoint> {
                                     title: 'Name-Surname',
                                     value: '$name $surname'),
                                 _memberInfo(
-                                    title: 'Member ID', value: '$memberID'),
+                                    title: 'Member ID', value:  FormatUtils.addSpaceToNumberString('$memberID')),
                                 _memberInfo(title: 'Email', value: '$email'),
-                                _memberInfo(title: 'Phone', value: '$phone'),
+                                _memberInfo(title: 'Phone', value:  FormatUtils.formatPhoneNumber('$phone')),
                               ],
                             ),
                           ),
