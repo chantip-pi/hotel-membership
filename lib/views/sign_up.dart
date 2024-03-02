@@ -47,17 +47,16 @@ class _SignUpPageState extends State<SignUpPage> {
     String uid = userCredential.user?.uid ?? "";
 
     UserService().addUserDetails(
-      uid: uid,
-      name: _nameController.text.trim(),
-      surname:  _surnameController.text.trim(),
-      email: _emailController.text.trim(),
-      phone:  _phoneController.text.trim(),
-      gender: selectedGender.trim(),
-      citizenID: citizenIDController.text.trim(), 
-      address:  _addressController.text.trim(),
-      birthdate: _selectedDate);
+        uid: uid,
+        name: _nameController.text.trim(),
+        surname: _surnameController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: _phoneController.text.trim(),
+        gender: selectedGender.trim(),
+        citizenID: citizenIDController.text.trim(),
+        address: _addressController.text.trim(),
+        birthdate: _selectedDate);
   }
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -89,6 +88,8 @@ class _SignUpPageState extends State<SignUpPage> {
       });
     }
   }
+
+  final RegExp numberRegex = RegExp(r'^[0-9]+$');
 
   @override
   Widget build(BuildContext context) {
@@ -352,6 +353,9 @@ class _SignUpPageState extends State<SignUpPage> {
             if (value == null || value.isEmpty) {
               return 'Please enter your phone number.';
             }
+            if (!numberRegex.hasMatch(value)) {
+              return 'Invalid input. Please enter a valid number.';
+            }
             return null;
           }),
     );
@@ -445,6 +449,9 @@ class _SignUpPageState extends State<SignUpPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter your citizen ID.';
+          }
+          if (!numberRegex.hasMatch(value)) {
+            return 'Invalid input. Please enter a valid number.';
           }
           if (value.length != 13) {
             return 'Invalid citizen ID.';

@@ -15,19 +15,37 @@ class _ScanMemberState extends State<ScanMember> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
-      body:Center(
-        child: 
-      Column(
-        children: [
-          Text("Scan member"),
-          _buildMemberIDTextField(),
-          _buildButton()
-        ],
-      ),
+      body:SingleChildScrollView(
+        child: Center(
+          child: 
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              _scanQRCodeText(),
+              _buildMemberIDTextField(),
+              _buildButton()
+            ],
+          ),
+        ),
+        ),
       )
+    );
+  }
+
+Widget _scanQRCodeText(){
+    return  Padding(
+      padding: EdgeInsets.only(bottom: 30, top: 30),
+      child: Text(
+        'Scan QR code',
+        style: const TextStyle(
+          fontWeight: FontWeight.w900,
+          color: Colors.black,
+          fontSize: 30,
+        ),
+      ),
     );
   }
 
@@ -77,12 +95,12 @@ class _ScanMemberState extends State<ScanMember> {
           controller: _memberIDController,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
-            labelText: 'memberID',
+            labelText: 'Member ID',
             labelStyle: TextStyle(
               fontSize: 18,
               color: Colors.black,
             ),
-            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+            contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 10),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(

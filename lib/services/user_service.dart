@@ -87,6 +87,28 @@ class UserService {
   }
 }
 
+Future<void> updateUserPoints(String memberID, int newPoints) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .where('memberID', isEqualTo: memberID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentReference userRef = querySnapshot.docs.first.reference;
+        await userRef.update({'points': newPoints});
+
+        print('Points updated successfully.');
+      } else {
+        print('User not found with memberID: $memberID');
+      }
+    } catch (e) {
+      print('Error updating points: $e');
+    }
+    
+  }
+
 }
 
 

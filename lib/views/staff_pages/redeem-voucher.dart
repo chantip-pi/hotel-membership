@@ -16,7 +16,9 @@ class _StaffRedeemState extends State<StaffRedeem> {
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
-      body:Center(child: Text("redeem page"),)
+      body:SingleChildScrollView(
+        child: Center(
+          child: Text("redeem page"),))
     );
   }
 }

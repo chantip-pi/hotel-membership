@@ -135,17 +135,17 @@ class _AddPointState extends State<AddPoint> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
               ),
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             value,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
-          Divider(
+          const Divider(
             color: AppTheme.primaryColor,
             thickness: 1.0,
           ),
@@ -245,10 +245,6 @@ class _AddPointState extends State<AddPoint> {
       int updatedPoints = (currentUser?['points'] ?? 0) + additionalPoints;
       await UserService().updateUserPoints(memberID, updatedPoints);
 
-      // Update the UI with the new points
-      setState(() {
-        points = updatedPoints;
-      });
     } catch (error) {
       print('Error updating points: $error');
     }
