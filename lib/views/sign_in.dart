@@ -99,7 +99,7 @@ class _SignInPageState extends State<SignInPage> {
       child: TextField(
         controller: _emailController,
         decoration: const InputDecoration(
-          labelText: 'Email Address',
+          labelText: 'Email',
           hintText: 'helloworld@gmail.com',
           hintStyle: TextStyle(color: Colors.grey),
           labelStyle: TextStyle(fontSize: 18, color: Colors.black),

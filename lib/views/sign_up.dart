@@ -227,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
-          labelText: 'Email Address',
+          labelText: 'Email',
           hintText: 'example@gmail.com',
           hintStyle: TextStyle(color: Colors.grey),
           labelStyle: TextStyle(
