@@ -166,7 +166,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
               onPressed: () async {
-                var uid = await _signIn(
+                await _signIn(
                     _emailController.text, _passwordController.text);
               },
               child: const Center(

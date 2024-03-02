@@ -21,8 +21,6 @@ class _AddPointState extends State<AddPoint> {
   TextEditingController _addPointController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool userNotFound = false;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -37,7 +35,7 @@ class _AddPointState extends State<AddPoint> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
@@ -91,20 +89,21 @@ class _AddPointState extends State<AddPoint> {
                           ),
                         );
                       } else {
-                       return _userNotFoundDisplay();
+                        return _userNotFoundDisplay();
                       }
                     }
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    children: [
-                      _buildAddPointTextField(),
-                      _buildButton(),
-                    ],
-                  ),
-                )
+              
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        _buildAddPointTextField(),
+                        _buildButton(),
+                      ],
+                    ),
+                  )
               ],
             ),
           ),
@@ -219,7 +218,12 @@ class _AddPointState extends State<AddPoint> {
                   int additionalPoints = int.parse(_addPointController.text);
                   await _updateUserPoints(additionalPoints, '$memberID');
                   _addPointController.clear();
-                  Navigator.pushReplacementNamed(context, '/add-point-success',arguments: memberID);
+
+                  if (mounted) {
+                    Navigator.pushReplacementNamed(
+                        context, '/add-point-success',
+                        arguments: memberID);
+                  }
                 }
               },
               child: const Center(
@@ -247,39 +251,36 @@ class _AddPointState extends State<AddPoint> {
       // Update the points
       int updatedPoints = (currentUser?['points'] ?? 0) + additionalPoints;
       await UserService().updateUserPoints(memberID, updatedPoints);
-
     } catch (error) {
       print('Error updating points: $error');
     }
   }
 
-    Widget _userNotFoundDisplay() {
-    return  Padding(
-        padding: const EdgeInsets.only(top: 30, bottom: 30),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Icon(
-                  Icons.block_rounded,
-                  color: Colors.red, 
-                  size: MediaQuery.of(context).size.height * 0.1, 
-                ),
+  Widget _userNotFoundDisplay() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30, bottom: 30),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: Icon(
+              Icons.block_rounded,
+              color: Colors.red,
+              size: MediaQuery.of(context).size.height * 0.1,
             ),
-            const Center(
-              child: Text(
-                'No member found. Please try again',
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
+          ),
+          const Center(
+            child: Text(
+              'No member found. Please try again',
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: Colors.black,
+                fontSize: 18,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
-
-
 }
