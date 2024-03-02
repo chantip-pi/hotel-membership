@@ -2,26 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/theme.dart';
 
-class AddPoint extends StatefulWidget {
-  const AddPoint({super.key});
+class AddPointSuccess extends StatefulWidget {
+  const AddPointSuccess({super.key});
 
   @override
-  State<AddPoint> createState() => _AddPointState();
+  State<AddPointSuccess> createState() => _AddPointSuccessState();
 }
 
-class _AddPointState extends State<AddPoint> {
-  late Future<Map<String, dynamic>?> _currentUserFuture;
+class _AddPointSuccessState extends State<AddPointSuccess> {
+
+   late Future<Map<String, dynamic>?> _currentUserFuture;
   late String? name;
   late String? surname;
   late String? email;
   late String? phone;
   late String? memberID;
   late int? points;
-
-  TextEditingController _addPointController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool userNotFound = false;
 
   @override
   void didChangeDependencies() {
@@ -32,11 +28,12 @@ class _AddPointState extends State<AddPoint> {
 
     _currentUserFuture = UserService().getUserByMemberId(receivedMemberID);
   }
-
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+         title: const Text("Continue Adding",
+        style: TextStyle(color: Colors.white,fontSize: 12)),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
@@ -77,6 +74,7 @@ class _AddPointState extends State<AddPoint> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                _memberSucess(),
                                 _memberPointText(),
                                 _memberInfo(
                                     title: 'Name-Surname',
@@ -90,21 +88,15 @@ class _AddPointState extends State<AddPoint> {
                           ),
                         );
                       } else {
-                       userNotFound = true;
-                       return _userNotFoundDisplay();
+                        return const Text(
+                            'User not found or error getting user details by ID');
                       }
                     }
                   },
                 ),
-                if (userNotFound) 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    children: [
-                      _buildAddPointTextField(),
-                      _buildButton(),
-                    ],
-                  ),
+                  child: _buildButton()
                 )
               ],
             ),
@@ -114,7 +106,32 @@ class _AddPointState extends State<AddPoint> {
     );
   }
 
-  Widget _memberPointText() {
+  Widget _memberSucess() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: Column(
+        children: [
+          Icon(
+              Icons.check_circle,
+              color: Colors.lightGreen, 
+              size: MediaQuery.of(context).size.height * 0.1, 
+            ),
+          Center(
+            child: Text(
+              'Succesfully Add Points!',
+              style: const TextStyle(
+                fontWeight: FontWeight.w900,
+                color: Colors.black,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+ Widget _memberPointText() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 30, top: 30),
       child: Text(
@@ -127,7 +144,7 @@ class _AddPointState extends State<AddPoint> {
       ),
     );
   }
-
+  
   Widget _memberInfo({required String title, required String value}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -157,48 +174,9 @@ class _AddPointState extends State<AddPoint> {
     );
   }
 
-  Widget _buildAddPointTextField() {
+   Widget _buildButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Form(
-        key: _formKey,
-        child: TextFormField(
-            autofocus: true,
-            controller: _addPointController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Enter Points',
-              labelStyle: TextStyle(
-                fontSize: 18,
-                color: Colors.black,
-              ),
-              contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 10),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppTheme.primaryColor,
-                  width: 2.0,
-                ),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter a number.';
-              }
-              final RegExp numberRegex = RegExp(r'^[0-9]+$');
-              if (!numberRegex.hasMatch(value)) {
-                return 'Invalid input. Please enter a valid number.';
-              }
-              return null;
-            }),
-      ),
-    );
-  }
-
-  Widget _buildButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         children: [
           Expanded(
@@ -215,17 +193,12 @@ class _AddPointState extends State<AddPoint> {
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: () async {
-                if (_formKey.currentState?.validate() ?? false) {
-                  int additionalPoints = int.parse(_addPointController.text);
-                  await _updateUserPoints(additionalPoints, '$memberID');
-                  _addPointController.clear();
-                  Navigator.pushReplacementNamed(context, '/add-point-success',arguments: memberID);
-                }
+              onPressed: () {
+              Navigator.pushNamed(context, '/staff-home-page');
               },
               child: const Center(
                 child: Text(
-                  'Add',
+                  'Back to Home Page',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -238,49 +211,5 @@ class _AddPointState extends State<AddPoint> {
       ),
     );
   }
-
-  Future<void> _updateUserPoints(int additionalPoints, String memberID) async {
-    try {
-      // Fetch the current user data again to ensure it's up-to-date
-      Map<String, dynamic>? currentUser =
-          await UserService().getUserByMemberId(memberID);
-
-      // Update the points
-      int updatedPoints = (currentUser?['points'] ?? 0) + additionalPoints;
-      await UserService().updateUserPoints(memberID, updatedPoints);
-
-    } catch (error) {
-      print('Error updating points: $error');
-    }
-  }
-
-    Widget _userNotFoundDisplay() {
-    return  Padding(
-        padding: const EdgeInsets.only(top: 30, bottom: 30),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Icon(
-                  Icons.block_rounded,
-                  color: Colors.red, 
-                  size: MediaQuery.of(context).size.height * 0.1, 
-                ),
-            ),
-            const Center(
-              child: Text(
-                'No member found. Please try again',
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ],
-        ),
-    );
-  }
-
 
 }

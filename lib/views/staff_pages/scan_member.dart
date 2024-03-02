@@ -68,7 +68,7 @@ Widget _scanQRCodeText(){
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: () async {
+              onPressed: () {
               Navigator.pushNamed(context, '/add-point', arguments: _memberIDController.text);
               },
               child: const Center(
