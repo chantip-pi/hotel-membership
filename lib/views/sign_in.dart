@@ -59,18 +59,20 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _buildSignInText(),
-              _buildEmailTextField(),
-              _buildPasswordTextField(),
-              _buildSignInButton(),
-              _buildSignUpPrompt(),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildSignInText(),
+                _buildEmailTextField(),
+                _buildPasswordTextField(),
+                _buildSignInButton(),
+                _buildSignUpPrompt(),
+              ],
+            ),
           ),
         ),
       ),
