@@ -12,14 +12,15 @@ class StaffHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text("Staff",style: TextStyle(color: Colors.white),),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {FirebaseAuth.instance.signOut();
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/sign-in');
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.logout_outlined,color: Colors.white,),
           ),
         ],
       ),
