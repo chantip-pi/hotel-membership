@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project/services/user_service.dart';
+import 'package:project/utils/format_string.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   late Future<Map<String, dynamic>?> _currentUserFuture;
     late String? name;
     late String? surname ;
-    late String? memberID;
+    late String memberID;
     late int? points;
     
   @override
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           currentUser = currentUser;
           name = currentUser?['name'] as String?;
           surname = currentUser?['surname'] as String?;
-          memberID = currentUser?['memberID'] as String?;
+          memberID = currentUser?['memberID'] as String;
           points = currentUser?['points'] as int?;
         });
           print('User Details by ID: ${currentUser}');
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Stack(
                               children: <Widget>[
-                                _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.045), formatMemberID(memberID), FontWeight.normal, 16),
+                                _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.045), FormatUtils.addSpaceToNumberString(memberID), FontWeight.normal, 16),
                                 _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.02), '${name} ${surname}', FontWeight.normal, 16)
                               ],
                             ),
@@ -188,14 +189,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-  }
-
-  String formatMemberID(String? memberID) {
-    if (memberID == null || memberID.isEmpty) {
-      return '';
-    }
-    final formattedID = RegExp(r'.{1,4}').allMatches(memberID).map((m) => m.group(0)).join(' ');
-    return formattedID;
   }
 
   Widget _cardTextAlignment(Alignment align, EdgeInsets padding, String str, FontWeight fontWeight, double fontSize) {

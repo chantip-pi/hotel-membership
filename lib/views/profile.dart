@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/theme.dart';
 import 'package:project/services/user_service.dart';
+import 'package:project/utils/format_string.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -12,11 +13,16 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late Future<Map<String, dynamic>?> _currentUserFuture;
-    late String? name;
-    late String? surname ;
-    late String? memberID;
-    late int? points;
-    
+  late String? name;
+  late String? surname ;
+  late String? memberID;
+  late int? points;
+  late String? email;
+  late String phone;
+  late String? gender;
+  late String? address;
+  late DateTime? birthdate;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +40,11 @@ class _ProfileState extends State<Profile> {
           surname = currentUser?['surname'] as String?;
           memberID = currentUser?['memberID'] as String?;
           points = currentUser?['points'] as int?;
+          email = currentUser?['email'] as String?;
+          phone = currentUser?['phone'] as String;
+          gender = currentUser?['gender'] as String?;
+          address = currentUser?['address'] as String?;
+          birthdate = currentUser?['birthdate'] as DateTime?;
         });
           print('User Details by ID: ${currentUser}');
           print('Name: ${name}');
@@ -47,6 +58,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    String formattedPhoneNumber = FormatUtils.formatPhoneNumber(phone);
 
     return Container(
       color: AppTheme.backgroundColor,
@@ -95,11 +107,11 @@ class _ProfileState extends State<Profile> {
                     ),
                     Padding(padding: EdgeInsets.only(top: 10)),
                     _ProfileInfo(title: 'Name-Surname', value: '${name} ${surname}'),
-                    _ProfileInfo(title: 'Gender', value: 'gender'),
-                    _ProfileInfo(title: 'Email', value: 'email'),
-                    _ProfileInfo(title: 'Phone Number', value: 'phonenumber'),
-                    _ProfileInfo(title: 'Birth Date', value: 'birthdate'),
-                    _ProfileInfo(title: 'Address', value: 'address'),
+                    _ProfileInfo(title: 'Gender', value: '${gender}'),
+                    _ProfileInfo(title: 'Email', value: '${email}'),
+                    _ProfileInfo(title: 'Phone Number', value: formattedPhoneNumber),
+                    _ProfileInfo(title: 'Birth Date', value: ''),
+                    _ProfileInfo(title: 'Address', value: '${address}'),
                     SizedBox(height: screenHeight * 0.01),
                     SizedBox(
                       width: double.infinity,
