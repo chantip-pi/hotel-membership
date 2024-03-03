@@ -73,8 +73,7 @@ class MyApp extends StatelessWidget {
       } else if (user.uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
         // return '/admin-home-page';
       } else {
-
-        // return '/home-page';
+        return '/nav-bar';
       }
     }
     // User not signed in, navigate to the sign-in page
