@@ -84,7 +84,7 @@ class _AddPointState extends State<AddPoint> {
                                 _memberInfo(
                                     title: 'Member ID', value:  FormatUtils.addSpaceToNumberString('$memberID')),
                                 _memberInfo(title: 'Email', value: '$email'),
-                                _memberInfo(title: 'Phone', value:  FormatUtils.formatPhoneNumber('$phone')),
+                                _memberInfo(title: 'Phone Number', value:  FormatUtils.formatPhoneNumber('$phone')),
                               ],
                             ),
                           ),
@@ -134,7 +134,7 @@ class _AddPointState extends State<AddPoint> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
             child: Text(
               title,
               style: const TextStyle(

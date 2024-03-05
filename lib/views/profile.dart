@@ -1,89 +1,140 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project/theme.dart';
+import 'package:project/services/user_service.dart';
+import 'package:project/utils/format_string.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key});
+class Profile extends StatefulWidget {
+  Profile({Key? key}) : super(key: key);
+
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  late Future<Map<String, dynamic>?> _currentUserFuture;
+  late String name;
+  late String surname ;
+  late String memberID;
+  late int points;
+  late String email;
+  late String phone;
+  late String gender;
+  late String address;
+  late Timestamp birthdate;
+
+  @override
+  void initState() {
+    super.initState();
+      
+    // Initialize the future in the initState method
+    _currentUserFuture = UserService().getUserById(FirebaseAuth.instance.currentUser!.uid);
+    
+    // Use the then callback to update the state when the future completes
+    _currentUserFuture.then((currentUser) {
+      if (currentUser != null) {
+        // Successfully retrieved user details by ID
+        setState(() {
+          currentUser = currentUser;
+          name = currentUser?['name'] as String;
+          surname = currentUser?['surname'] as String;
+          memberID = currentUser?['memberID'] as String;
+          points = currentUser?['points'] as int;
+          email = currentUser?['email'] as String;
+          phone = currentUser?['phone'] as String;
+          gender = currentUser?['gender'] as String;
+          address = currentUser?['address'] as String;
+          birthdate = currentUser?['birthdate'] as Timestamp;
+        });
+        }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    String formattedPhoneNumber = FormatUtils.formatPhoneNumber(phone);
+    DateTime dateTime = birthdate.toDate();
+    String formattedBirthdate = DateFormat('dd MMM yyyy').format(dateTime);
+
     return Container(
       color: AppTheme.backgroundColor,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Text(
+          title: const Text(
             'Profile',
             style: TextStyle(
               color: Colors.white,
             ),
           ),
           centerTitle: true,
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
           backgroundColor: AppTheme.primaryColor,
         ),
         body: Stack(
           children: [
             Image.asset(
               'assets/images/backgrounddemo.jpg',
-              width: MediaQuery.of(context).size.width,
+              width: screenWidth,
               fit: BoxFit.cover,
             ),
             Center(
               child: Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).padding.top),
-                  ProfileImage(),
+                  Padding(padding: EdgeInsets.only(top: screenHeight * 0.035)),
+                  _profileImage(screenHeight),
                 ],
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(16, 240, 16, 0),
-              child: SingleChildScrollView( 
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.05, screenHeight * 0.24, screenHeight * 0.016, 0),
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Personal Information',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10)),
-                    ProfileInfo(title: 'Name-Surname', value: 'John Smith'),
-                    ProfileInfo(title: 'Gender', value: 'Male'),
-                    ProfileInfo(title: 'Email', value: 'john@gmail.com'),
-                    ProfileInfo(title: 'Phone Number', value: '09xxxxxxxx'),
-                    ProfileInfo(title: 'Birth Date', value: '20 Feb 1993'),
-                    ProfileInfo(title: 'Address', value: '50 NgamWongwan road, LadYao,Chatuchak, Bangkok, 10900'),
-                    SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Sign out action
-                        },
-                        child: Text(
-                          'Sign out',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                    Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
+                    _profileInfo(title: 'Name-Surname', value: '$name $surname'),
+                    _profileInfo(title: 'Gender', value: gender),
+                    _profileInfo(title: 'Email', value: email),
+                    _profileInfo(title: 'Phone Number', value: formattedPhoneNumber),
+                    _profileInfo(title: 'Birthdate', value: formattedBirthdate),
+                    _profileInfo(title: 'Address', value: address),
+                    Padding(
+                      padding: EdgeInsets.only(top: screenHeight * 0.03, bottom: screenHeight * 0.05),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: screenHeight * 0.06,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.pushReplacementNamed(context, '/sign-in');
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(AppTheme.backgroundColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                side: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                           ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(AppTheme.backgroundColor),
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10),
+                          child: const Text(
+                            'Sign out',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -98,56 +149,46 @@ class Profile extends StatelessWidget {
       ),
     );
   }
-}
 
-class ProfileImage extends StatelessWidget {
-  const ProfileImage({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _profileImage(double screenHeight) {
     return ClipOval(
       child: Image.asset(
         'assets/images/profile.png',
-        width: 150,
-        height: 150,
+        width: screenHeight * 0.15,
+        height: screenHeight * 0.15,
         fit: BoxFit.cover,
       ),
     );
   }
-}
 
-class ProfileInfo extends StatelessWidget {
-  final String title;
-  final String value;
-
-  const ProfileInfo({
-    required this.title,
-    required this.value,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+  Widget _profileInfo({required String title, required String value}) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 18),
+            ),
+            const Divider(
+              color: AppTheme.primaryColor,
+              thickness: 1.0,
+            ),
+          ],
         ),
-        SizedBox(height: 8),
-        Text(
-          value,
-          style: TextStyle(fontSize: 16),
-        ),
-        Divider(
-          color: AppTheme.primaryColor,
-          thickness: 1.0,
-        ),
-      ],
+      ),
     );
   }
 }
