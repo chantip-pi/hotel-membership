@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/theme.dart';
 
@@ -7,15 +8,45 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
 
-  void _signIn() {
-    String email = emailController.text;
-    String password = passwordController.text;
-    // TODO Perform sign-in logic here
+  Future<String?> _signIn(String email, String password) async {
+  try {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    var uid = credential.user?.uid;
+    if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
+       Navigator.pushNamed(context,"/staff-home-page");
+      print("Staff has Sign In");
+    } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
+      //TODO implement admin app
+      print("Admin has Sign In");
+    } else {
+      //TODO implement go to homepage
+      print("User has Sign In");
+    }
+    return uid;
+
+  } on FirebaseAuthException catch (e) {
+    String errorMessage = "An error occurred. Please try again.";
+    if (e.code == 'invalid-credential') {
+      errorMessage = "Incorrect Email or Password. Please try again.";
+    } 
+    
+    // Show error using SnackBar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ),
+    );
+
+    return null;
   }
+}
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -23,23 +54,24 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _buildSignInText(),
-              _buildEmailTextField(),
-              _buildPasswordTextField(),
-              _buildSignInButton(),
-              _buildSignUpPrompt(),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildSignInText(),
+                _buildEmailTextField(),
+                _buildPasswordTextField(),
+                _buildSignInButton(),
+                _buildSignUpPrompt(),
+              ],
+            ),
           ),
         ),
       ),
@@ -48,7 +80,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildSignInText() {
     return const Padding(
-      padding: EdgeInsets.only(bottom: 30,top: 150),
+      padding: EdgeInsets.only(bottom: 30, top: 150),
       child: Text(
         "Sign in",
         style: TextStyle(
@@ -64,9 +96,9 @@ class _SignInPageState extends State<SignInPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
-        controller: emailController,
+        controller: _emailController,
         decoration: const InputDecoration(
-          labelText: 'Email Address',
+          labelText: 'Email',
           hintText: 'helloworld@gmail.com',
           hintStyle: TextStyle(color: Colors.grey),
           labelStyle: TextStyle(fontSize: 18, color: Colors.black),
@@ -88,11 +120,10 @@ class _SignInPageState extends State<SignInPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
-        controller: passwordController,
+        controller: _passwordController,
         decoration: InputDecoration(
           labelText: 'Password',
-          labelStyle: const TextStyle(fontSize: 18, 
-                      color: Colors.black),
+          labelStyle: const TextStyle(fontSize: 18, color: Colors.black),
           suffixIcon: GestureDetector(
             onTap: _togglePasswordVisibility,
             child: Icon(
@@ -134,15 +165,17 @@ class _SignInPageState extends State<SignInPage> {
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: _signIn,
+              onPressed: () async {
+                await _signIn(
+                    _emailController.text, _passwordController.text);
+              },
               child: const Center(
                 child: Text(
                   'Sign in',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 16
-                  ),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 16),
                 ),
               ),
             ),
@@ -162,8 +195,8 @@ class _SignInPageState extends State<SignInPage> {
           child: const Text(
             "Sign up",
             style: TextStyle(
-              fontWeight: FontWeight.bold,  
-              decoration: TextDecoration.underline),
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline),
           ),
         ),
       ],
