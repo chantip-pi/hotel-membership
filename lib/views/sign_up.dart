@@ -518,7 +518,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   try {
                     await _signUp(_emailController.text.trim(),
                         _passwordController.text.trim());
-                    Navigator.pop(context);
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim()
+                    );
+                    Navigator.pushReplacementNamed(context, '/introduction');
                   } catch (e) {
                     print('Signup failed: $e');
                   }

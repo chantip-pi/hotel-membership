@@ -26,7 +26,7 @@ class _SignInPageState extends State<SignInPage> {
       print("Admin has Sign In");
     } else {
       //TODO implement go to homepage
-      Navigator.pushNamed(context,'/nav-bar');
+      Navigator.pushReplacementNamed(context,'/nav-bar');
     }
     return uid;
 

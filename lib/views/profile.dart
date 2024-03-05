@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
@@ -13,15 +15,15 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late Future<Map<String, dynamic>?> _currentUserFuture;
-  late String? name;
-  late String? surname ;
-  late String? memberID;
-  late int? points;
-  late String? email;
+  late String name;
+  late String surname ;
+  late String memberID;
+  late int points;
+  late String email;
   late String phone;
-  late String? gender;
-  late String? address;
-  late DateTime? birthdate;
+  late String gender;
+  late String address;
+  late Timestamp birthdate;
 
   @override
   void initState() {
@@ -36,21 +38,17 @@ class _ProfileState extends State<Profile> {
         // Successfully retrieved user details by ID
         setState(() {
           currentUser = currentUser;
-          name = currentUser?['name'] as String?;
-          surname = currentUser?['surname'] as String?;
-          memberID = currentUser?['memberID'] as String?;
-          points = currentUser?['points'] as int?;
-          email = currentUser?['email'] as String?;
+          name = currentUser?['name'] as String;
+          surname = currentUser?['surname'] as String;
+          memberID = currentUser?['memberID'] as String;
+          points = currentUser?['points'] as int;
+          email = currentUser?['email'] as String;
           phone = currentUser?['phone'] as String;
-          gender = currentUser?['gender'] as String?;
-          address = currentUser?['address'] as String?;
-          birthdate = currentUser?['birthdate'] as DateTime?;
+          gender = currentUser?['gender'] as String;
+          address = currentUser?['address'] as String;
+          birthdate = currentUser?['birthdate'] as Timestamp;
         });
-          print('User Details by ID: ${currentUser}');
-          print('Name: ${name}');
-        } else {
-          print('User not found or error getting user details by ID');
-      }
+        }
     });
   }
 
@@ -59,20 +57,21 @@ class _ProfileState extends State<Profile> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     String formattedPhoneNumber = FormatUtils.formatPhoneNumber(phone);
+    DateTime dateTime = birthdate.toDate();
+    String formattedBirthdate = DateFormat('dd MMM yyyy').format(dateTime);
 
     return Container(
       color: AppTheme.backgroundColor,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: Text(
+          title: const Text(
             'Profile',
             style: TextStyle(
               color: Colors.white,
             ),
           ),
           centerTitle: true,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.white,
           ),
           backgroundColor: AppTheme.primaryColor,
@@ -88,7 +87,7 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: [
                   Padding(padding: EdgeInsets.only(top: screenHeight * 0.035)),
-                  _ProfileImage(screenHeight),
+                  _profileImage(screenHeight),
                 ],
               ),
             ),
@@ -98,47 +97,49 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Personal Information',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10)),
-                    _ProfileInfo(title: 'Name-Surname', value: '${name} ${surname}'),
-                    _ProfileInfo(title: 'Gender', value: '${gender}'),
-                    _ProfileInfo(title: 'Email', value: '${email}'),
-                    _ProfileInfo(title: 'Phone Number', value: formattedPhoneNumber),
-                    _ProfileInfo(title: 'Birth Date', value: ''),
-                    _ProfileInfo(title: 'Address', value: '${address}'),
-                    SizedBox(height: screenHeight * 0.01),
-                    SizedBox(
-                      width: double.infinity,
-                      height: screenHeight * 0.06,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          //TODO Sign out
-                        },
-                        child: Text(
-                          'Sign out',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                    Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
+                    _profileInfo(title: 'Name-Surname', value: '$name $surname'),
+                    _profileInfo(title: 'Gender', value: gender),
+                    _profileInfo(title: 'Email', value: email),
+                    _profileInfo(title: 'Phone Number', value: formattedPhoneNumber),
+                    _profileInfo(title: 'Birthdate', value: formattedBirthdate),
+                    _profileInfo(title: 'Address', value: address),
+                    Padding(
+                      padding: EdgeInsets.only(top: screenHeight * 0.03, bottom: screenHeight * 0.05),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: screenHeight * 0.06,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.pushReplacementNamed(context, '/sign-in');
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(AppTheme.backgroundColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                side: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                           ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(AppTheme.backgroundColor),
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10),
+                          child: const Text(
+                            'Sign out',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.01),
                   ],
                 ),
               ),
@@ -149,7 +150,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _ProfileImage(double screenHeight) {
+  Widget _profileImage(double screenHeight) {
     return ClipOval(
       child: Image.asset(
         'assets/images/profile.png',
@@ -160,27 +161,34 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _ProfileInfo({required String title, required String value}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+  Widget _profileInfo({required String title, required String value}) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 18),
+            ),
+            const Divider(
+              color: AppTheme.primaryColor,
+              thickness: 1.0,
+            ),
+          ],
         ),
-        SizedBox(height: 8),
-        Text(
-          value,
-          style: TextStyle(fontSize: 16),
-        ),
-        Divider(
-          color: AppTheme.primaryColor,
-          thickness: 1.0,
-        ),
-      ],
+      ),
     );
   }
 }
