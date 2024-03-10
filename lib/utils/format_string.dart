@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FormatUtils {
   static String formatPhoneNumber(String phoneNumber) {
     if (phoneNumber.length != 10) {
@@ -20,4 +22,10 @@ class FormatUtils {
 
     return formattedNumber;
   }
+
+    static String formatDueDate(Timestamp timestamp) {
+    DateTime dueDate = timestamp.toDate();
+    return "${dueDate.day}/${dueDate.month}/${dueDate.year}";
+  }
+
 }

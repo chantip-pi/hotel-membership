@@ -4,6 +4,8 @@ import 'package:project/views/benefits.dart';
 import 'package:project/views/home_page.dart';
 import 'package:project/views/introduction.dart';
 import 'package:project/views/profile.dart';
+import 'package:project/views/shop/admin_shop.dart';
+import 'package:project/views/shop/user_shop.dart';
 import 'package:project/views/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/views/sign_up.dart';
@@ -46,7 +48,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-        initialRoute: determineInitialRoute(),
+        // initialRoute: determineInitialRoute(),
+        initialRoute: '/shop',
 
         routes: {
           '/nav-bar':(context) => BottomNavBar(),
@@ -61,6 +64,8 @@ class MyApp extends StatelessWidget {
           '/scan-member': (context) => ScanMember(),
           '/add-point-success': (context) => AddPointSuccess(),
           '/introduction' : (context) => IntroductionPage(),
+          '/admin-shop' : (context) => VoucherListPage(),
+          '/shop' : (cointext) => VoucherShop()
           }
           );
   }

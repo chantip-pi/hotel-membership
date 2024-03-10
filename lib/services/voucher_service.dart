@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirestoreService {
+class VoucherService{
   final CollectionReference vouchers = FirebaseFirestore.instance.collection('vouchers');
 
   // Create
@@ -43,4 +43,13 @@ class FirestoreService {
       'timestamp': Timestamp.now(),
     });
   }
+
+  Stream<QuerySnapshot> getVoucherStreamByCategory(String category) {
+    final voucherStream = vouchers
+        .where('voucherType', isEqualTo: category)
+        .orderBy('points', descending: false)
+        .snapshots();
+    return voucherStream;
+  }
+  
 }
