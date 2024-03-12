@@ -142,7 +142,8 @@ class _SignUpPageState extends State<SignUpPage> {
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Form(
               key: _formKey,
-              child: Column(children: [
+              child: Column(
+                children: [
                 _buildNameTextField(),
                 _buildSurnameTextField(),
                 _buildEmailTextField(),
