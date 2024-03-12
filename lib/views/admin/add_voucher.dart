@@ -100,7 +100,7 @@ class _AddVoucherState extends State<AddVoucher> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(1900),
+      firstDate:_selectedDate,
       lastDate: DateTime(2104),
       builder: (BuildContext context, Widget? child) {
         return Theme(
