@@ -288,7 +288,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Points: ${voucher['points']}'),
-                      Text('Due Date: ${_formatDueDate(voucher['dueDate'])}'),
+                      Text('Due Date: ${FormatUtils.formatDate(voucher['dueDate'])}'),
                       Text('Voucher Type: ${voucher['voucherType']}'),
                     ],
                   ),
@@ -299,10 +299,5 @@ class _VoucherListPageState extends State<VoucherListPage> {
         }
       },
     );
-  }
-
-  String _formatDueDate(Timestamp timestamp) {
-    DateTime dueDate = timestamp.toDate(); // Convert Timestamp to DateTime
-    return DateFormat('dd MMM yyyy').format(dueDate); // Format the DateTime
   }
 }
