@@ -13,7 +13,7 @@ class AdminHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Admin",style: TextStyle(color: Colors.white),),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

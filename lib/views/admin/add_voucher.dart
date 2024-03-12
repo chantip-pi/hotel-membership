@@ -31,7 +31,6 @@ class _AddVoucherState extends State<AddVoucher> {
   VoucherService _voucherService = VoucherService();
 
   final FirebaseImageUtils _firebaseImageUtils = FirebaseImageUtils();
-  String uploadedImageName = "";
   String imageUrl = '';
 
   Future<void> _selectImageSourceDialog() async {
@@ -50,9 +49,6 @@ class _AddVoucherState extends State<AddVoucher> {
                     try {
                       imageUrl = await _firebaseImageUtils
                           .uploadImageFromGallery('voucher_image');
-                      setState(() {
-                        uploadedImageName = imageUrl; // Display the image name
-                      });
                     } catch (e) {
                       print('Error uploading image from gallery: $e');
                     }
@@ -65,9 +61,6 @@ class _AddVoucherState extends State<AddVoucher> {
                     try {
                       imageUrl = await _firebaseImageUtils
                           .uploadImageFromCamera('voucher_image');
-                      setState(() {
-                        uploadedImageName = imageUrl; // Display the image name
-                      });
                     } catch (e) {
                       print('Error capturing image from camera: $e');
                     }
@@ -100,7 +93,7 @@ class _AddVoucherState extends State<AddVoucher> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate:_selectedDate,
+      firstDate: _selectedDate,
       lastDate: DateTime(2104),
       builder: (BuildContext context, Widget? child) {
         return Theme(
@@ -137,22 +130,33 @@ class _AddVoucherState extends State<AddVoucher> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppTheme.primaryColor,
-        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            if (imageUrl.isNotEmpty) {
+              _firebaseImageUtils.deletePictureByUrl(imageUrl);
+            }
+            Navigator.pop(context);
+          },
+        ),
       ),
       backgroundColor: AppTheme.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            if (uploadedImageName.isEmpty)
+            if (imageUrl.isEmpty)
               Image.asset(
                 'assets/images/default-voucher-image.png',
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width * 0.8,
                 fit: BoxFit.fill,
               ),
-            if (uploadedImageName.isNotEmpty)
+            if (imageUrl.isNotEmpty)
               Image.network(
-                uploadedImageName,
+                imageUrl,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
@@ -179,7 +183,10 @@ class _AddVoucherState extends State<AddVoucher> {
                           ),
                         ),
                       ),
-                      child: Text('Select Image',style: TextStyle(color: Colors.white),),
+                      child: Text(
+                        'Select Image',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     _buildVoucherNameTextField(),
                     _builPointsTextField(),
@@ -202,28 +209,30 @@ class _AddVoucherState extends State<AddVoucher> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: _voucherNameController,
-          decoration: const InputDecoration(
-            labelText: 'Voucher Name',
-            labelStyle: TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
-            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: AppTheme.primaryColor,
-                width: 2.0,
-              ),
+        controller: _voucherNameController,
+        maxLength: 40,
+        decoration: const InputDecoration(
+          labelText: 'Voucher Name',
+          labelStyle: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+          contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: AppTheme.primaryColor,
+              width: 2.0,
             ),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter vouhcer name.';
-            }
-            return null;
-          }),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter voucher name.';
+          }
+          return null;
+        },
+      ),
     );
   }
 
@@ -467,7 +476,7 @@ class _AddVoucherState extends State<AddVoucher> {
               onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
                   try {
-                         _voucherService.addVoucher(
+                    _voucherService.addVoucher(
                       name: _voucherNameController.text,
                       onShop: true,
                       timestamp: Timestamp.now(),
