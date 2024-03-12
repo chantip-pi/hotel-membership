@@ -15,6 +15,7 @@ class VoucherService{
     double? discountPercentage,
     double? cashValue,
     String? giftItem,
+    String? imageUrl
   }) {
     return vouchers.add({
       'name': name,
@@ -27,12 +28,13 @@ class VoucherService{
       'discountPercentage': discountPercentage,
       'cashValue': cashValue,
       'giftItem': giftItem,
+      'imageUrl': imageUrl
     });
   }
 
   // Read
   Stream<QuerySnapshot> getVoucherStream() {
-    final voucherStream = vouchers.orderBy('name', descending: false).snapshots();
+    final voucherStream = vouchers.orderBy('timestamp', descending: true).snapshots();
     return voucherStream;
   }
 
@@ -47,9 +49,9 @@ class VoucherService{
   Stream<QuerySnapshot> getVoucherStreamByCategory(String category) {
     final voucherStream = vouchers
         .where('voucherType', isEqualTo: category)
-        .orderBy('points', descending: false)
+        .orderBy('timestamp', descending: false)
         .snapshots();
     return voucherStream;
   }
-  
+
 }

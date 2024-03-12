@@ -40,6 +40,8 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
   cloud_firestore: ^4.14.0
+  image_picker: ^1.0.7
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:
@@ -67,10 +69,12 @@ flutter:
   assets:
     - assets/images/backgrounddemo.jpg
     - assets/images/profile.png
+    - assets/images/default-voucher-image.png
     - assets/icons/Ticket_use_light.svg
     - assets/icons/qr.svg
     - assets/icons/benefit.svg
     - assets/icons/LOGO.svg
+    - assets/icons/person.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -105,7 +105,6 @@ class _VoucherShopState extends State<VoucherShop> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Points: ${voucher['points']}'),
-                      Text('Due Date: ${_formatDueDate(voucher['dueDate'])}'),
                       Text('Voucher Type: ${voucher['voucherType']}'),
                     ],
                   ),
@@ -119,8 +118,5 @@ class _VoucherShopState extends State<VoucherShop> {
     );
   }
 
-  String _formatDueDate(Timestamp timestamp) {
-    DateTime dueDate = timestamp.toDate();
-    return "${dueDate.day}/${dueDate.month}/${dueDate.year}";
-  }
+
 }

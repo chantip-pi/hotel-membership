@@ -1,22 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project/views/admin/admin_homepage.dart';
 import 'package:project/views/benefits.dart';
 import 'package:project/views/home_page.dart';
 import 'package:project/views/introduction.dart';
 import 'package:project/views/profile.dart';
-import 'package:project/views/shop/admin_shop.dart';
-import 'package:project/views/shop/user_shop.dart';
+import 'package:project/views/admin/add_voucher.dart';
+import 'package:project/views/admin/admin_shop.dart';
+import 'package:project/views/user_shop.dart';
 import 'package:project/views/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/views/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/firebase_options.dart';
 import 'package:project/theme.dart';
-import 'package:project/views/staff_pages/add_point.dart';
-import 'package:project/views/staff_pages/add_success.dart';
-import 'package:project/views/staff_pages/redeem-voucher.dart';
-import 'package:project/views/staff_pages/scan_member.dart';
-import 'package:project/views/staff_pages/staff_home_page.dart';
+import 'package:project/views/staff/add_point.dart';
+import 'package:project/views/staff/add_success.dart';
+import 'package:project/views/staff/redeem-voucher.dart';
+import 'package:project/views/staff/scan_member.dart';
+import 'package:project/views/staff/staff_home_page.dart';
 
 
 void main() async {
@@ -48,24 +50,29 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-        // initialRoute: determineInitialRoute(),
-        initialRoute: '/shop',
+        initialRoute: determineInitialRoute(),
+        // initialRoute: '/admin-shop',
 
         routes: {
           '/nav-bar':(context) => BottomNavBar(),
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
+          '/introduction' : (context) => IntroductionPage(),
           '/home-page': (context) => HomePage(),
           '/benefits': (context) => Benefits(),
           '/profile': (context) => Profile(),
+          '/shop' : (cointext) => VoucherShop(),
+
           '/staff-home-page': (context) => StaffHomePage(),
           '/add-point': (context) => AddPoint(),
           '/staff-redeem': (context) => StaffRedeem(),
           '/scan-member': (context) => ScanMember(),
           '/add-point-success': (context) => AddPointSuccess(),
-          '/introduction' : (context) => IntroductionPage(),
+
+
+          '/admin-home-page': (context) => AdminHomePage(),
           '/admin-shop' : (context) => VoucherListPage(),
-          '/shop' : (cointext) => VoucherShop()
+          '/add-voucher': (context) => AddVoucher()
           }
           );
   }
@@ -78,7 +85,7 @@ class MyApp extends StatelessWidget {
       if (user.uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
         return '/staff-home-page';
       } else if (user.uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
-        // return '/admin-home-page';
+        return '/admin-home-page';
       } else {
         return '/nav-bar';
       }
