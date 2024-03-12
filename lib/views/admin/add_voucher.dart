@@ -33,46 +33,45 @@ class _AddVoucherState extends State<AddVoucher> {
   final FirebaseImageUtils _firebaseImageUtils = FirebaseImageUtils();
   String imageUrl = '';
 
-  Future<void> _selectImageSourceDialog() async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Select Image Source'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                ListTile(
-                  title: Text('Gallery'),
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    try {
-                      imageUrl = await _firebaseImageUtils
-                          .uploadImageFromGallery('voucher_image');
-                    } catch (e) {
-                      print('Error uploading image from gallery: $e');
-                    }
-                  },
-                ),
-                ListTile(
-                  title: Text('Camera'),
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    try {
-                      imageUrl = await _firebaseImageUtils
-                          .uploadImageFromCamera('voucher_image');
-                    } catch (e) {
-                      print('Error capturing image from camera: $e');
-                    }
-                  },
-                ),
-              ],
-            ),
+ Future<void> _selectImageSourceDialog() async {
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Select Image Source', style: TextStyle(color: Colors.black)),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              ListTile(
+                title: Text('Gallery', style: TextStyle(color: Colors.black)),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  try {
+                    imageUrl = await _firebaseImageUtils.uploadImageFromGallery('voucher_image');
+                  } catch (e) {
+                    print('Error uploading image from gallery: $e');
+                  }
+                },
+              ),
+              ListTile(
+                title: Text('Camera', style: TextStyle(color: Colors.black)),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  try {
+                    imageUrl = await _firebaseImageUtils.uploadImageFromCamera('voucher_image');
+                  } catch (e) {
+                    print('Error capturing image from camera: $e');
+                  }
+                },
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 
   @override
   void dispose() {
@@ -335,29 +334,36 @@ class _AddVoucherState extends State<AddVoucher> {
   }
 
   Widget _buildVoucherType() {
-    return DropdownButtonFormField<String>(
-        value: selectedVoucherType,
-        items: ['Discount', 'Cash', 'Gift'].map((type) {
-          return DropdownMenuItem<String>(
-            value: type,
-            child: Text(type),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            selectedVoucherType = value!;
-          });
-        },
-        decoration: InputDecoration(
-          labelText: 'Voucher Type',
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
-            ),
-          ),
-        ));
-  }
+  return DropdownButtonFormField<String>(
+    value: selectedVoucherType,
+    items: ['Discount', 'Cash', 'Gift'].map((type) {
+      return DropdownMenuItem<String>(
+        value: type,
+        child: Text(type),
+      );
+    }).toList(),
+    onChanged: (value) {
+      setState(() {
+        selectedVoucherType = value!;
+      });
+    },
+    decoration: const InputDecoration(
+      labelText: 'Voucher Type',
+      labelStyle: TextStyle(
+        color: AppTheme.primaryColor,
+      ),
+      filled: true,
+      fillColor: Colors.white,
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: AppTheme.primaryColor,
+          width: 2.0,
+        ),
+      ),
+    ),
+  );
+}
+
 
   Widget _buildVoucherValue() {
     final RegExp numberRegex = RegExp(r'^[0-9]+$');
