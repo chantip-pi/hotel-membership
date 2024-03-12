@@ -40,15 +40,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          textTheme: GoogleFonts.poppinsTextTheme(),
-          useMaterial3: true,
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Colors.black,
-            selectedItemColor: AppTheme.primaryColor, 
-            unselectedItemColor: Colors.white,
-          ),
+       theme: ThemeData(
+      textTheme: GoogleFonts.poppinsTextTheme(),
+      useMaterial3: true,
+      appBarTheme: AppBarTheme(
+        color: AppTheme.primaryColor,
+        iconTheme: IconThemeData(
+          color: Colors.white, // Change icon color to white
         ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+        selectedItemColor: AppTheme.primaryColor,
+        unselectedItemColor: Colors.white,
+      ),
+    ),
 
         initialRoute: determineInitialRoute(),
         // initialRoute: '/admin-shop',
