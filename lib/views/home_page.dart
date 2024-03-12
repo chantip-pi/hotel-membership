@@ -41,7 +41,9 @@ class _HomePageState extends State<HomePage> {
               Icons.notifications,
               color: Colors.white,
             ),
-            onPressed: () => {},
+            onPressed: () => {
+              Navigator.pushNamed(context, '/notifications'),
+            },
           )
         ],
       ),

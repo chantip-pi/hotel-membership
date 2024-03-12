@@ -15,6 +15,7 @@ import 'package:project/views/staff_pages/add_success.dart';
 import 'package:project/views/staff_pages/redeem-voucher.dart';
 import 'package:project/views/staff_pages/scan_member.dart';
 import 'package:project/views/staff_pages/staff_home_page.dart';
+import 'package:project/views/notifications.dart';
 
 
 void main() async {
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
           '/scan-member': (context) => ScanMember(),
           '/add-point-success': (context) => AddPointSuccess(),
           '/introduction' : (context) => IntroductionPage(),
+          '/notifications' : (context) => Notifications(),
           }
           );
   }

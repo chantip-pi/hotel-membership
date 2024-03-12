@@ -303,7 +303,6 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
 class IntroPageThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: AppTheme.backgroundColor,
@@ -356,7 +355,6 @@ class IntroPageThree extends StatelessWidget {
     );
   }
 }
-
 
 Widget _cardTextAlignment(Alignment align, EdgeInsets padding, String str, FontWeight fontWeight, double fontSize) {
     return Align(
