@@ -4,6 +4,7 @@ import 'package:project/views/admin/admin_homepage.dart';
 import 'package:project/views/benefits.dart';
 import 'package:project/views/home_page.dart';
 import 'package:project/views/introduction.dart';
+import 'package:project/views/my_voucher.dart';
 import 'package:project/views/profile.dart';
 import 'package:project/views/admin/add_voucher.dart';
 import 'package:project/views/admin/admin_shop.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
     ),
 
         initialRoute: determineInitialRoute(),
-        // initialRoute: '/admin-shop',
+
 
         routes: {
           '/nav-bar':(context) => BottomNavBar(),
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
           '/benefits': (context) => Benefits(),
           '/profile': (context) => Profile(),
           '/shop' : (cointext) => VoucherShop(),
+          '/my-voucher': (context) => MyVoucher(),
 
           '/staff-home-page': (context) => StaffHomePage(),
           '/add-point': (context) => AddPoint(),
