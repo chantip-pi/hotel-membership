@@ -13,7 +13,7 @@ class StaffHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Staff",style: TextStyle(color: Colors.white),),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

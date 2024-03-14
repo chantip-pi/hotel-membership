@@ -63,6 +63,19 @@ Future<String> uploadImageFromCamera(String folderName) async {
   }
 }
 
+Future<void> deletePictureByUrl(String imageUrl) async {
+  try {
+    // Convert the imageUrl to a storage Reference
+    final firebase_storage.Reference reference =
+        firebase_storage.FirebaseStorage.instance.refFromURL(imageUrl);
 
+    // Delete the file
+    await reference.delete();
+    print('Picture deleted successfully');
+  } catch (e) {
+    print('Error deleting picture: $e');
+    // Handle error as needed
+  }
+}
  
 }
