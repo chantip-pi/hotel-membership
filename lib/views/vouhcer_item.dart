@@ -16,15 +16,16 @@ class _VoucherItemState extends State<VoucherItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        automaticallyImplyLeading: true,
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               flex: 2,
-              child: Stack(
-                alignment: Alignment.topLeft,
-                children: [
+              child:
                   ClipRRect(
                     child: Image.network(
                       widget.voucherInfo['imageUrl'], // Assuming 'image' is the URL of the voucher image
@@ -33,25 +34,6 @@ class _VoucherItemState extends State<VoucherItem> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                      ),
-                      onPressed: () {
-                        if (Navigator.canPop(context)) {
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
