@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:project/utils/format_string.dart';
 
 class VoucherItem extends StatefulWidget {
   final Map<String, dynamic> voucherInfo;
+  final String purchaseID;
 
-  const VoucherItem({Key? key, required this.voucherInfo}) : super(key: key);
+  const VoucherItem({Key? key, required this.voucherInfo, required this.purchaseID}) : super(key: key);
 
   @override
   _VoucherItemState createState() => _VoucherItemState();
@@ -16,7 +19,7 @@ class _VoucherItemState extends State<VoucherItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         automaticallyImplyLeading: true,
       ),
       body: Center(
@@ -25,20 +28,21 @@ class _VoucherItemState extends State<VoucherItem> {
           children: [
             Expanded(
               flex: 2,
-              child:
-                  ClipRRect(
-                    child: Image.network(
-                      widget.voucherInfo['imageUrl'], // Assuming 'image' is the URL of the voucher image
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+              child: ClipRRect(
+                child: Image.network(
+                  widget.voucherInfo[
+                      'imageUrl'], // Assuming 'image' is the URL of the voucher image
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Text(
-                widget.voucherInfo['name'], // Assuming 'name' is the name of the voucher
+                widget.voucherInfo[
+                    'name'], // Assuming 'name' is the name of the voucher
                 style: const TextStyle(fontSize: 32),
               ),
             ),
@@ -65,7 +69,7 @@ class _VoucherItemState extends State<VoucherItem> {
                     ),
                   ),
                   Text(
-                    widget.voucherInfo['termsCondition'], 
+                    widget.voucherInfo['termsCondition'],
                     style: const TextStyle(fontSize: 16),
                   ),
                 ],
@@ -103,7 +107,30 @@ class _VoucherItemState extends State<VoucherItem> {
               child: ElevatedButton(
                 onPressed: _isChecked
                     ? () {
-                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title:
+                                  Text('Please Present this code to the staff'),
+                              content: Text(
+                                  widget.purchaseID),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.pop(context);
+                                    Navigator.pushReplacementNamed(context, '/my-voucher');
+                                  },
+                                  child: Text('Back',
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black)), // Set button text color
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

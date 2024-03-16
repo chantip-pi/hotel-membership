@@ -8,6 +8,8 @@ import 'package:project/views/my_voucher.dart';
 import 'package:project/views/profile.dart';
 import 'package:project/views/admin/add_voucher.dart';
 import 'package:project/views/admin/admin_shop.dart';
+import 'package:project/views/staff/redeem_fail.dart';
+import 'package:project/views/staff/scan_voucher';
 import 'package:project/views/user_shop.dart';
 import 'package:project/views/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +19,7 @@ import 'package:project/firebase_options.dart';
 import 'package:project/theme.dart';
 import 'package:project/views/staff/add_point.dart';
 import 'package:project/views/staff/add_success.dart';
-import 'package:project/views/staff/redeem-voucher.dart';
+import 'package:project/views/staff/redeem-success.dart';
 import 'package:project/views/staff/scan_member.dart';
 import 'package:project/views/staff/staff_home_page.dart';
 
@@ -68,15 +70,16 @@ class MyApp extends StatelessWidget {
           '/home-page': (context) => HomePage(),
           '/benefits': (context) => Benefits(),
           '/profile': (context) => Profile(),
-          '/shop' : (cointext) => VoucherShop(),
+          '/shop' : (context) => VoucherShop(),
           '/my-voucher': (context) => MyVoucher(),
 
           '/staff-home-page': (context) => StaffHomePage(),
-          '/add-point': (context) => AddPoint(),
-          '/staff-redeem': (context) => StaffRedeem(),
           '/scan-member': (context) => ScanMember(),
+          '/add-point': (context) => AddPoint(),
           '/add-point-success': (context) => AddPointSuccess(),
-
+          '/scan-voucher': (context) => ScanVoucher(),
+          '/redeem-success': (context) => RedeemSuccess(),
+          '/redeem-fail': (context) => RedeemFail(),
 
           '/admin-home-page': (context) => AdminHomePage(),
           '/admin-shop' : (context) => VoucherListPage(),

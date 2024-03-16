@@ -57,6 +57,7 @@ class _MyVoucherState extends State<MyVoucher> {
                   MaterialPageRoute(
                       builder: (context) => VoucherItem(
                             voucherInfo: voucherInfo,
+                            purchaseID: purchase['purchaseID']
                           )),
                 );
               },

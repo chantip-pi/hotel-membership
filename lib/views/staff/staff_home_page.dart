@@ -13,7 +13,7 @@ class StaffHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Staff",style: TextStyle(color: Colors.white),),
-        backgroundColor: Colors.black,
+        backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -43,7 +43,7 @@ class StaffHomePage extends StatelessWidget {
                 child: StaffButton(
                   iconPath: 'assets/icons/Ticket_use_light.svg',
                   label: 'REDEEM',
-                  routeName: '/staff-redeem',
+                  routeName: '/scan-voucher',
                 ),
               ),
             ],

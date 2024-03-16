@@ -27,10 +27,10 @@ class UserPurchaseService {
     return voucherStream;
   }
 
-  // Update
+  // Update Voucher to be redeem
   Future<void> redeemVoucher(String docID) {
     return purchases.doc(docID).update({
-      'redeem': true,
+      'isRedeem': true,
       'timestamp': Timestamp.now(),
     });
   }
@@ -91,77 +91,75 @@ class UserPurchaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserPurchasesWithVoucherInfo(String userID) async {
-  try {
-    // Query purchases collection to find the documents with the given userID
-    QuerySnapshot purchaseSnapshot = await purchases.where('userID', isEqualTo: userID).get();
-    if (purchaseSnapshot.docs.isEmpty) {
-      return []; // No purchases found for the given userID
+  Future<List<Map<String, dynamic>>> getUserPurchasesWithVoucherInfo(
+      String userID) async {
+    try {
+      // Query purchases collection to find the documents with the given userID
+      QuerySnapshot purchaseSnapshot =
+          await purchases.where('userID', isEqualTo: userID).get();
+      if (purchaseSnapshot.docs.isEmpty) {
+        return []; // No purchases found for the given userID
+      }
+      // List to store user purchases with voucher info
+      List<Map<String, dynamic>> userPurchasesWithVoucherInfo = [];
+
+      // Loop through each user purchase document
+      for (DocumentSnapshot purchaseDoc in purchaseSnapshot.docs) {
+        String voucherID = purchaseDoc['voucherID'] as String;
+        bool isRedeem = purchaseDoc['isRedeem'] as bool;
+
+        String purchaseID = purchaseDoc.id;
+        // Query vouchers collection to get the voucher info
+        DocumentSnapshot voucherSnapshot = await vouchers.doc(voucherID).get();
+        if (!voucherSnapshot.exists) {
+          continue; // Skip if no voucher found with the given voucherID
+        }
+
+        // Extract voucher info
+        Map<String, dynamic> voucherInfo =
+            voucherSnapshot.data() as Map<String, dynamic>;
+
+        // Add user purchase with voucher info to the list only if isRedeem is false
+        if (!isRedeem) {
+          userPurchasesWithVoucherInfo.add({
+            'purchaseID': purchaseID,
+            'userID': userID,
+            'voucherID': voucherID,
+            'voucherInfo': voucherInfo,
+            'isRedeem': isRedeem,
+          });
+        }
+      }
+      // Return the list of user purchases with voucher info
+      return userPurchasesWithVoucherInfo;
+    } catch (e) {
+      print('Error retrieving user purchases with voucher info: $e');
+      return [];
     }
-    // List to store user purchases with voucher info
-    List<Map<String, dynamic>> userPurchasesWithVoucherInfo = [];
+  }
 
-    // Loop through each user purchase document
-    for (DocumentSnapshot purchaseDoc in purchaseSnapshot.docs) {
-      String voucherID = purchaseDoc['voucherID'] as String;
-      bool isRedeem = purchaseDoc['isRedeem'] as bool;
+  Future<Map<String, List<Map<String, dynamic>>>> getVouchersByCategory(
+      String category) async {
+    try {
+      // Retrieve user purchases with voucher info for the given category
+      List<Map<String, dynamic>> userPurchasesWithVoucherInfo =
+          await getUserPurchasesWithVoucherInfo(category);
 
-      // Query vouchers collection to get the voucher info
-      DocumentSnapshot voucherSnapshot = await vouchers.doc(voucherID).get();
-      if (!voucherSnapshot.exists) {
-        continue; // Skip if no voucher found with the given voucherID
+      // Categorize vouchers by type
+      Map<String, List<Map<String, dynamic>>> categorizedVouchers = {};
+      for (var purchaseInfo in userPurchasesWithVoucherInfo) {
+        String voucherType =
+            purchaseInfo['voucherInfo']['voucherType'] as String;
+        categorizedVouchers.putIfAbsent(voucherType, () => []);
+        categorizedVouchers[voucherType]!.add(purchaseInfo['voucherInfo']);
       }
 
-      // Extract voucher info
-      Map<String, dynamic> voucherInfo = voucherSnapshot.data() as Map<String, dynamic>;
+      return categorizedVouchers;
+    } catch (e) {
 
-      // Add user purchase with voucher info to the list only if isRedeem is false
-      if (!isRedeem) {
-        userPurchasesWithVoucherInfo.add({
-          'userID': userID,
-          'voucherID': voucherID,
-          'voucherInfo': voucherInfo,
-          'isRedeem': isRedeem,
-        });
-      }
+      print('Error retrieving vouchers by category: $e');
+      return {};
     }
-    // Return the list of user purchases with voucher info
-    return userPurchasesWithVoucherInfo;
-  } catch (e) {
-    print('Error retrieving user purchases with voucher info: $e');
-    return [];
-  }
-}
-
-
-Future<Map<String, List<Map<String, dynamic>>>> getVouchersByCategory(String category) async {
-  try {
-    // Retrieve user purchases with voucher info for the given category
-    List<Map<String, dynamic>> userPurchasesWithVoucherInfo = await getUserPurchasesWithVoucherInfo(category);
-
-    // Categorize vouchers by type
-    Map<String, List<Map<String, dynamic>>> categorizedVouchers = {};
-    for (var purchaseInfo in userPurchasesWithVoucherInfo) {
-      String voucherType = purchaseInfo['voucherInfo']['voucherType'] as String;
-      categorizedVouchers.putIfAbsent(voucherType, () => []);
-      categorizedVouchers[voucherType]!.add(purchaseInfo['voucherInfo']);
-    }
-
-    // Return the categorized vouchers
-    return categorizedVouchers;
-  } catch (e) {
-    // Handle error
-    print('Error retrieving vouchers by category: $e');
-    return {};
-  }
-}
-
-   // Redeem VOucher by docID
-  Future<void> RedeemVoucher(String docID) {
-    return purchases.doc(docID).update({
-      'isRedeem': true,
-      'timestamp': Timestamp.now(),
-    });
   }
 
 }
