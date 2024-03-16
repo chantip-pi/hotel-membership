@@ -209,7 +209,7 @@ class _AddPointState extends State<AddPoint> {
                   ),
                 ),
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(AppTheme.primaryColor),
+                    MaterialStateProperty.all<Color>(Colors.black),
                 fixedSize: MaterialStateProperty.all<Size>(
                   const Size.fromHeight(56),
                 ),
