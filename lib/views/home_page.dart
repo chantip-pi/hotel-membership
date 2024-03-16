@@ -160,6 +160,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMyVouchersBlock(double screenHeight, double screenWidth) {
     return GestureDetector(
+      onTap: () {Navigator.pushNamed(context, '/my-voucher'); },
       child: Stack(
         children: <Widget>[
           Container(

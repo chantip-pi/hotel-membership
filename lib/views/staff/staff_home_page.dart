@@ -43,7 +43,7 @@ class StaffHomePage extends StatelessWidget {
                 child: StaffButton(
                   iconPath: 'assets/icons/Ticket_use_light.svg',
                   label: 'REDEEM',
-                  routeName: '/staff-redeem',
+                  routeName: '/scan-voucher',
                 ),
               ),
             ],
