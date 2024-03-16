@@ -7,6 +7,8 @@ import 'package:project/views/introduction.dart';
 import 'package:project/views/profile.dart';
 import 'package:project/views/admin/add_voucher.dart';
 import 'package:project/views/admin/admin_shop.dart';
+import 'package:project/views/purchase_voucher.dart';
+import 'package:project/views/user_cart.dart';
 import 'package:project/views/user_shop.dart';
 import 'package:project/views/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
         ),
 
         initialRoute: determineInitialRoute(),
-        // initialRoute: '/admin-shop',
+        // initialRoute: '/shop',
 
         routes: {
           '/nav-bar':(context) => BottomNavBar(),
@@ -61,18 +63,17 @@ class MyApp extends StatelessWidget {
           '/home-page': (context) => HomePage(),
           '/benefits': (context) => Benefits(),
           '/profile': (context) => Profile(),
-          '/shop' : (cointext) => VoucherShop(),
-
+          '/shop' : (context) => VoucherShop(),
           '/staff-home-page': (context) => StaffHomePage(),
           '/add-point': (context) => AddPoint(),
           '/staff-redeem': (context) => StaffRedeem(),
           '/scan-member': (context) => ScanMember(),
           '/add-point-success': (context) => AddPointSuccess(),
-
-
           '/admin-home-page': (context) => AdminHomePage(),
           '/admin-shop' : (context) => VoucherListPage(),
-          '/add-voucher': (context) => AddVoucher()
+          '/add-voucher': (context) => AddVoucher(),
+          // '/purchase-voucher' : (context) => PurchaseVoucher(),
+          '/user-cart' :(context) => UserCart(),
           }
           );
   }
@@ -117,7 +118,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          HomePage(),
+          VoucherShop(),
           HomePage(),
           Profile(),
         ],

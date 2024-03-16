@@ -82,6 +82,7 @@ class _ProfileState extends State<Profile> {
               'assets/images/backgrounddemo.jpg',
               width: screenWidth,
               fit: BoxFit.cover,
+              height: screenHeight * 0.25,
             ),
             Center(
               child: Column(
@@ -92,7 +93,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(screenWidth * 0.05, screenHeight * 0.24, screenHeight * 0.016, 0),
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.05, screenHeight * 0.3, screenHeight * 0.016, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

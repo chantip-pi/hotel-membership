@@ -41,12 +41,14 @@ class _HomePageState extends State<HomePage> {
               Icons.notifications,
               color: Colors.white,
             ),
-            onPressed: () => {},
+            onPressed: () => {
+              Navigator.pushNamed(context, '/notifications'),
+            },
           )
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenWidth * 0.016),
         child: FutureBuilder<Map<String, dynamic>?>(
           future: _currentUserFuture,
           builder: (context, snapshot) {
@@ -67,17 +69,14 @@ class _HomePageState extends State<HomePage> {
                 points = currentUser['points'] as int?;
               }
 
-              return Container(
-                color: AppTheme.backgroundColor,
-                width: double.infinity,
-                child: Column(
+              return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Stack(
                         children: <Widget>[
                         Column(
                             children: <Widget>[
-                            Padding(padding: EdgeInsets.only(top: screenHeight * 0.025)),
+                            Padding(padding: EdgeInsets.only(top: screenHeight * 0.023)),
                             Stack(
                                 children: [
                                 Container(
@@ -100,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                             ),
                             Container(
-                                height: screenHeight * 0.28,
+                                height: screenHeight * 0.25,
                                 width: screenWidth * 0.9,
                                 decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
@@ -139,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ],
                     ),
-                    Padding(padding: EdgeInsets.all(screenWidth * 0.03)),
+                    Padding(padding: EdgeInsets.all(screenWidth * 0.02)),
                     _buildMyVouchersBlock(screenHeight, screenWidth),
                     Padding(padding: EdgeInsets.all(screenHeight * 0.01)),
                     Row(
@@ -151,8 +150,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                     ),
                     ],
-                ),
-              );
+                );
             }
           },
         ),
@@ -169,21 +167,21 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               color: const Color.fromRGBO(215, 191, 152, 1),
             ),
-            height: screenHeight * 0.2,
+            height: screenHeight * 0.18,
             width: screenWidth * 0.9,
             child: Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth * 0.3, screenHeight * 0.13, 0, 0),
-            child: const Text(
-              'MY VOUCHERS',
-              style: TextStyle(
-                fontSize: 20,
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.3, screenHeight * 0.13, 0, 0),
+              child: Text(
+                'MY VOUCHERS',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
-        ),
-        Padding(padding: EdgeInsets.only(top: screenHeight * 0.05)),
-        Padding(
-          padding: EdgeInsets.fromLTRB(screenWidth * 0.33, screenHeight * 0.03, 0, 0),
+          Padding(padding: EdgeInsets.only(top: screenHeight * 0.05)),
+          Padding(
+            padding: EdgeInsets.fromLTRB(screenWidth * 0.33, screenHeight * 0.03, 0, 0),
             child: SvgPicture.asset(
               'assets/icons/Ticket_use_light.svg',
               height: screenHeight * 0.09,
@@ -220,7 +218,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               color: const Color.fromRGBO(215, 191, 152, 1),
             ),
-            height: screenHeight * 0.2,
+            height: screenHeight * 0.18,
             width: screenWidth * 0.43,
             child: Padding(
               padding: EdgeInsets.fromLTRB(screenWidth * 0.065, screenHeight * 0.14, 0, 0),
@@ -256,7 +254,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               color: const Color.fromRGBO(215, 191, 152, 1),
             ),
-            height: screenHeight * 0.2,
+            height: screenHeight * 0.18,
             width: screenWidth * 0.43,
             child: Padding(
               padding: EdgeInsets.fromLTRB(screenWidth * 0.12, screenHeight * 0.14, 0, 0),
