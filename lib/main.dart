@@ -9,7 +9,7 @@ import 'package:project/views/profile.dart';
 import 'package:project/views/admin/add_voucher.dart';
 import 'package:project/views/admin/admin_shop.dart';
 import 'package:project/views/staff/redeem_fail.dart';
-import 'package:project/views/staff/scan_voucher';
+import 'package:project/views/staff/scan_voucher.dart';
 import 'package:project/views/user_shop.dart';
 import 'package:project/views/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
