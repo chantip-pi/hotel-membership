@@ -44,14 +44,16 @@ class _VoucherShopState extends State<VoucherShop> {
             itemCount: vouchers.length,
             itemBuilder: (context, index) {
               var voucher = vouchers[index];
+              var voucherId = voucher.id;
               return Card(
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PurchaseVoucher(voucherData: voucher.data()! as Map<String, dynamic>),
-                      ),
+                        builder: (context) => PurchaseVoucher(
+                          voucherId: voucherId,
+                      )),
                     );
                   },
                   child: Column(
@@ -71,9 +73,7 @@ class _VoucherShopState extends State<VoucherShop> {
                           children: [
                             Text(voucher['name']),
                             Text('Points: ${voucher['points']}'),
-                            Text(
-                              'Due Date: ${(FormatUtils.formatDueDate(voucher['dueDate']))}',
-                            ),
+                            Text('Due Date: ${FormatUtils.formatDate(voucher['dueDate'])}'),
                             Text('Voucher Type: ${voucher['voucherType']}'),
                           ],
                         ),
@@ -182,7 +182,7 @@ class _VoucherShopState extends State<VoucherShop> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Points: ${voucher['points']}'),
-                      Text('Due Date: ${_formatDueDate(voucher['dueDate'])}'),
+                      Text('Due Date: ${FormatUtils.formatDate(voucher['dueDate'])}'),
                       Text('Voucher Type: ${voucher['voucherType']}'),
                     ],
                   ),
@@ -221,11 +221,4 @@ class _VoucherShopState extends State<VoucherShop> {
       ),
     );
   }
-
-
-  String _formatDueDate(Timestamp timestamp) {
-    DateTime dueDate = timestamp.toDate(); // Convert Timestamp to DateTime
-    return DateFormat('dd MMM yyyy').format(dueDate); // Format the DateTime
-  }
-
 }
