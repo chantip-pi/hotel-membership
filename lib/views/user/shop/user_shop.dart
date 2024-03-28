@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:project/utils/format_string.dart';
-import 'package:project/views/purchase_voucher.dart';
+import 'package:project/views/user/shop/purchase_voucher.dart';
 
 class VoucherShop extends StatefulWidget {
 

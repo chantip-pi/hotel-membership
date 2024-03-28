@@ -46,12 +46,6 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
           } else {
             final voucherData = snapshot.data!;
             Map<String, dynamic> voucherDataMapped = voucherData as Map<String, dynamic>;
-            // Map<String, dynamic> voucherDataMapped = querySnapshotToMap(voucherData);
-
-            //might delete later
-            // final List<Map<String, dynamic>> mappedData = snapshot.data!.docs.map((doc) {
-            //   return doc.data() as Map<String, dynamic>; // Convert each document to a map
-            // }).toList();
             final List<Map<String, dynamic>> mappedData = snapshot.data!.docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>; // Convert each document to a map
               final voucherName = data['name'] ?? ''; // Provide a default value if the field doesn't exist
@@ -206,20 +200,3 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
   }
 
 }
-
-// Map<String, dynamic> querySnapshotToMap(QuerySnapshot<Object?> snapshot) {
-//   Map<String, dynamic> resultMap = {};
-
-//   for (QueryDocumentSnapshot<Object?> documentSnapshot in snapshot.docs) {
-//     // Get the data from each document
-//     Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-    
-//     // Assuming each document has an ID field
-//     String documentId = documentSnapshot.id;
-
-//     // Add the data to the result map with document ID as the key
-//     resultMap[documentId] = data;
-//   }
-
-//   return resultMap;
-// }
