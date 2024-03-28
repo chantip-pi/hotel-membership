@@ -5,11 +5,12 @@ import 'package:project/views/admin/add_voucher.dart';
 import 'package:project/views/admin/admin_shop.dart';
 import 'package:project/views/user/benefits.dart';
 import 'package:project/views/user/home_page.dart';
+import 'package:project/views/user/my_voucher.dart';
 import 'package:project/views/user/registeration/introduction.dart';
 import 'package:project/views/user/registeration/profile.dart';
 import 'package:project/views/user/registeration/sign_in.dart';
 import 'package:project/views/user/registeration/sign_up.dart';
-import 'package:project/views/user_cart.dart';
+import 'package:project/views/user/shop/user_cart.dart';
 import 'package:project/views/staff/redeem_fail.dart';
 import 'package:project/views/staff/scan_voucher.dart';
 import 'package:project/views/user/shop/user_shop.dart';
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
           '/admin-home-page': (context) => AdminHomePage(),
           '/admin-shop' : (context) => VoucherListPage(),
           '/add-voucher': (context) => AddVoucher(),
+          '/my-voucher' : (context) => MyVoucher(),
           // '/purchase-voucher' : (context) => PurchaseVoucher(),
           '/user-cart' :(context) => UserCart(),
           }
