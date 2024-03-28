@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VoucherService{
   final CollectionReference vouchers = FirebaseFirestore.instance.collection('vouchers');
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Create
   Future<void> addVoucher({
@@ -63,11 +62,11 @@ class VoucherService{
   return voucherStream;
 }
 
-  Stream<QuerySnapshot> getVoucherByIDs(String voucherIDs) {
-    final voucher = vouchers
-        .where('voucherID', isEqualTo: voucherIDs)
-        .orderBy('timestamp', descending: false)
-        .snapshots();
-    return voucher;
-  }
+  Stream<DocumentSnapshot> getVoucherByID(String voucherID) {
+  final voucher = vouchers
+      .doc(voucherID)
+      .snapshots();
+  return voucher;
+}
+
 }
