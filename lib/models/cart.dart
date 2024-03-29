@@ -41,25 +41,6 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  void incrementQty(String voucherID) {
-    Item item =
-        _cartItems.where((element) => element.voucherID == voucherID).first;
-    item.quantity++;
-    notifyListeners();
-  }
-
-  void decrimentQty(String voucherID) {
-    Item item =
-        _cartItems.where((element) => element.voucherID == voucherID).first;
-
-    if (item.quantity > 1) {
-      item.quantity--;
-    } else {
-      _cartItems.remove(item);
-    }
-    notifyListeners();
-  }
-
   Future<int> getCartTotal() async {
     int total = 0;
     for (var item in _cartItems) {

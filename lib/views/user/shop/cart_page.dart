@@ -48,15 +48,18 @@ class _CartList extends StatelessWidget {
   Widget build(BuildContext context) {
     var itemNameStyle = Theme.of(context).textTheme.titleLarge;
     var cart = context.watch<Cart>();
+    List<String> voucherIDs = cart.cartItems.isNotEmpty
+    ? cart.cartItems.map((item) => item.voucherID).toList()
+    : [];
 
     return ListView.builder(
       itemCount: cart.cartItems.length,
-      itemBuilder: (context, index) {
+      itemBuilder: (context, index)  {
         return StreamBuilder<QuerySnapshot>(
-          stream: VoucherService().getVoucherStream(),
-          builder: (context, snapshot) {
+          stream: VoucherService().getVoucherStreamByIDs(voucherIDs),
+          builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
@@ -64,7 +67,7 @@ class _CartList extends StatelessWidget {
               var voucher = vouchers[index];
               return ListTile(
                 leading: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white, shape: BoxShape.rectangle),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -83,6 +86,10 @@ class _CartList extends StatelessWidget {
                 ),
                 title: Text(
                   voucher['name'],
+                  style: itemNameStyle,
+                ),
+                subtitle: Text(
+                   "${voucher['points'] * cart.cartItems[index].quantity}",
                   style: itemNameStyle,
                 ),
               );
