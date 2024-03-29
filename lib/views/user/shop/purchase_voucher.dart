@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:project/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/utils/format_string.dart';
-import 'package:project/views/user/shop/user_cart.dart';
+import 'package:project/models/cart.dart';
 import 'package:provider/provider.dart';
 
 class PurchaseVoucher extends StatefulWidget {
@@ -60,12 +59,6 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
   }
 
   Widget _buildToCartButton(Map<String, dynamic> voucherData) {
-    final Product product = Product(
-      name: voucherData['name'],
-      price: voucherData['points'].toString(),
-      imageUrl: voucherData['imageUrl'],
-    );
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
@@ -85,7 +78,11 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
               ),
               onPressed: () {
                 final cart = Provider.of<Cart>(context, listen: false);
-                cart.addToCart(product);
+                cart.addToCart(
+                  widget.voucherId,
+                  count
+                 );
+                 Navigator.pop(context);
               },
               child:  Center(
                 child: Text(
@@ -126,21 +123,6 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
             return Text(snapshot.toString());
           } else {
             final voucherData = snapshot.data!.data() as Map<String, dynamic>;
-            print('Cash Value: ${voucherData['cashValue'] ?? 'N/A'}');
-            print(
-                'Discount Percentage: ${voucherData['discountPercentage'] ?? 'N/A'}');
-            print('Due Date: ${voucherData['dueDate'] ?? 'N/A'}');
-            print('Gift Item: ${voucherData['giftItem'] ?? 'N/A'}');
-            print('Image URL: ${voucherData['imageUrl'] ?? 'N/A'}');
-            print('Name: ${voucherData['name'] ?? 'N/A'}');
-            print('On Shop: ${voucherData['onShop'] ?? 'N/A'}');
-            print('Points: ${voucherData['points'] ?? 'N/A'}');
-            print(
-                'Terms & Condition: ${voucherData['termsCondition'] ?? 'N/A'}');
-            print(
-                'Timestamp: ${FormatUtils.formatDate(voucherData['timestamp']) ?? 'N/A'}');
-            print('Voucher Type: ${voucherData['voucherType'] ?? 'N/A'}');
-
             return Column(
               children: [
                 Expanded(

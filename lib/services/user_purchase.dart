@@ -10,8 +10,7 @@ class UserPurchaseService {
   // Create
   Future<void> addPurchase(
       {required String userID,
-      required String voucherID,
-      required bool isRedeem}) {
+      required String voucherID}) {
     return purchases.add({
       'userID': userID,
       'voucherID': voucherID,

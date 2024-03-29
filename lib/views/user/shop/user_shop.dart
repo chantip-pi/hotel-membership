@@ -202,7 +202,7 @@ class _VoucherShopState extends State<VoucherShop> {
 
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/user-cart');
+        Navigator.pushNamed(context, '/cart');
       },
       child: Padding(
         padding: EdgeInsets.only(bottom: screenHeight * 0.03),

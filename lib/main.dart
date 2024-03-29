@@ -10,9 +10,10 @@ import 'package:project/views/user/registeration/introduction.dart';
 import 'package:project/views/user/registeration/profile.dart';
 import 'package:project/views/user/registeration/sign_in.dart';
 import 'package:project/views/user/registeration/sign_up.dart';
-import 'package:project/views/user/shop/user_cart.dart';
+import 'package:project/models/cart.dart';
 import 'package:project/views/staff/redeem_fail.dart';
 import 'package:project/views/staff/scan_voucher.dart';
+import 'package:project/views/user/shop/cart_page.dart';
 import 'package:project/views/user/shop/user_shop.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +24,7 @@ import 'package:project/views/staff/add_success.dart';
 import 'package:project/views/staff/redeem-success.dart';
 import 'package:project/views/staff/scan_member.dart';
 import 'package:project/views/staff/staff_home_page.dart';
+import 'package:provider/provider.dart';
 
 
 void main() async {
@@ -42,50 +44,54 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-       theme: ThemeData(
-      textTheme: GoogleFonts.poppinsTextTheme(),
-      useMaterial3: true,
-      appBarTheme: AppBarTheme(
-        color: AppTheme.primaryColor,
-        iconTheme: IconThemeData(
-          color: Colors.white, // Change icon color to white
+    return MultiProvider(
+      providers: [
+          ChangeNotifierProvider(create: (_) => Cart()),
+      ],
+      child: MaterialApp(
+          title: 'Flutter Demo',
+         theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          color: AppTheme.primaryColor,
+          iconTheme: IconThemeData(
+            color: Colors.white, // Change icon color to white
+          ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.black,
+          selectedItemColor: AppTheme.primaryColor,
+          unselectedItemColor: Colors.white,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.black,
-        selectedItemColor: AppTheme.primaryColor,
-        unselectedItemColor: Colors.white,
-      ),
-    ),
-
-        initialRoute: determineInitialRoute(),
-
-        routes: {
-          '/nav-bar':(context) => BottomNavBar(),
-          '/sign-in': (context) => SignInPage(),
-          '/sign-up': (context) => SignUpPage(),
-          '/introduction' : (context) => IntroductionPage(),
-          '/home-page': (context) => HomePage(),
-          '/benefits': (context) => Benefits(),
-          '/profile': (context) => Profile(),
-          '/shop' : (context) => VoucherShop(),
-          '/staff-home-page': (context) => StaffHomePage(),
-          '/scan-member': (context) => ScanMember(),
-          '/add-point': (context) => AddPoint(),
-          '/add-point-success': (context) => AddPointSuccess(),
-          '/scan-voucher': (context) => ScanVoucher(),
-          '/redeem-success': (context) => RedeemSuccess(),
-          '/redeem-fail': (context) => RedeemFail(),
-          '/admin-home-page': (context) => AdminHomePage(),
-          '/admin-shop' : (context) => VoucherListPage(),
-          '/add-voucher': (context) => AddVoucher(),
-          '/my-voucher' : (context) => MyVoucher(),
-          // '/purchase-voucher' : (context) => PurchaseVoucher(),
-          '/user-cart' :(context) => UserCart(),
-          }
-          );
+      
+          initialRoute: determineInitialRoute(),
+      
+          routes: {
+            '/nav-bar':(context) => BottomNavBar(),
+            '/sign-in': (context) => SignInPage(),
+            '/sign-up': (context) => SignUpPage(),
+            '/introduction' : (context) => IntroductionPage(),
+            '/home-page': (context) => HomePage(),
+            '/benefits': (context) => Benefits(),
+            '/profile': (context) => Profile(),
+            '/shop' : (context) => VoucherShop(),
+            '/staff-home-page': (context) => StaffHomePage(),
+            '/scan-member': (context) => ScanMember(),
+            '/add-point': (context) => AddPoint(),
+            '/add-point-success': (context) => AddPointSuccess(),
+            '/scan-voucher': (context) => ScanVoucher(),
+            '/redeem-success': (context) => RedeemSuccess(),
+            '/redeem-fail': (context) => RedeemFail(),
+            '/admin-home-page': (context) => AdminHomePage(),
+            '/admin-shop' : (context) => VoucherListPage(),
+            '/add-voucher': (context) => AddVoucher(),
+            '/my-voucher' : (context) => MyVoucher(),
+            '/cart' : (context) => MyCart(),
+            }
+            ),
+    );
   }
 
   String determineInitialRoute() {
