@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project/models/item.dart';
 import 'package:project/services/voucher_service.dart';
 
 class UserPurchaseService {
@@ -7,7 +8,7 @@ class UserPurchaseService {
   final CollectionReference vouchers =
       FirebaseFirestore.instance.collection('vouchers');
 
-  // Create
+  // add single purchase
   Future<void> addPurchase(
       {required String userID,
       required String voucherID}) {
@@ -17,6 +18,18 @@ class UserPurchaseService {
       'timestamp': Timestamp.now(),
       'isRedeem': false
     });
+  }
+
+  //add all purchase in cart
+  Future<void> purchaseItems(String userID, List<Item> cartItems) async {
+    for (var cartItem in cartItems) {
+      for (var i = 0; i < cartItem.quantity; i++) {
+        await addPurchase(
+          userID: userID,
+          voucherID: cartItem.voucherID,
+        );
+      }
+    }
   }
 
   // Read

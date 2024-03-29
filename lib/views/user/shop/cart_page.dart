@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/models/cart.dart';
+import 'package:project/services/user_purchase.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +13,10 @@ class MyCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cart',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text(
+          'Cart',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       ),
       body: Container(
@@ -56,15 +61,17 @@ class _CartList extends StatelessWidget {
               return Text('Error: ${snapshot.error}');
             } else {
               var vouchers = snapshot.data!.docs.toList();
-               var voucher = vouchers[index];
+              var voucher = vouchers[index];
               return ListTile(
                 leading: Container(
-                  decoration: BoxDecoration(color: Colors.white, shape: BoxShape.rectangle),
+                  decoration: BoxDecoration(
+                      color: Colors.white, shape: BoxShape.rectangle),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       '${cart.cartItems[index].quantity}',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                     ),
                   ),
                 ),
@@ -97,35 +104,70 @@ class _CartTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Consumer<Cart>(
-                builder: (context, cart, child) => 
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Ordering not supported yet.')));
-                                  },
-                                   style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),),
-                          backgroundColor: Colors.deepOrange,),
-                      child:
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Order Now',style: TextStyle(color: Colors.white)),
-                              Text('\$${cart.getCartTotal()}',
-                              style: const TextStyle(color: Colors.white),),
-                            ],
+                builder: (context, cart, child) => Expanded(
+                      child: Column(
+                        children: [
+                          FutureBuilder<int>(
+                            future: cart.getCartTotal(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<int> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                // While the future is still loading, display a loading indicator
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                // If there's an error, display an error message
+                                return Text(
+                                  'Error: ${snapshot.error}',
+                                  style: const TextStyle(color: Colors.white),
+                                );
+                              } else {
+                                // If the future has completed successfully, display the total
+                                return Text(
+                                  '${snapshot.data} Points',
+                                  style: const TextStyle(color: Colors.black),
+                                );
+                              }
+                            },
                           ),
-                        )
-                       ),
-                  ),
-                )),
-          
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  String userID = FirebaseAuth.instance.currentUser!.uid;
+                                UserPurchaseService().purchaseItems(
+                                  userID,cart.cartItems
+                                );
+                                  cart.clearCart(); //clear all items in the cart
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Successfully claimed!'),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  backgroundColor: Colors.deepOrange,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text('Claim',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        ],
+                      ),
+                    )),
           ],
         ),
       ),

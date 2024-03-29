@@ -62,12 +62,18 @@ class Cart extends ChangeNotifier {
   }
 
 
-  Future<double> getCartTotal() async {
-    double total = 0;
-    for (var item in _cartItems) {
-      var voucherData = await VoucherService().getVoucherByID(item.voucherID).first;
-      total += (voucherData['points'] as double) * item.quantity;
-    }
-    return total;
+Future<int> getCartTotal() async {
+  int total = 0;
+  for (var item in _cartItems) {
+    var voucherData = await VoucherService().getVoucherByID(item.voucherID).first;
+    total += (voucherData['points'] as int) * item.quantity;
   }
+  return total;
+}
+
+void clearCart() {
+  _cartItems.clear();
+  notifyListeners();
+}
+
 }
