@@ -55,16 +55,15 @@ class _CartList extends StatelessWidget {
     return ListView.builder(
       itemCount: cart.cartItems.length,
       itemBuilder: (context, index)  {
-        return StreamBuilder<QuerySnapshot>(
-          stream: VoucherService().getVoucherStreamByIDs(voucherIDs),
-          builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
+        return StreamBuilder<DocumentSnapshot>(
+          stream: VoucherService().getVoucherByID(cart.cartItems[index].voucherID),
+          builder: (context,AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              var vouchers = snapshot.data!.docs.toList();
-              var voucher = vouchers[index];
+              var voucher = snapshot.data!.data() as Map<String, dynamic>;
               return ListTile(
                 leading: Container(
                   decoration: const BoxDecoration(

@@ -17,6 +17,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     Widget buildVouchersGrid() {
       return StreamBuilder<QuerySnapshot>(
         stream: _voucherService.getVoucherStream(),

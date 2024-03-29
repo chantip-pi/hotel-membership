@@ -57,7 +57,7 @@ class VoucherService {
 
   Stream<QuerySnapshot> getVoucherStreamByIDs(List<String> voucherIDs) {
     final voucherStream = vouchers
-        .where('voucherID', whereIn: voucherIDs)
+        .where(FieldPath.documentId, whereIn: voucherIDs)
         .snapshots();
     return voucherStream;
   }
