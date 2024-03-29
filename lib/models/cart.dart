@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:project/models/item.dart';
 import 'package:project/services/user_purchase.dart';
 import 'package:project/services/voucher_service.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Cart extends ChangeNotifier {
-  List<Item> _cartItems = [];
+  final List<Item> _cartItems = [];
 
   List<Item> get cartItems => _cartItems;
 
@@ -42,7 +41,7 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-    void incrementQty(String voucherID) {
+  void incrementQty(String voucherID) {
     Item item =
         _cartItems.where((element) => element.voucherID == voucherID).first;
     item.quantity++;
@@ -61,19 +60,18 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-
-Future<int> getCartTotal() async {
-  int total = 0;
-  for (var item in _cartItems) {
-    var voucherData = await VoucherService().getVoucherByID(item.voucherID).first;
-    total += (voucherData['points'] as int) * item.quantity;
+  Future<int> getCartTotal() async {
+    int total = 0;
+    for (var item in _cartItems) {
+      var voucherData =
+          await VoucherService().getVoucherByID(item.voucherID).first;
+      total += (voucherData['points'] as int) * item.quantity;
+    }
+    return total;
   }
-  return total;
-}
 
-void clearCart() {
-  _cartItems.clear();
-  notifyListeners();
-}
-
+  void clearCart() {
+    _cartItems.clear();
+    notifyListeners();
+  }
 }

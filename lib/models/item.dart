@@ -12,5 +12,4 @@ class Item {
     required this.quantity,
      required this.timestamp,
   });
-
 }

@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:project/theme.dart';
 import 'package:project/utils/format_string.dart';
@@ -29,7 +26,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Text('No vouchers available.');
+            return const Text('No vouchers available.');
           } else {
             var vouchers = snapshot.data!.docs
                 .where((doc) =>

@@ -54,9 +54,9 @@ class UserPurchaseService {
           await purchases.where('userID', isEqualTo: userID).get();
       // Extracting voucher IDs from user purchases
       List<String> voucherIDs = [];
-      userPurchaseSnapshot.docs.forEach((doc) {
+      for (var doc in userPurchaseSnapshot.docs) {
         voucherIDs.add(doc.get('voucherID') as String);
-      });
+      }
 
       return voucherIDs;
     } catch (e) {
@@ -73,9 +73,9 @@ class UserPurchaseService {
         .snapshots();
 
     voucherStream.listen((snapshot) {
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         print(doc.data());
-      });
+      }
     });
 
     return voucherStream;
@@ -89,10 +89,10 @@ class UserPurchaseService {
 
       // Extracting voucher IDs from user purchases
       List<String> voucherIDs = [];
-      userPurchaseSnapshot.docs.forEach((doc) {
+      for (var doc in userPurchaseSnapshot.docs) {
         voucherIDs.add(doc.get('voucherID') as String);
         print(voucherIDs);
-      });
+      }
 
       // Now that you have the voucher IDs, you can call getVoucherStreamByIDs
       return getVoucherStreamByIDs(voucherIDs);
@@ -173,5 +173,4 @@ class UserPurchaseService {
       return {};
     }
   }
-
 }
