@@ -62,4 +62,11 @@ class VoucherService{
   return voucherStream;
 }
 
+  Stream<DocumentSnapshot> getVoucherByID(String voucherID) {
+  final voucher = vouchers
+      .doc(voucherID)
+      .snapshots();
+  return voucher;
+}
+
 }

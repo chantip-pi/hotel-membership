@@ -106,8 +106,8 @@ Future<void> updateUserPoints(String memberID, int newPoints) async {
     } catch (e) {
       print('Error updating points: $e');
     }
-    
   }
+  
 
 }
 

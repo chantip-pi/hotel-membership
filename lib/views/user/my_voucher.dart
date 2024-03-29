@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project/services/user_purchase.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
-import 'package:project/views/vouhcer_item.dart';
+import 'package:project/views/user/vouhcer_item.dart';
 
 class MyVoucher extends StatefulWidget {
   const MyVoucher({super.key});
