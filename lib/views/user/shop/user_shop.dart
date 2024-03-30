@@ -59,7 +59,7 @@ class _VoucherShopState extends State<VoucherShop> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PurchaseVoucher(
-                                voucherId: voucherID,
+                                voucherID: voucherID,
                               ),
                             ),
                           );

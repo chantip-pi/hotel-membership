@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/models/cart.dart';
 import 'package:project/services/user_purchase.dart';
+import 'package:project/services/user_service.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +44,12 @@ class MyCart extends StatelessWidget {
   }
 }
 
-class _CartList extends StatelessWidget {
+class _CartList extends StatefulWidget {
+  @override
+  _CartListState createState() => _CartListState();
+}
+
+class _CartListState extends State<_CartList> {
   @override
   Widget build(BuildContext context) {
     var itemNameStyle = Theme.of(context).textTheme.titleLarge;
@@ -52,19 +58,19 @@ class _CartList extends StatelessWidget {
     return ListView.builder(
       itemCount: cart.cartItems.length,
       itemBuilder: (context, index) {
-        return StreamBuilder<QuerySnapshot>(
-          stream: VoucherService().getVoucherStream(),
-          builder: (context, snapshot) {
+        return StreamBuilder<DocumentSnapshot>(
+          stream:
+              VoucherService().getVoucherByID(cart.cartItems[index].voucherID),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              var vouchers = snapshot.data!.docs.toList();
-              var voucher = vouchers[index];
+              var voucher = snapshot.data!.data() as Map<String, dynamic>;
               return ListTile(
                 leading: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white, shape: BoxShape.rectangle),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -85,6 +91,10 @@ class _CartList extends StatelessWidget {
                   voucher['name'],
                   style: itemNameStyle,
                 ),
+                subtitle: Text(
+                  "${voucher['points'] * cart.cartItems[index].quantity}",
+                  style: itemNameStyle,
+                ),
               );
             }
           },
@@ -94,7 +104,33 @@ class _CartList extends StatelessWidget {
   }
 }
 
-class _CartTotal extends StatelessWidget {
+class _CartTotal extends StatefulWidget {
+  @override
+  _CartTotalState createState() => _CartTotalState();
+}
+
+class _CartTotalState extends State<_CartTotal> {
+  late String userID = FirebaseAuth.instance.currentUser!.uid;
+  late String userMemberID = "Loading..";
+  late int userPoints = 0;
+  late int cartTotal = 0;
+  late int userRemainPoints = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    userMemberID = await UserService().getUserMemberID(userID);
+    userPoints = await UserService().getUserPoints(userID);
+    userRemainPoints = userPoints;
+    setState(() {});
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -107,44 +143,67 @@ class _CartTotal extends StatelessWidget {
                 builder: (context, cart, child) => Expanded(
                       child: Column(
                         children: [
-                          FutureBuilder<int>(
-                            future: cart.getCartTotal(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<int> snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                // While the future is still loading, display a loading indicator
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                // If there's an error, display an error message
-                                return Text(
-                                  'Error: ${snapshot.error}',
-                                  style: const TextStyle(color: Colors.white),
-                                );
-                              } else {
-                                // If the future has completed successfully, display the total
-                                return Text(
-                                  '${snapshot.data} Points',
-                                  style: const TextStyle(color: Colors.black),
-                                );
-                              }
+                           Text('Your current Points: $userPoints Points'),
+                          Consumer<Cart>(
+                            builder: (context, cart, child) {
+                              return FutureBuilder<int>(
+                                future: cart.getCartTotal(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    // While the future is still loading, display a loading indicator
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    // If there's an error, display an error message
+                                    return Text(
+                                      'Error: ${snapshot.error}',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    );
+                                  } else {
+                                    // If the future has completed successfully, display the total
+                                    userRemainPoints -= snapshot.data as int;
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          'Total ${snapshot.data} Points',
+                                          style:
+                                              const TextStyle(color: Colors.black),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                },
+                              );
                             },
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: ElevatedButton(
                                 onPressed: () {
-                                  String userID = FirebaseAuth.instance.currentUser!.uid;
-                                UserPurchaseService().purchaseItems(
-                                  userID,cart.cartItems
-                                );
-                                  cart.clearCart(); //clear all items in the cart
+                                  // add to userPurcase firebase
+                                  UserPurchaseService()
+                                      .purchaseItems(userID, cart.cartItems);
+                                  // update points
+                                  if (userRemainPoints>0){
+                                  UserService().updateUserPoints(userMemberID, userRemainPoints);
+                                  //clear all items in the cart and notify
+                                  cart.clearCart();
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/cart');
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content:
-                                          Text('Successfully claimed!'),
+                                      content: Text('Successfully claimed!'),
                                     ),
                                   );
+                                } else{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Failed to claimed. Please check if you have enough points.'),
+                                    ),
+                                  );
+                                }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(

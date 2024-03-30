@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 
 
 class RedeemFail extends StatefulWidget {

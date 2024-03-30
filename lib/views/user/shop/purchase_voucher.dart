@@ -1,15 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:project/services/voucher_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/utils/format_string.dart';
 import 'package:project/models/cart.dart';
 import 'package:provider/provider.dart';
 
 class PurchaseVoucher extends StatefulWidget {
-  final String voucherId;
-  const PurchaseVoucher({Key? key, required this.voucherId}) : super(key: key);
+  final String voucherID;
+  const PurchaseVoucher({Key? key, required this.voucherID}) : super(key: key);
 
   @override
   State<PurchaseVoucher> createState() => _PurchaseVoucherState();
@@ -22,10 +22,8 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
   @override
   void initState() {
     super.initState();
-    _voucher = VoucherService().getVoucherByID(widget.voucherId);
+    _voucher = VoucherService().getVoucherByID(widget.voucherID);
   }
-
-  
 
   void increment() {
     setState(() {
@@ -42,7 +40,7 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
   }
 
   Widget _buildAmountButton(
-      String buttonText, IconData iconData, Function() onPressed) {
+    IconData iconData, Function() onPressed) {
     double screenWidth = MediaQuery.of(context).size.width;
     return ElevatedButton(
       onPressed: onPressed,
@@ -79,7 +77,7 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
               onPressed: () {
                 final cart = Provider.of<Cart>(context, listen: false);
                 cart.addToCart(
-                  widget.voucherId,
+                  widget.voucherID,
                   count
                  );
                  Navigator.pop(context);
@@ -174,7 +172,7 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              _buildAmountButton('-', Icons.remove, decrement),
+                              _buildAmountButton(Icons.remove, decrement),
                               Padding(
                                   padding: EdgeInsets.only(
                                       left: screenWidth * 0.05)),
@@ -182,7 +180,7 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
                               Padding(
                                   padding: EdgeInsets.only(
                                       left: screenWidth * 0.05)),
-                              _buildAmountButton('+', Icons.add, increment),
+                              _buildAmountButton(Icons.add, increment),
                             ],
                           ),
                         ),

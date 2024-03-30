@@ -49,6 +49,7 @@ class VoucherService {
   Stream<QuerySnapshot> getVoucherStreamByCategory(String category) {
     final voucherStream = vouchers
         .where('voucherType', isEqualTo: category)
+        .where((doc) => doc['onShop'] == true)
         .orderBy('timestamp', descending: false)
         .snapshots();
     return voucherStream;
@@ -56,8 +57,7 @@ class VoucherService {
 
   Stream<QuerySnapshot> getVoucherStreamByIDs(List<String> voucherIDs) {
     final voucherStream = vouchers
-        .where('voucherID', whereIn: voucherIDs)
-        .orderBy('timestamp', descending: false)
+        .where(FieldPath.documentId, whereIn: voucherIDs)
         .snapshots();
     return voucherStream;
   }

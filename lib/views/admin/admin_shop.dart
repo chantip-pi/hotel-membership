@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/services/voucher_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/utils/format_string.dart';
 
 class VoucherListPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     Widget buildVouchersGrid() {
       return StreamBuilder<QuerySnapshot>(
         stream: _voucherService.getVoucherStream(),
@@ -31,7 +32,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
             var vouchers = snapshot.data!.docs
                 .where((doc) =>
                     doc['onShop'] == true &&
-                    doc['voucherType'] == _categories[_selectedIndex])
+                    doc['voucherType'] == _categories[_selectedIndex]) 
                 .toList();
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -254,46 +255,6 @@ class _VoucherListPageState extends State<VoucherListPage> {
             ),
           ],
         );
-      },
-    );
-  }
-
-  Widget _buildVouchersList() {
-    String selectedCategory = _categories[_selectedIndex];
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: _voucherService.getVoucherStreamByCategory(selectedCategory),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Text('No vouchers available.');
-        } else {
-          var vouchers = snapshot.data!.docs
-              .where((doc) => doc['onShop'] == true)
-              .toList();
-          return Expanded(
-            child: ListView.builder(
-              itemCount: vouchers.length,
-              itemBuilder: (context, index) {
-                var voucher = vouchers[index];
-                return ListTile(
-                  title: Text(voucher['name']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Points: ${voucher['points']}'),
-                      Text('Due Date: ${FormatUtils.formatDate(voucher['dueDate'])}'),
-                      Text('Voucher Type: ${voucher['voucherType']}'),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        }
       },
     );
   }

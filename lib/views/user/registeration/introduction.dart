@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project/services/user_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/utils/format_string.dart';
 
 class IntroductionPage extends StatefulWidget {

@@ -18,7 +18,7 @@ import 'package:project/views/user/shop/user_shop.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/firebase_options.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/views/staff/add_point.dart';
 import 'package:project/views/staff/add_success.dart';
 import 'package:project/views/staff/redeem-success.dart';
