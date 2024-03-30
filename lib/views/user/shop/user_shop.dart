@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:carousel_slider/carousel_slider.dart'; // Import carousel_slider package
+import 'package:project/utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:project/models/cart.dart';
 import 'package:project/services/voucher_service.dart';
@@ -36,7 +38,7 @@ class _VoucherShopState extends State<VoucherShop> {
                     doc['voucherType'] == _categories[_selectedIndex])
                 .toList();
             return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
@@ -49,10 +51,14 @@ class _VoucherShopState extends State<VoucherShop> {
                     var voucher = vouchers[index];
                     var voucherID = voucher.id;
                     var isInCart = context.select<Cart, bool>(
-                      (cart) => cart.cartItems.any((element) =>
-                          element.voucherID == voucherID),
+                      (cart) => cart.cartItems
+                          .any((element) => element.voucherID == voucherID),
                     );
                     return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      color: AppTheme.lightGoldColor,
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -68,34 +74,56 @@ class _VoucherShopState extends State<VoucherShop> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (voucher['imageUrl'] != null)
-                              Stack(children: [
-                                Image.network(
-                                  voucher['imageUrl'],
-                                  height: 100,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                                Positioned(
-                                  top: 10.0,
-                                  right: 10.0,
-                                  child: InCartCircle(
-                                    isInCart: isInCart,
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10.0),
+                                      topRight: Radius.circular(10.0),
+                                    ),
+                                    child: Image.network(
+                                      voucher['imageUrl'],
+                                      height: 100,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                )
-                              ]),
+                                  Positioned(
+                                    top: 10.0,
+                                    right: 10.0,
+                                    child: InCartCircle(
+                                      isInCart: isInCart,
+                                    ),
+                                  )
+                                ],
+                              ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(voucher['name']),
-                                  Text('Points: ${voucher['points']}'),
                                   Text(
-                                    'Due Date: ${FormatUtils.formatDate(voucher['dueDate'])}',
+                                    voucher['name'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                  Text(
-                                      'Voucher Type: ${voucher['voucherType']}'),
                                 ],
+                              ),
+                            ),
+                            Spacer(), // Add Spacer widget to push points to the bottom
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  '${voucher['points']} Points',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -115,8 +143,9 @@ class _VoucherShopState extends State<VoucherShop> {
       length: _categories.length,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Shop'),
           bottom: _buildTabBar(),
+          centerTitle: true,
+          backgroundColor: AppTheme.primaryColor,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -129,8 +158,46 @@ class _VoucherShopState extends State<VoucherShop> {
           ),
           shape: CircleBorder(),
         ),
-        body: _buildVouchersGrid(),
+        body: Column(
+          children: [
+            _buildBannerCarousel(), // Add the banner carousel
+            Expanded(
+              child:
+                  _buildVouchersGrid(), // Move the vouchers grid inside Expanded widget
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildBannerCarousel() {
+    // Sample banner images
+    List<String> bannerImages = [
+      'https://via.placeholder.com/600x200?text=Banner+1',
+      'https://via.placeholder.com/600x200?text=Banner+2',
+      'https://via.placeholder.com/600x200?text=Banner+3',
+    ];
+
+    return CarouselSlider(
+      options: CarouselOptions(
+        autoPlay: true,
+        aspectRatio: 2.0,
+        enlargeCenterPage: true,
+      ),
+      items: bannerImages.map((item) {
+        return Container(
+          margin: EdgeInsets.all(5.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Image.network(
+              item,
+              fit: BoxFit.cover,
+              width: 1000.0,
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -141,6 +208,7 @@ class _VoucherShopState extends State<VoucherShop> {
       preferredSize: Size.fromHeight(50),
       child: Container(
         height: 50,
+        color: Colors.white,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           padding: EdgeInsets.only(top: 15),
@@ -157,7 +225,7 @@ class _VoucherShopState extends State<VoucherShop> {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Colors.black,
+                      color: AppTheme.primaryColor,
                       width: _selectedIndex == index ? 3.0 : 1.0,
                     ),
                   ),
@@ -166,7 +234,9 @@ class _VoucherShopState extends State<VoucherShop> {
                   child: Text(
                     _categories[index],
                     style: TextStyle(
-                      color: Colors.black,
+                      color: _selectedIndex == index
+                          ? AppTheme.primaryColor
+                          : Colors.black, // Change tab text color here
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -192,12 +262,12 @@ class InCartCircle extends StatelessWidget {
         ? Container(
             decoration: const BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Colors.white, // Customize the color as needed
+              color: Colors.white,
             ),
             child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.check, color: Colors.black)),
           )
-        : const SizedBox.shrink(); // Return an empty SizedBox if not in cart
+        : const SizedBox.shrink();
   }
 }
