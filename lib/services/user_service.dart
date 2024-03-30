@@ -106,4 +106,22 @@ class UserService {
       print('Error updating points: $e');
     }
   }
+
+  Future<int> getUserPoints(String userID) async {
+  Map<String, dynamic>? userData = await UserService().getUserById(userID);
+  if (userData != null && userData.containsKey('points')) {
+    return userData['points'] as int;
+  } else {
+    return 0; 
+  }
+  }
+
+  Future<String> getUserMemberID(String userID) async {
+  Map<String, dynamic>? userData = await UserService().getUserById(userID);
+  if (userData != null && userData.containsKey('memberID')) {
+    return userData['memberID'] as String;
+  } else {
+    return ""; 
+  }
+  }
 }

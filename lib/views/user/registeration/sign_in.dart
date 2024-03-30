@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 
 class SignInPage extends StatefulWidget {
   @override

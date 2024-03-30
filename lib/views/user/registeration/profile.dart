@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
 

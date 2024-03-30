@@ -36,13 +36,13 @@ class _MyVoucherState extends State<MyVoucher> {
         future: _userPurchasesWithVoucherInfo,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Text('No vouchers found');
+            return const Text('No vouchers found');
           }
           // Process the retrieved user purchases with voucher info
           List<Map<String, dynamic>> userPurchasesWithVoucherInfo =
@@ -64,7 +64,6 @@ class _MyVoucherState extends State<MyVoucher> {
               child: ListTile(
                 title: Text(voucherInfo['name']),
                 subtitle: Text("Valid Until ${FormatUtils.formatDate(voucherInfo['dueDate'])}"),
-                // Additional voucher fields...
               ),
             );
           }).toList();

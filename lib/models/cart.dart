@@ -37,10 +37,14 @@ class Cart extends ChangeNotifier {
             voucherID: item.voucherID);
       }
     }
+   clearCart();
+  }
+
+  void clearCart() {
     _cartItems.clear();
     notifyListeners();
   }
-
+  
   Future<int> getCartTotal() async {
     int total = 0;
     for (var item in _cartItems) {
@@ -50,9 +54,5 @@ class Cart extends ChangeNotifier {
     }
     return total;
   }
-
-  void clearCart() {
-    _cartItems.clear();
-    notifyListeners();
-  }
 }
+
