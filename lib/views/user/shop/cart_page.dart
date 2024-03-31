@@ -13,7 +13,7 @@ class MyCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildCartList() {
+    Widget buildCartList() {
       var cart = context.watch<Cart>();
 
       return ListView.builder(
@@ -46,7 +46,7 @@ class MyCart extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10.0),
                           bottomLeft: Radius.circular(10.0),
                         ),
@@ -125,9 +125,9 @@ class MyCart extends StatelessWidget {
                                           MaterialStateProperty.all(
                                               Colors.black),
                                       shape: MaterialStateProperty.all(
-                                          CircleBorder()),
+                                          const CircleBorder()),
                                       padding: MaterialStateProperty.all(
-                                        EdgeInsets.all(5),
+                                        const EdgeInsets.all(5),
                                       ),
                                     ),
                                   ),
@@ -156,9 +156,9 @@ class MyCart extends StatelessWidget {
                                           MaterialStateProperty.all(
                                               Colors.black),
                                       shape: MaterialStateProperty.all(
-                                          CircleBorder()),
+                                          const CircleBorder()),
                                       padding: MaterialStateProperty.all(
-                                        EdgeInsets.all(5),
+                                        const EdgeInsets.all(5),
                                       ),
                                     ),
                                   ),
@@ -195,7 +195,7 @@ class MyCart extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: _buildCartList(),
+                child: buildCartList(),
               ),
             ),
             const Padding(
@@ -238,112 +238,110 @@ class _CartTotalState extends State<_CartTotal> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Consumer<Cart>(
-                builder: (context, cart, child) => Expanded(
-                      child: Column(
+    return Consumer<Cart>(
+      builder: (context, cart, child) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Your current Points: '),
+                Text("$userPoints Points")
+              ],
+            ),
+          ),
+          Consumer<Cart>(
+            builder: (context, cart, child) {
+              return FutureBuilder<int>(
+                future: cart.getCartTotal(),
+                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Error: ${snapshot.error}',
+                      style: const TextStyle(color: Colors.white),
+                    );
+                  } else {
+                    userRemainPoints -= snapshot.data as int;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Your current Points: '),
-                                Text("$userPoints Points")
-                              ],
-                            ),
+                          const Text(
+                            'Total',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Consumer<Cart>(
-                            builder: (context, cart, child) {
-                              return FutureBuilder<int>(
-                                future: cart.getCartTotal(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<int> snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text(
-                                      'Error: ${snapshot.error}',
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    );
-                                  } else {
-                                    userRemainPoints -= snapshot.data as int;
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Total'),
-                                          Text("${snapshot.data} Points")
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  // add to userPurcase firebase
-                                  UserPurchaseService()
-                                      .purchaseItems(userID, cart.cartItems);
-                                  // update points
-                                  if (userRemainPoints > 0) {
-                                    UserService().updateUserPoints(
-                                        userMemberID, userRemainPoints);
-                                    //clear all items in the cart and notify
-                                    cart.clearCart();
-                                    Navigator.pop(context);
-                                    Navigator.pushNamed(context, '/cart');
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Successfully claimed!'),
-                                      ),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Failed to claimed. Please check if you have enough points.'),
-                                      ),
-                                    );
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  backgroundColor: Colors.deepOrange,
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('Claim',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ],
-                                  ),
-                                )),
-                          ),
+                          Text(
+                            "${snapshot.data} Points",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
-                    )),
-          ],
-        ),
+                    );
+                  }
+                },
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                fixedSize: MaterialStateProperty.all<Size>(
+                  const Size.fromHeight(56),
+                ),
+              ),
+              onPressed: () {
+                // add to userPurcase firebase
+                UserPurchaseService().purchaseItems(userID, cart.cartItems);
+                // update points
+                if (userRemainPoints > 0) {
+                  UserService()
+                      .updateUserPoints(userMemberID, userRemainPoints);
+                  //clear all items in the cart and notify
+                  cart.clearCart();
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/cart');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Successfully claimed!'),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Failed to claimed. Please check if you have enough points.'),
+                    ),
+                  );
+                }
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Claim',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
