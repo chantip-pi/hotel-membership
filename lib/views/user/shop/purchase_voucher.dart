@@ -138,7 +138,10 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
   }
 
   Widget buildBulletPoints(String termsCondition) {
-    final bulletPoints = termsCondition.split('\\n');
+    final bulletPoints = termsCondition.split('-');
+    if (bulletPoints.isNotEmpty) {
+      bulletPoints.removeAt(0);
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: bulletPoints.map((bulletPoint) {

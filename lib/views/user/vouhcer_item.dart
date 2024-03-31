@@ -21,7 +21,10 @@ class _VoucherItemState extends State<VoucherItem> {
   List<String> bulletPoints = [];
   @override
   Widget build(BuildContext context) {
-    bulletPoints = widget.voucherInfo['termsCondition'].split('\\n');
+    bulletPoints = widget.voucherInfo['termsCondition'].split('-');
+    if (bulletPoints.isNotEmpty) {
+      bulletPoints.removeAt(0);
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(
