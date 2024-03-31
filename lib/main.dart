@@ -84,6 +84,7 @@ class MyApp extends StatelessWidget {
           '/add-voucher': (context) => AddVoucher(),
           // '/purchase-voucher' : (context) => PurchaseVoucher(),
           '/user-cart' :(context) => UserCart(),
+          '/my-voucher' :(context) => MyVoucher(),
           }
           );
   }

@@ -74,6 +74,9 @@ flutter:
     - assets/icons/Ticket_use_light.svg
     - assets/icons/qr.svg
     - assets/icons/benefit.svg
+    - assets/icons/cash.svg
+    - assets/icons/gift.svg
+    - assets/icons/discount.svg
     - assets/icons/LOGO.svg
     - assets/icons/person.svg
     - assets/images/food2.jpg

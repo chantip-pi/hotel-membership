@@ -55,13 +55,13 @@ class VoucherService{
     return voucherStream;
   }
 
- Stream<QuerySnapshot> getVoucherStreamByIDs(List<String> voucherIDs) {
-  final voucherStream = vouchers
-      .where('voucherID', whereIn: voucherIDs)
-      .orderBy('timestamp', descending: false)
-      .snapshots();
-  return voucherStream;
-}
+  Stream<QuerySnapshot> getVoucherStreamByIDs(List<String> voucherIDs) {
+    final voucherStream = vouchers
+        .where('voucherID', whereIn: voucherIDs)
+        .orderBy('timestamp', descending: false)
+        .snapshots();
+    return voucherStream;
+  }
 
   Stream<QuerySnapshot> getVoucherByIDs(String voucherIDs) {
     final voucher = vouchers
