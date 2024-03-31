@@ -102,41 +102,45 @@ class _VoucherListPageState extends State<VoucherListPage> {
                                     style: TextStyle(
                                       color: Colors.white,
                                     )),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        '${voucher['points']} Points',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          width: 40.0,
-                                          height: 40.0,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(Icons.delete,
-                                                color: Colors.black),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  voucher.id);
-                                            },
-                                          ),
-                                        )),
-                                  ],
-                                ),
                               ],
                             ),
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          '${voucher['points']} Points',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Container(
+                                            width: 40.0,
+                                            height: 40.0,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: IconButton(
+                                              icon: Icon(Icons.delete,
+                                                  color: Colors.black),
+                                              onPressed: () {
+                                                _showDeleteConfirmationDialog(
+                                                    voucher.id);
+                                              },
+                                            ),
+                                          )),
+                                    ],
+                                  ),
                           ),
                         ],
                       ),
