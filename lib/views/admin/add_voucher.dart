@@ -499,7 +499,10 @@ class _AddVoucherState extends State<AddVoucher> {
                       giftItem: selectedVoucherType == 'Gift'
                           ? _giftItemController.text
                           : null,
-                      imageUrl: imageUrl,
+                     imageUrl: imageUrl.isNotEmpty
+                                ? imageUrl
+                                : "https://firebasestorage.googleapis.com/v0/b/hotel-membership-2b18b.appspot.com/o/voucher_image%2Fdefault-voucher-image.png?alt=media&token=dc6c37c3-d22b-4597-8486-dfdb7443ffae",
+
                     );
                     Navigator.pop(context);
                   } catch (e) {
