@@ -84,7 +84,7 @@ class _VoucherShopState extends State<VoucherShop> {
                               Stack(
                                 children: [
                                   ClipRRect(
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10.0),
                                       topRight: Radius.circular(10.0),
                                     ),
@@ -124,7 +124,7 @@ class _VoucherShopState extends State<VoucherShop> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                   'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                   )),
                             ),
@@ -189,33 +189,34 @@ class _VoucherShopState extends State<VoucherShop> {
   }
 
   Widget _buildBannerCarousel() {
-    // Sample banner images
+
     List<String> bannerImages = [
-      'https://via.placeholder.com/600x200?text=Banner+1',
-      'https://via.placeholder.com/600x200?text=Banner+2',
-      'https://via.placeholder.com/600x200?text=Banner+3',
+      'assets/images/banner1.png',
+  'assets/images/banner2.jpg',
+  'assets/images/banner3.jpg',
     ];
 
     return CarouselSlider(
-      options: CarouselOptions(
-        autoPlay: true,
-        aspectRatio: 2.0,
-        enlargeCenterPage: true,
+  options: CarouselOptions(
+    autoPlay: true,
+    aspectRatio: 2.0,
+    enlargeCenterPage: true,
+  ),
+  items: bannerImages.map((item) {
+    return Container(
+      margin: EdgeInsets.all(5.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image.asset(
+          item,
+          fit: BoxFit.cover,
+          width: 1000.0,
+        ),
       ),
-      items: bannerImages.map((item) {
-        return Container(
-          margin: EdgeInsets.all(5.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: Image.network(
-              item,
-              fit: BoxFit.cover,
-              width: 1000.0,
-            ),
-          ),
-        );
-      }).toList(),
     );
+  }).toList(),
+);
+
   }
 
   PreferredSizeWidget _buildTabBar() {
