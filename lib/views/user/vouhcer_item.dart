@@ -185,6 +185,7 @@ class _VoucherItemState extends State<VoucherItem> {
                             title: const Text(
                                 'Please Present this code to the staff'),
                             content: Text(widget.purchaseID),
+                            backgroundColor: Colors.white,
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {

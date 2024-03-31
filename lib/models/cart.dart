@@ -54,5 +54,17 @@ class Cart extends ChangeNotifier {
     }
     return total;
   }
+
+  void increaseQuantity(String voucherID) {
+    var item = _cartItems.firstWhere((item) => item.voucherID == voucherID);
+    item.quantity++;
+    notifyListeners();
+  }
+
+  void decreaseQuantity(String voucherID) {
+    var item = _cartItems.firstWhere((item) => item.voucherID == voucherID);
+      item.quantity--;
+      notifyListeners();
+  }
 }
 
