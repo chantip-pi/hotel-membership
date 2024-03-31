@@ -225,7 +225,7 @@ class _VoucherShopState extends State<VoucherShop> {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: AppTheme.primaryColor,
+                      color: Colors.black,
                       width: _selectedIndex == index ? 3.0 : 1.0,
                     ),
                   ),
@@ -236,7 +236,7 @@ class _VoucherShopState extends State<VoucherShop> {
                     style: TextStyle(
                       color: _selectedIndex == index
                           ? AppTheme.primaryColor
-                          : Colors.black, // Change tab text color here
+                          : Colors.black, 
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
