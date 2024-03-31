@@ -44,7 +44,6 @@ class _MyVoucherState extends State<MyVoucher> {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Text('No vouchers found');
           }
-          // Process the retrieved user purchases with voucher info
           List<Map<String, dynamic>> userPurchasesWithVoucherInfo =
               snapshot.data!;
           List<Widget> voucherWidgets =

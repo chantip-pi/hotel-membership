@@ -12,6 +12,144 @@ class MyCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildCartList() {
+      var itemNameStyle = Theme.of(context).textTheme.titleLarge;
+      var cart = context.watch<Cart>();
+
+      return ListView.builder(
+        itemCount: cart.cartItems.length,
+        itemBuilder: (context, index) {
+          return StreamBuilder<DocumentSnapshot>(
+            stream: VoucherService()
+                .getVoucherByID(cart.cartItems[index].voucherID),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                var voucher = snapshot.data!.data() as Map<String, dynamic>;
+                String name = voucher['name'];
+                String displayName;
+                if (name.length > 30) {
+                  displayName = '${name.substring(0, 30)}...';
+                } else {
+                  displayName = name;
+                }
+                return Card(
+                  elevation: 3, // Add elevation for a shadow effect
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8, horizontal: 16), // Add margin for spacing
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                cart.cartItems[index].quantity == 1?
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Remove Item'),
+                                      content: const Text(
+                                          'Are you sure you want to remove this item from your cart?'),
+                                      backgroundColor: Colors.white,
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(); 
+                                          },
+                                          child: Text('Cancel',
+                                          style: TextStyle(color: Colors.black))
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                         cart.removeFromCart(cart.cartItems[index].voucherID);
+                                            Navigator.of(context).pop(); 
+                                          },
+                                          child: Text('Remove',
+                                          style: TextStyle(color: Colors.red))
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ):
+                                cart.decreaseQuantity(
+                                    cart.cartItems[index].voucherID);
+                              },
+                              icon: const Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: CircleBorder(),
+                                padding: EdgeInsets.all(10),
+                                backgroundColor: Colors.black,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 80,
+                              child: Center(
+                                child: Text(
+                                  '${cart.cartItems[index].quantity}',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                cart.increaseQuantity(
+                                    cart.cartItems[index].voucherID);
+                              },
+                              icon: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: CircleBorder(),
+                                padding: EdgeInsets.all(10),
+                                backgroundColor: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  displayName,
+                                  style: itemNameStyle,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "${voucher['points']} Points",
+                                  style: itemNameStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -28,7 +166,7 @@ class MyCart extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: _CartList(),
+                child: _buildCartList(),
               ),
             ),
             const Padding(
@@ -40,66 +178,6 @@ class MyCart extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _CartList extends StatefulWidget {
-  @override
-  _CartListState createState() => _CartListState();
-}
-
-class _CartListState extends State<_CartList> {
-  @override
-  Widget build(BuildContext context) {
-    var itemNameStyle = Theme.of(context).textTheme.titleLarge;
-    var cart = context.watch<Cart>();
-
-    return ListView.builder(
-      itemCount: cart.cartItems.length,
-      itemBuilder: (context, index) {
-        return StreamBuilder<DocumentSnapshot>(
-          stream:
-              VoucherService().getVoucherByID(cart.cartItems[index].voucherID),
-          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              var voucher = snapshot.data!.data() as Map<String, dynamic>;
-              return ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white, shape: BoxShape.rectangle),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '${cart.cartItems[index].quantity}',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                    ),
-                  ),
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.remove_circle_outline),
-                  onPressed: () {
-                    cart.removeFromCart(cart.cartItems[index].voucherID);
-                  },
-                ),
-                title: Text(
-                  voucher['name'],
-                  style: itemNameStyle,
-                ),
-                subtitle: Text(
-                  "${voucher['points'] * cart.cartItems[index].quantity}",
-                  style: itemNameStyle,
-                ),
-              );
-            }
-          },
-        );
-      },
     );
   }
 }
@@ -129,8 +207,6 @@ class _CartTotalState extends State<_CartTotal> {
     setState(() {});
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -143,7 +219,7 @@ class _CartTotalState extends State<_CartTotal> {
                 builder: (context, cart, child) => Expanded(
                       child: Column(
                         children: [
-                           Text('Your current Points: $userPoints Points'),
+                          Text('Your current Points: $userPoints Points'),
                           Consumer<Cart>(
                             builder: (context, cart, child) {
                               return FutureBuilder<int>(
@@ -152,24 +228,21 @@ class _CartTotalState extends State<_CartTotal> {
                                     AsyncSnapshot<int> snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    // While the future is still loading, display a loading indicator
                                     return CircularProgressIndicator();
                                   } else if (snapshot.hasError) {
-                                    // If there's an error, display an error message
                                     return Text(
                                       'Error: ${snapshot.error}',
                                       style:
                                           const TextStyle(color: Colors.white),
                                     );
                                   } else {
-                                    // If the future has completed successfully, display the total
                                     userRemainPoints -= snapshot.data as int;
                                     return Column(
                                       children: [
                                         Text(
                                           'Total ${snapshot.data} Points',
-                                          style:
-                                              const TextStyle(color: Colors.black),
+                                          style: const TextStyle(
+                                              color: Colors.black),
                                         ),
                                       ],
                                     );
@@ -186,24 +259,26 @@ class _CartTotalState extends State<_CartTotal> {
                                   UserPurchaseService()
                                       .purchaseItems(userID, cart.cartItems);
                                   // update points
-                                  if (userRemainPoints>0){
-                                  UserService().updateUserPoints(userMemberID, userRemainPoints);
-                                  //clear all items in the cart and notify
-                                  cart.clearCart();
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, '/cart');
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Successfully claimed!'),
-                                    ),
-                                  );
-                                } else{
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Failed to claimed. Please check if you have enough points.'),
-                                    ),
-                                  );
-                                }
+                                  if (userRemainPoints > 0) {
+                                    UserService().updateUserPoints(
+                                        userMemberID, userRemainPoints);
+                                    //clear all items in the cart and notify
+                                    cart.clearCart();
+                                    Navigator.pop(context);
+                                    Navigator.pushNamed(context, '/cart');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Successfully claimed!'),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Failed to claimed. Please check if you have enough points.'),
+                                      ),
+                                    );
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -211,13 +286,13 @@ class _CartTotalState extends State<_CartTotal> {
                                   ),
                                   backgroundColor: Colors.deepOrange,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text('Claim',
+                                      Text('Claim',
                                           style:
                                               TextStyle(color: Colors.white)),
                                     ],

@@ -54,6 +54,13 @@ class _VoucherShopState extends State<VoucherShop> {
                       (cart) => cart.cartItems
                           .any((element) => element.voucherID == voucherID),
                     );
+                    String name = voucher['name'];
+                    String displayName;
+                    if (name.length > 30) {
+                      displayName = '${name.substring(0, 30)}...';
+                    } else {
+                      displayName = name;
+                    }
                     return Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -103,8 +110,8 @@ class _VoucherShopState extends State<VoucherShop> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    voucher['name'],
-                                    style: TextStyle(
+                                    displayName,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -113,7 +120,15 @@ class _VoucherShopState extends State<VoucherShop> {
                                 ],
                               ),
                             ),
-                            Spacer(), // Add Spacer widget to push points to the bottom
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )),
+                            ),
+                            Spacer(),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Align(
@@ -121,7 +136,9 @@ class _VoucherShopState extends State<VoucherShop> {
                                 child: Text(
                                   '${voucher['points']} Points',
                                   style: TextStyle(
+                                    fontSize: 16,
                                     color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -225,7 +242,7 @@ class _VoucherShopState extends State<VoucherShop> {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: AppTheme.primaryColor,
+                      color: Colors.black,
                       width: _selectedIndex == index ? 3.0 : 1.0,
                     ),
                   ),
@@ -236,7 +253,7 @@ class _VoucherShopState extends State<VoucherShop> {
                     style: TextStyle(
                       color: _selectedIndex == index
                           ? AppTheme.primaryColor
-                          : Colors.black, // Change tab text color here
+                          : Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
