@@ -301,37 +301,51 @@ class _AddVoucherState extends State<AddVoucher> {
   }
 
   Widget _buildTermsTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: TextFormField(
-        controller: _termsConditionController,
-        maxLines: 10,
-        maxLength: 1500,
-        decoration: const InputDecoration(
-          labelText: 'Terms & Condition',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 12),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
-            ),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20),
+    child: TextFormField(
+      controller: _termsConditionController,
+      maxLines: 10,
+      maxLength: 1500,
+      decoration: const InputDecoration(
+         hintText: 'Type terms & conditions as follows:\n-first term\n-second term...',
+        labelText: 'Terms & Condition',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+        ),
+        contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 12),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppTheme.primaryColor,
+            width: 2.0,
           ),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter terms & conditions.';
-          }
-          return null;
-        },
       ),
-    );
-  }
+      onFieldSubmitted: (_) {
+        _insertNewLine();
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter terms & conditions.';
+        }
+        return null;
+      },
+    ),
+  );
+}
+
+void _insertNewLine() {
+  final text = _termsConditionController.text;
+  final newText = text + '-';
+  _termsConditionController.value = _termsConditionController.value.copyWith(
+    text: newText,
+    selection: TextSelection.collapsed(offset: newText.length),
+  );
+}
+
 
   Widget _buildVoucherType() {
   return DropdownButtonFormField<String>(
