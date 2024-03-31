@@ -32,6 +32,37 @@ class VoucherService {
     });
   }
 
+    Future<void> updateVoucher(
+    String docID, {
+    String? name,
+    bool? onShop,
+    Timestamp? timestamp,
+    int? points,
+    Timestamp? dueDate,
+    String? voucherType,
+    String? termsCondition,
+    double? discountPercentage,
+    double? cashValue,
+    String? giftItem,
+    String? imageUrl,
+  }) {
+    Map<String, dynamic> dataToUpdate = {};
+
+    if (name != null) dataToUpdate['name'] = name;
+    if (onShop != null) dataToUpdate['onShop'] = onShop;
+    if (timestamp != null) dataToUpdate['timestamp'] = timestamp;
+    if (points != null) dataToUpdate['points'] = points;
+    if (dueDate != null) dataToUpdate['dueDate'] = dueDate;
+    if (voucherType != null) dataToUpdate['voucherType'] = voucherType;
+    if (termsCondition != null) dataToUpdate['termsCondition'] = termsCondition;
+    if (discountPercentage != null) dataToUpdate['discountPercentage'] = discountPercentage;
+    if (cashValue != null) dataToUpdate['cashValue'] = cashValue;
+    if (giftItem != null) dataToUpdate['giftItem'] = giftItem;
+    if (imageUrl != null) dataToUpdate['imageUrl'] = imageUrl;
+
+    return vouchers.doc(docID).update(dataToUpdate);
+  }
+
   Stream<QuerySnapshot> getVoucherStream() {
     final voucherStream =
         vouchers.orderBy('timestamp', descending: true).snapshots();

@@ -97,13 +97,13 @@ class _AddVoucherState extends State<AddVoucher> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: AppTheme.primaryColor, // Head background
-            hintColor: AppTheme.secondaryColor, // Text on head
+            primaryColor: AppTheme.primaryColor, 
+            hintColor: AppTheme.secondaryColor, 
             colorScheme: const ColorScheme.light(
-                primary: AppTheme.primaryColor), // Text on days
+                primary: AppTheme.primaryColor), 
             buttonTheme: const ButtonThemeData(
                 textTheme:
-                    ButtonTextTheme.primary), // OK/Cancel button text color
+                    ButtonTextTheme.primary), 
           ),
           child: child!,
         );
@@ -124,13 +124,13 @@ class _AddVoucherState extends State<AddVoucher> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Add Voucher",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppTheme.primaryColor,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
@@ -182,7 +182,7 @@ class _AddVoucherState extends State<AddVoucher> {
                           ),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Select Image',
                         style: TextStyle(color: Colors.white),
                       ),
