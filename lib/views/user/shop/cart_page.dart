@@ -5,6 +5,7 @@ import 'package:project/models/cart.dart';
 import 'package:project/services/user_purchase.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/services/voucher_service.dart';
+import 'package:project/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 class MyCart extends StatelessWidget {
@@ -13,7 +14,6 @@ class MyCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget _buildCartList() {
-      var itemNameStyle = Theme.of(context).textTheme.titleLarge;
       var cart = context.watch<Cart>();
 
       return ListView.builder(
@@ -37,110 +37,138 @@ class MyCart extends StatelessWidget {
                   displayName = name;
                 }
                 return Card(
-                  elevation: 3, // Add elevation for a shadow effect
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 16), // Add margin for spacing
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                cart.cartItems[index].quantity == 1?
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text('Remove Item'),
-                                      content: const Text(
-                                          'Are you sure you want to remove this item from your cart?'),
-                                      backgroundColor: Colors.white,
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(); 
-                                          },
-                                          child: Text('Cancel',
-                                          style: TextStyle(color: Colors.black))
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                         cart.removeFromCart(cart.cartItems[index].voucherID);
-                                            Navigator.of(context).pop(); 
-                                          },
-                                          child: Text('Remove',
-                                          style: TextStyle(color: Colors.red))
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ):
-                                cart.decreaseQuantity(
-                                    cart.cartItems[index].voucherID);
-                              },
-                              icon: const Icon(
-                                Icons.remove,
-                                color: Colors.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(10),
-                                backgroundColor: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 80,
-                              child: Center(
-                                child: Text(
-                                  '${cart.cartItems[index].quantity}',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                cart.increaseQuantity(
-                                    cart.cartItems[index].voucherID);
-                              },
-                              icon: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(10),
-                                backgroundColor: Colors.black,
-                              ),
-                            ),
-                          ],
+                  elevation: 6,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          bottomLeft: Radius.circular(10.0),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  displayName,
-                                  style: itemNameStyle,
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  "${voucher['points']} Points",
-                                  style: itemNameStyle,
-                                ),
-                              ],
-                            ),
+                        child: Image.network(
+                          voucher['imageUrl'],
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                displayName,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      cart.cartItems[index].quantity == 1
+                                          ? showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title:
+                                                      const Text('Remove Item'),
+                                                  content: const Text(
+                                                      'Are you sure you want to remove this item from your cart?'),
+                                                  backgroundColor: Colors.white,
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text(
+                                                        'Cancel',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        cart.removeFromCart(cart
+                                                            .cartItems[index]
+                                                            .voucherID);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text(
+                                                        'Remove',
+                                                        style: TextStyle(
+                                                            color: Colors.red),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            )
+                                          : cart.decreaseQuantity(
+                                              cart.cartItems[index].voucherID);
+                                    },
+                                    icon: const Icon(
+                                      Icons.remove,
+                                      color: Colors.white,
+                                    ),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.black),
+                                      shape: MaterialStateProperty.all(
+                                          CircleBorder()),
+                                      padding: MaterialStateProperty.all(
+                                        EdgeInsets.all(5),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                    child: Center(
+                                      child: Text(
+                                        '${cart.cartItems[index].quantity}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      cart.increaseQuantity(
+                                          cart.cartItems[index].voucherID);
+                                    },
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.black),
+                                      shape: MaterialStateProperty.all(
+                                          CircleBorder()),
+                                      padding: MaterialStateProperty.all(
+                                        EdgeInsets.all(5),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               }
@@ -154,12 +182,13 @@ class MyCart extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Cart',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+        backgroundColor: AppTheme.primaryColor,
+        centerTitle: true,
       ),
       body: Container(
-        color: const Color.fromARGB(255, 243, 243, 243),
+        color: AppTheme.backgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -219,7 +248,16 @@ class _CartTotalState extends State<_CartTotal> {
                 builder: (context, cart, child) => Expanded(
                       child: Column(
                         children: [
-                          Text('Your current Points: $userPoints Points'),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Your current Points: '),
+                                Text("$userPoints Points")
+                              ],
+                            ),
+                          ),
                           Consumer<Cart>(
                             builder: (context, cart, child) {
                               return FutureBuilder<int>(
@@ -237,14 +275,16 @@ class _CartTotalState extends State<_CartTotal> {
                                     );
                                   } else {
                                     userRemainPoints -= snapshot.data as int;
-                                    return Column(
-                                      children: [
-                                        Text(
-                                          'Total ${snapshot.data} Points',
-                                          style: const TextStyle(
-                                              color: Colors.black),
-                                        ),
-                                      ],
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Total'),
+                                          Text("${snapshot.data} Points")
+                                        ],
+                                      ),
                                     );
                                   }
                                 },
