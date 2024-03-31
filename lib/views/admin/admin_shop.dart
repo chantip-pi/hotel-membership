@@ -17,7 +17,6 @@ class _VoucherListPageState extends State<VoucherListPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     Widget buildVouchersGrid() {
       return StreamBuilder<QuerySnapshot>(
         stream: _voucherService.getVoucherStream(),
@@ -32,7 +31,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
             var vouchers = snapshot.data!.docs
                 .where((doc) =>
                     doc['onShop'] == true &&
-                    doc['voucherType'] == _categories[_selectedIndex]) 
+                    doc['voucherType'] == _categories[_selectedIndex])
                 .toList();
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -46,6 +45,13 @@ class _VoucherListPageState extends State<VoucherListPage> {
                 itemCount: vouchers.length,
                 itemBuilder: (context, index) {
                   var voucher = vouchers[index];
+                  String name = voucher['name'];
+                  String displayName;
+                  if (name.length > 30) {
+                    displayName = '${name.substring(0, 30)}...';
+                  } else {
+                    displayName = name;
+                  }
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -90,12 +96,13 @@ class _VoucherListPageState extends State<VoucherListPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  voucher['name'],
+                                  displayName,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
                                 Text(
                                     'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
@@ -109,38 +116,37 @@ class _VoucherListPageState extends State<VoucherListPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          '${voucher['points']} Points',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Container(
-                                            width: 40.0,
-                                            height: 40.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                            ),
-                                            child: IconButton(
-                                              icon: Icon(Icons.delete,
-                                                  color: Colors.black),
-                                              onPressed: () {
-                                                _showDeleteConfirmationDialog(
-                                                    voucher.id);
-                                              },
-                                            ),
-                                          )),
-                                    ],
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '${voucher['points']} Points',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
+                                ),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Container(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      child: IconButton(
+                                        icon: Icon(Icons.delete,
+                                            color: Colors.black),
+                                        onPressed: () {
+                                          _showDeleteConfirmationDialog(
+                                              voucher.id);
+                                        },
+                                      ),
+                                    )),
+                              ],
+                            ),
                           ),
                         ],
                       ),
