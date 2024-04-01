@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/models/item.dart';
-import 'package:project/services/voucher_service.dart';
 
 class UserPurchaseService {
   final CollectionReference purchases =
@@ -151,11 +150,11 @@ class UserPurchaseService {
   }
 
   Future<Map<String, List<Map<String, dynamic>>>> getVouchersByCategory(
-      String category) async {
+      String category, String userID) async {
     try {
       // Retrieve user purchases with voucher info for the given category
       List<Map<String, dynamic>> userPurchasesWithVoucherInfo =
-          await getUserPurchasesWithVoucherInfo(category);
+          await getUserPurchasesWithVoucherInfo(userID);
 
       // Categorize vouchers by type
       Map<String, List<Map<String, dynamic>>> categorizedVouchers = {};
@@ -163,7 +162,9 @@ class UserPurchaseService {
         String voucherType =
             purchaseInfo['voucherInfo']['voucherType'] as String;
         categorizedVouchers.putIfAbsent(voucherType, () => []);
-        categorizedVouchers[voucherType]!.add(purchaseInfo['voucherInfo']);
+        if (voucherType == category) {
+          categorizedVouchers[voucherType]!.add(purchaseInfo['voucherInfo']);
+        }
       }
 
       return categorizedVouchers;

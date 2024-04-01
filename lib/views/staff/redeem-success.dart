@@ -52,7 +52,7 @@ class _RedeemSuccessState extends State<RedeemSuccess> {
             ),
           Center(
             child: Text(
-              'Succesfully Redeem Vocuher',
+              'Succesfully Redeem Voucher',
               style: const TextStyle(
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
