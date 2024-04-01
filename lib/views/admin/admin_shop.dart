@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:project/utils/theme.dart';
 import 'package:project/utils/format_string.dart';
+import 'package:project/views/admin/voucher_display.dart';
 
 class VoucherListPage extends StatefulWidget {
   @override
@@ -45,6 +46,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                 itemCount: vouchers.length,
                 itemBuilder: (context, index) {
                   var voucher = vouchers[index];
+                   var voucherID = voucher.id;
                   String name = voucher['name'];
                   String displayName;
                   if (name.length > 30) {
@@ -59,7 +61,14 @@ class _VoucherListPageState extends State<VoucherListPage> {
                     color: AppTheme.lightGoldColor, // Set background color
                     child: InkWell(
                       onTap: () {
-                        // TODO: show voucher detail
+                       Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VoucherDisplay(
+                                voucherID: voucherID,
+                              ),
+                            ),
+                          );
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
