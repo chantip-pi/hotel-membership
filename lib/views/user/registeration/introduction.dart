@@ -222,7 +222,7 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
                           ),
-                          color: Colors.white,
+                          color: Colors.black87,
                         ),
                         height: screenHeight * 0.05,
                         width: screenWidth * 0.9,
@@ -244,7 +244,7 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
                         bottomRight: Radius.circular(10),
                       ),
                       image: DecorationImage(
-                        image: AssetImage('assets/images/backgrounddemo.jpg'),
+                        image: AssetImage('assets/images/member-background.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),
