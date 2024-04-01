@@ -16,6 +16,7 @@ class MyVoucher extends StatefulWidget {
 class _MyVoucherState extends State<MyVoucher> {
   late String _currentUserID;
   late Future<List<Map<String, dynamic>>> _userPurchasesWithVoucherInfo;
+  final ScrollController _scrollController = ScrollController();
 
   String voucherCategory = 'All';
 
@@ -85,10 +86,15 @@ class _MyVoucherState extends State<MyVoucher> {
                 child: _textChanger(voucherCategory),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView(
-                  children: voucherWidgets,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: ListView(
+                      controller: _scrollController,
+                      children: voucherWidgets,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -126,7 +132,7 @@ class _MyVoucherState extends State<MyVoucher> {
       'assets/icons/gift.svg',
     ];
 
-    List<String> labels = ['VOUCHER', 'DISCOUNT', 'CASH', 'GIFT'];
+    List<String> labels = ['ALL', 'DISCOUNT', 'CASH', 'GIFT'];
 
     return SizedBox(
       height: MediaQuery.of(context).size.width * 0.35,
@@ -146,6 +152,7 @@ class _MyVoucherState extends State<MyVoucher> {
               } else {
                 voucherCategory = 'Gift';
               }
+              _scrollController.jumpTo(0);
               _textChanger(labels[index]);
             });
           },
@@ -182,7 +189,7 @@ class _MyVoucherState extends State<MyVoucher> {
             Padding(padding: EdgeInsets.only(top: screenHeight * 0.008)),
             Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
@@ -204,7 +211,7 @@ class _MyVoucherState extends State<MyVoucher> {
 
   Widget _buildListTileByCase(Map<String, dynamic> voucherInfo, String voucherCategory) {
     if (voucherCategory == 'All') {
-      return _buildListTile(voucherInfo);
+      return _buildWidgetforList(voucherInfo);
     } else {
       UserPurchaseService userPurchaseService = UserPurchaseService();
       Future<Map<String, List<Map<String, dynamic>>>> voucherFuture =
@@ -236,12 +243,12 @@ class _MyVoucherState extends State<MyVoucher> {
           });
 
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.6,
             child: ListView.builder(
               itemCount: vouchers.length,
               itemBuilder: (context, index) {
                 Map<String, dynamic> usingInfo = vouchers[index];
-                return _buildListTile(usingInfo);
+                return _buildWidgetforList(usingInfo);
               },
             ),
           );
@@ -249,37 +256,73 @@ class _MyVoucherState extends State<MyVoucher> {
       );
     }
   }
-  
-  Widget _buildListTile(Map<String, dynamic> usingInfo) {
+
+  Widget _buildWidgetforList(Map<String, dynamic> usingInfo) {
+    String name = usingInfo['name'];
+    String displayName;
+    double screenWidth = MediaQuery.of(context).size.width;
+    if (name.length > 30) {
+      displayName = '${name.substring(0, 30)}...';
+    } else {
+      displayName = name;
+    }
+
     return Container(
-      decoration: const BoxDecoration( 
+      height: 100,
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: AppTheme.primaryColor,
+            width: 1.0,
           ),
         ),
       ),
-      child: ListTile(
-        leading: Image.network(usingInfo['imageUrl']),
-        title: Text(
-          usingInfo['name'],
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: SizedBox(
+              width: screenWidth * 0.2,
+              height: screenWidth * 0.15,
+              child: Image.network(
+                usingInfo['imageUrl'],
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Quantity:'),
-            const SizedBox(height: 5),
-            Text("Valid Until ${FormatUtils.formatDate(usingInfo['dueDate'])}"),
-          ],
-        ),
-        trailing: const Icon(
-          Icons.navigate_next,
-          color: AppTheme.primaryColor,
-        ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, top: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text("Valid Until ${FormatUtils.formatDate(usingInfo['dueDate'])}"),
+                ],
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Icon(
+              Icons.navigate_next,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+        ],
       ),
     );
+  }
+  
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
