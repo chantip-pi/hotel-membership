@@ -274,10 +274,10 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pushReplacementNamed(context,'/home-page');
+                    Navigator.pushReplacementNamed(context,'/nav-bar');
                   },
                   child: const Text(
-                    'Done',
+                    'Back',
                     style: TextStyle(
                       color: Colors.black,
                     ),
