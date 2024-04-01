@@ -20,7 +20,8 @@ class MyVoucher extends StatefulWidget {
 class _MyVoucherState extends State<MyVoucher> {
   late String _currentUserID;
   late Future<List<Map<String, dynamic>>> _userPurchasesWithVoucherInfo;
-  String voucherCategory = 'All';
+
+  String voucherCategory = 'Discount';
   int _selectedIndex = 0;
 
   @override
@@ -48,7 +49,7 @@ class _MyVoucherState extends State<MyVoucher> {
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: FutureBuilder<List<Map<String, dynamic>>> (
         future: _userPurchasesWithVoucherInfo,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,7 +82,7 @@ class _MyVoucherState extends State<MyVoucher> {
                   ),
                 );
               },
-              child: _buildListTileByCase(voucherInfo),
+              child: _buildListTileByCase(voucherInfo, voucherCategory),
             );
           }).toList();
 
@@ -139,6 +140,7 @@ class _MyVoucherState extends State<MyVoucher> {
           onTap: () {
             setState(() {
               _selectedIndex = index;
+              _textChanger(labels[index]);
             });
           },
           child: Row(
@@ -194,24 +196,101 @@ class _MyVoucherState extends State<MyVoucher> {
     );
   }
 
-  Widget _buildListTileByCase(Map<String, dynamic> voucherInfo) {
-    String voucherCategory;
-    if (_selectedIndex == 1) {
-      voucherCategory = 'Discount';
-    } else if (_selectedIndex == 2) {
-      voucherCategory = 'Cash';
-    } else {
-      voucherCategory = 'Gift';
-    }
-    Map<String, dynamic> usingInfo = voucherInfo;
-    VoucherService voucherService = VoucherService();
-    Stream<QuerySnapshot> voucherStream = voucherService.getVoucherStreamByCategory(voucherCategory);
-    if (_selectedIndex == 0) {
+  Widget _buildListTileByCase(Map<String, dynamic> voucherInfo, String voucherCategory) {
+    // Map<String, dynamic> usingInfo = voucherInfo;
+    // Stream<QuerySnapshot> useInfo = usingInfo as Stream<QuerySnapshot>;
+    // VoucherService voucherService = VoucherService();
+    // Stream<QuerySnapshot> voucherStream = voucherService.getUserVoucherStreamByCategory(useInfo, voucherCategory);
+    if (voucherCategory == 'All') {
       return _buildListTile(voucherInfo);
     } else {
-      usingInfo = voucherStream as Map<String, dynamic>;
-      return _buildListTile(usingInfo);
+    // UserPurchaseService userPurchaseService = UserPurchaseService();
+    // Future<Map<String, List<Map<String, dynamic>>>> voucherStream =
+    //     userPurchaseService.getVouchersByCategory(voucherCategory);
+      UserPurchaseService userPurchaseService = UserPurchaseService();
+      Future<Map<String, List<Map<String, dynamic>>>> voucherFuture =
+          userPurchaseService.getVouchersByCategory(voucherCategory, _currentUserID);
+
+      return FutureBuilder(
+        future: voucherFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          if (!snapshot.hasData || snapshot.data == null) {
+            return Text('No vouchers available');
+          }
+
+          Map<String, List<Map<String, dynamic>>> voucherData = snapshot.data!;
+          // List<Map<String, dynamic>> vouchers =
+          //     voucherData[voucherCategory] ?? [];
+          List<Map<String, dynamic>> vouchers = [];
+          voucherData.forEach((key, value) {
+            vouchers.addAll(value);
+          });
+          
+          print(voucherFuture);
+          print('data $voucherData');
+          print('list $vouchers');
+          print('category $voucherCategory');
+
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: ListView.builder(
+              itemCount: vouchers.length,
+              itemBuilder: (context, index) {
+                Map<String, dynamic> usingInfo = vouchers[index];
+                return _buildListTile(usingInfo);
+              },
+            ),
+          );
+          // for (Map<String, dynamic> i in vouchers) {
+          //   usingInfo = i;
+          // }
+          // return _buildListTile(usingInfo);
+        },
+      );
     }
+
+    // if (_selectedIndex == 0) {
+    //   return _buildListTile(voucherInfo);
+    // } else {
+    //   usingInfo = voucherStream as Map<String, dynamic>;
+    //   return _buildListTile(usingInfo);
+    // }
+
+    // return StreamBuilder(
+    //   stream: voucherStream,
+    //   builder: (context, snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return CircularProgressIndicator(); // Or any other loading indicator
+    //     }
+    //     if (snapshot.hasError) {
+    //       return Text('Error: ${snapshot.error}');
+    //     }
+    //     if (!snapshot.hasData) {
+    //       return Text('No data available');
+    //     }
+
+    //     List<DocumentSnapshot> voucherDocuments = snapshot.data!.docs;
+    //     // Filter vouchers based on voucherType
+    //     List<Map<String, dynamic>> filteredVouchers = voucherDocuments
+    //         .map((doc) => doc.data() as Map<String, dynamic>)
+    //         .where((voucher) => voucher['voucherType'] == voucherCategory)
+    //         .toList();
+
+    //     return ListView.builder(
+    //       itemCount: filteredVouchers.length,
+    //       itemBuilder: (context, index) {
+    //         Map<String, dynamic> usingInfo = filteredVouchers[index];
+    //         return _buildListTile(usingInfo);
+    //       },
+    //     );
+    //   },
+    // );
   }
   
   Widget _buildListTile(Map<String, dynamic> usingInfo) {
