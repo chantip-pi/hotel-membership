@@ -21,7 +21,7 @@ class _VoucherDisplayState extends State<VoucherDisplay> {
     super.initState();
     _voucher = VoucherService().getVoucherByID(widget.voucherID);
   }
-  
+
    @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,11 +152,5 @@ class _VoucherDisplayState extends State<VoucherDisplay> {
         );
       }).toList(),
     );
-  }
-  
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }
