@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                                     bottomLeft: Radius.circular(10),
                                     bottomRight: Radius.circular(10)),
                                 image: DecorationImage(
-                                    image: AssetImage('assets/images/backgrounddemo.jpg'),
+                                    image: AssetImage('assets/images/member-background.png'),
                                     fit: BoxFit.cover,
                                 ),
                                 ),

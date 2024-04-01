@@ -244,7 +244,7 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
                         bottomRight: Radius.circular(10),
                       ),
                       image: DecorationImage(
-                        image: AssetImage('assets/images/backgrounddemo.jpg'),
+                        image: AssetImage('assets/images/member-background.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
