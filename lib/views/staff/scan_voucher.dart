@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:project/utils/theme.dart';
+import 'package:project/services/user_purchase.dart';
 
-class ScanMember extends StatefulWidget {
-  const ScanMember({super.key});
+class ScanVoucher extends StatefulWidget {
+  const ScanVoucher({super.key});
 
   @override
-  State<ScanMember> createState() => _ScanMemberState();
+  State<ScanVoucher> createState() => _ScanMemberState();
 }
 
-class _ScanMemberState extends State<ScanMember> {
-  TextEditingController _memberIDController = TextEditingController();
+class _ScanMemberState extends State<ScanVoucher> {
+  TextEditingController _voucherIDController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _ScanMemberState extends State<ScanMember> {
           child: Column(
             children: [
               _scanQRCodeText(),
-              _buildMemberIDTextField(),
+              _buildVocuherIDTextField(),
               _buildButton()
             ],
           ),
@@ -39,7 +40,7 @@ Widget _scanQRCodeText(){
     return  Padding(
       padding: EdgeInsets.only(bottom: 30, top: 30),
       child: Text(
-        'Enter Member ID',
+        'Enter User Voucher ID',
         style: const TextStyle(
           fontWeight: FontWeight.w900,
           color: Colors.black,
@@ -68,9 +69,15 @@ Widget _scanQRCodeText(){
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: () {
-              Navigator.pushNamed(context, '/add-point', arguments: _memberIDController.text);
-              _memberIDController.clear();
+              onPressed: ()  async {
+              try {
+                await UserPurchaseService().redeemVoucher(_voucherIDController.text);
+                Navigator.pushNamed(context, '/redeem-success');
+                _voucherIDController.clear();
+              } catch (e) {
+                 Navigator.pushNamed(context, '/redeem-fail');
+                 _voucherIDController.clear();
+              }
               },
               child: const Center(
                 child: Text(
@@ -88,15 +95,13 @@ Widget _scanQRCodeText(){
     );
   }
 
-
-  Widget _buildMemberIDTextField() {
+  Widget _buildVocuherIDTextField() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: _memberIDController,
-          keyboardType: TextInputType.number,
+          controller: _voucherIDController,
           decoration: const InputDecoration(
-            labelText: 'Member ID',
+            labelText: 'User Vocuher ID',
             labelStyle: TextStyle(
               fontSize: 18,
               color: Colors.black,
@@ -112,7 +117,7 @@ Widget _scanQRCodeText(){
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter a member ID.';
+              return 'Please enter a voucher iD.';
             }
             return null;
           }),

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({Key? key});
@@ -13,7 +13,7 @@ class AdminHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Admin",style: TextStyle(color: Colors.white),),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/services/user_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/utils/format_string.dart';
 
 class AddPointSuccess extends StatefulWidget {
@@ -33,7 +33,7 @@ class _AddPointSuccessState extends State<AddPointSuccess> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         title: const Text("Continue Scanning",
+         title: const Text("Continue",
         style: TextStyle(color: Colors.white,fontSize: 16)),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: AppTheme.primaryColor,
@@ -190,7 +190,7 @@ class _AddPointSuccessState extends State<AddPointSuccess> {
                   ),
                 ),
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(AppTheme.primaryColor),
+                    MaterialStateProperty.all<Color>(Colors.black),
                 fixedSize: MaterialStateProperty.all<Size>(
                   const Size.fromHeight(56),
                 ),

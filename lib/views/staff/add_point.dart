@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/services/user_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/utils/format_string.dart';
 
 class AddPoint extends StatefulWidget {
@@ -209,7 +209,7 @@ class _AddPointState extends State<AddPoint> {
                   ),
                 ),
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(AppTheme.primaryColor),
+                    MaterialStateProperty.all<Color>(Colors.black),
                 fixedSize: MaterialStateProperty.all<Size>(
                   const Size.fromHeight(56),
                 ),

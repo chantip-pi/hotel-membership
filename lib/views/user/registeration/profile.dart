@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
 
@@ -15,15 +15,15 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late Future<Map<String, dynamic>?> _currentUserFuture;
-  late String name;
-  late String surname ;
-  late String memberID;
-  late int points;
-  late String email;
-  late String phone;
-  late String gender;
-  late String address;
-  late Timestamp birthdate;
+  late String name = "Loading..";
+  late String surname = "Loading..";
+  late String memberID = "Loading..";
+  late int points = 0;
+  late String email = "Loading..";
+  late String phone = "Loading..";
+  late String gender = "Loading..";
+  late String address = "Loading..";
+  late Timestamp birthdate = Timestamp.now();
 
   @override
   void initState() {
@@ -82,6 +82,7 @@ class _ProfileState extends State<Profile> {
               'assets/images/backgrounddemo.jpg',
               width: screenWidth,
               fit: BoxFit.cover,
+              height: screenHeight * 0.25,
             ),
             Center(
               child: Column(
@@ -92,7 +93,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(screenWidth * 0.05, screenHeight * 0.24, screenHeight * 0.016, 0),
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.05, screenHeight * 0.3, screenHeight * 0.016, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

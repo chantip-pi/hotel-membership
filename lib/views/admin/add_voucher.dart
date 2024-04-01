@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:project/services/image_storage.dart';
 import 'package:project/services/voucher_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 
 class AddVoucher extends StatefulWidget {
   const AddVoucher({super.key});
@@ -31,55 +31,47 @@ class _AddVoucherState extends State<AddVoucher> {
   VoucherService _voucherService = VoucherService();
 
   final FirebaseImageUtils _firebaseImageUtils = FirebaseImageUtils();
-  String uploadedImageName = "";
   String imageUrl = '';
 
-  Future<void> _selectImageSourceDialog() async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Select Image Source'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                ListTile(
-                  title: Text('Gallery'),
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    try {
-                      imageUrl = await _firebaseImageUtils
-                          .uploadImageFromGallery('voucher_image');
-                      setState(() {
-                        uploadedImageName = imageUrl; // Display the image name
-                      });
-                    } catch (e) {
-                      print('Error uploading image from gallery: $e');
-                    }
-                  },
-                ),
-                ListTile(
-                  title: Text('Camera'),
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    try {
-                      imageUrl = await _firebaseImageUtils
-                          .uploadImageFromCamera('voucher_image');
-                      setState(() {
-                        uploadedImageName = imageUrl; // Display the image name
-                      });
-                    } catch (e) {
-                      print('Error capturing image from camera: $e');
-                    }
-                  },
-                ),
-              ],
-            ),
+ Future<void> _selectImageSourceDialog() async {
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Select Image Source', style: TextStyle(color: Colors.black)),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              ListTile(
+                title: Text('Gallery', style: TextStyle(color: Colors.black)),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  try {
+                    imageUrl = await _firebaseImageUtils.uploadImageFromGallery('voucher_image');
+                  } catch (e) {
+                    print('Error uploading image from gallery: $e');
+                  }
+                },
+              ),
+              ListTile(
+                title: Text('Camera', style: TextStyle(color: Colors.black)),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  try {
+                    imageUrl = await _firebaseImageUtils.uploadImageFromCamera('voucher_image');
+                  } catch (e) {
+                    print('Error capturing image from camera: $e');
+                  }
+                },
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 
   @override
   void dispose() {
@@ -100,18 +92,18 @@ class _AddVoucherState extends State<AddVoucher> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(1900),
+      firstDate: _selectedDate,
       lastDate: DateTime(2104),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: AppTheme.primaryColor, // Head background
-            hintColor: AppTheme.secondaryColor, // Text on head
+            primaryColor: AppTheme.primaryColor, 
+            hintColor: AppTheme.secondaryColor, 
             colorScheme: const ColorScheme.light(
-                primary: AppTheme.primaryColor), // Text on days
+                primary: AppTheme.primaryColor), 
             buttonTheme: const ButtonThemeData(
                 textTheme:
-                    ButtonTextTheme.primary), // OK/Cancel button text color
+                    ButtonTextTheme.primary), 
           ),
           child: child!,
         );
@@ -132,27 +124,38 @@ class _AddVoucherState extends State<AddVoucher> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Add Voucher",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppTheme.primaryColor,
-        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            if (imageUrl.isNotEmpty) {
+              _firebaseImageUtils.deletePictureByUrl(imageUrl);
+            }
+            Navigator.pop(context);
+          },
+        ),
       ),
       backgroundColor: AppTheme.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            if (uploadedImageName.isEmpty)
+            if (imageUrl.isEmpty)
               Image.asset(
                 'assets/images/default-voucher-image.png',
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width * 0.8,
                 fit: BoxFit.fill,
               ),
-            if (uploadedImageName.isNotEmpty)
+            if (imageUrl.isNotEmpty)
               Image.network(
-                uploadedImageName,
+                imageUrl,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
@@ -179,7 +182,10 @@ class _AddVoucherState extends State<AddVoucher> {
                           ),
                         ),
                       ),
-                      child: Text('Select Image',style: TextStyle(color: Colors.white),),
+                      child: const Text(
+                        'Select Image',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     _buildVoucherNameTextField(),
                     _builPointsTextField(),
@@ -202,28 +208,30 @@ class _AddVoucherState extends State<AddVoucher> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
-          controller: _voucherNameController,
-          decoration: const InputDecoration(
-            labelText: 'Voucher Name',
-            labelStyle: TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
-            contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: AppTheme.primaryColor,
-                width: 2.0,
-              ),
+        controller: _voucherNameController,
+        maxLength: 40,
+        decoration: const InputDecoration(
+          labelText: 'Voucher Name',
+          labelStyle: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+          contentPadding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: AppTheme.primaryColor,
+              width: 2.0,
             ),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter vouhcer name.';
-            }
-            return null;
-          }),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter voucher name.';
+          }
+          return null;
+        },
+      ),
     );
   }
 
@@ -293,62 +301,83 @@ class _AddVoucherState extends State<AddVoucher> {
   }
 
   Widget _buildTermsTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: TextFormField(
-        controller: _termsConditionController,
-        maxLines: 10,
-        maxLength: 1500,
-        decoration: const InputDecoration(
-          labelText: 'Terms & Condition',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 12),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
-            ),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20),
+    child: TextFormField(
+      controller: _termsConditionController,
+      maxLines: 10,
+      maxLength: 1500,
+      decoration: const InputDecoration(
+         hintText: 'Type terms & conditions as follows:\n-first term\n-second term...',
+        labelText: 'Terms & Condition',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+        ),
+        contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 12),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppTheme.primaryColor,
+            width: 2.0,
           ),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter terms & conditions.';
-          }
-          return null;
-        },
       ),
-    );
-  }
+      onFieldSubmitted: (_) {
+        _insertNewLine();
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter terms & conditions.';
+        }
+        return null;
+      },
+    ),
+  );
+}
+
+void _insertNewLine() {
+  final text = _termsConditionController.text;
+  final newText = text + '-';
+  _termsConditionController.value = _termsConditionController.value.copyWith(
+    text: newText,
+    selection: TextSelection.collapsed(offset: newText.length),
+  );
+}
+
 
   Widget _buildVoucherType() {
-    return DropdownButtonFormField<String>(
-        value: selectedVoucherType,
-        items: ['Discount', 'Cash', 'Gift'].map((type) {
-          return DropdownMenuItem<String>(
-            value: type,
-            child: Text(type),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            selectedVoucherType = value!;
-          });
-        },
-        decoration: InputDecoration(
-          labelText: 'Voucher Type',
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
-            ),
-          ),
-        ));
-  }
+  return DropdownButtonFormField<String>(
+    value: selectedVoucherType,
+    items: ['Discount', 'Cash', 'Gift'].map((type) {
+      return DropdownMenuItem<String>(
+        value: type,
+        child: Text(type),
+      );
+    }).toList(),
+    onChanged: (value) {
+      setState(() {
+        selectedVoucherType = value!;
+      });
+    },
+    decoration: const InputDecoration(
+      labelText: 'Voucher Type',
+      labelStyle: TextStyle(
+        color: AppTheme.primaryColor,
+      ),
+      filled: true,
+      fillColor: Colors.white,
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: AppTheme.primaryColor,
+          width: 2.0,
+        ),
+      ),
+    ),
+  );
+}
+
 
   Widget _buildVoucherValue() {
     final RegExp numberRegex = RegExp(r'^[0-9]+$');
@@ -467,7 +496,7 @@ class _AddVoucherState extends State<AddVoucher> {
               onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
                   try {
-                         _voucherService.addVoucher(
+                    _voucherService.addVoucher(
                       name: _voucherNameController.text,
                       onShop: true,
                       timestamp: Timestamp.now(),
@@ -484,7 +513,10 @@ class _AddVoucherState extends State<AddVoucher> {
                       giftItem: selectedVoucherType == 'Gift'
                           ? _giftItemController.text
                           : null,
-                      imageUrl: imageUrl,
+                     imageUrl: imageUrl.isNotEmpty
+                                ? imageUrl
+                                : "https://firebasestorage.googleapis.com/v0/b/hotel-membership-2b18b.appspot.com/o/voucher_image%2Fdefault-voucher-image.png?alt=media&token=dc6c37c3-d22b-4597-8486-dfdb7443ffae",
+
                     );
                     Navigator.pop(context);
                   } catch (e) {
