@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/services/user_purchase.dart';
 
 class ScanVoucher extends StatefulWidget {

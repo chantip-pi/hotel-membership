@@ -7,8 +7,8 @@ import 'package:project/services/user_purchase.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:project/utils/format_string.dart';
-import 'package:project/views/vouhcer_item.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
+import 'package:project/views/user/vouhcer_item.dart';
 
 class MyVoucher extends StatefulWidget {
   const MyVoucher({super.key});
@@ -53,15 +53,14 @@ class _MyVoucherState extends State<MyVoucher> {
         future: _userPurchasesWithVoucherInfo,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Text('No vouchers found');
+            return const Text('No vouchers found');
           }
-          // Process the retrieved user purchases with voucher info
           List<Map<String, dynamic>> userPurchasesWithVoucherInfo =
               snapshot.data!;    
           List<Widget> voucherWidgets =

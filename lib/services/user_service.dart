@@ -3,7 +3,7 @@ import 'dart:math';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<String> _docIDs = [];
+  final List<String> _docIDs = [];
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   // Add a new user to Firestore
@@ -32,7 +32,7 @@ class UserService {
     });
   }
 
-  // generatememberID
+  // generate memberID
   String _generateRandomID() {
     final Random random = Random();
     const String chars = '0123456789';
@@ -43,18 +43,19 @@ class UserService {
     return result;
   }
 
-
   Future getAllUserIDs() async {
-    await _firestore.collection('users').get().then(
-      (snapshot) => snapshot.docs.forEach((element) {
-        print(element.reference);
-        _docIDs.add(element.reference.id);
-      }));
+    await _firestore
+        .collection('users')
+        .get()
+        .then((snapshot) => snapshot.docs.forEach((element) {
+              _docIDs.add(element.reference.id);
+            }));
   }
 
-   Future<Map<String, dynamic>?> getUserById(String userId) async {
+  Future<Map<String, dynamic>?> getUserById(String userId) async {
     try {
-      DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(userId).get();
+      DocumentSnapshot userSnapshot =
+          await _firestore.collection('users').doc(userId).get();
 
       if (userSnapshot.exists) {
         return userSnapshot.data() as Map<String, dynamic>;
@@ -67,27 +68,7 @@ class UserService {
     }
   }
 
-
   Future<Map<String, dynamic>?> getUserByMemberId(String memberID) async {
-  try {
-    QuerySnapshot querySnapshot = await _firestore
-        .collection('users')
-        .where('memberID', isEqualTo: memberID)
-        .limit(1)
-        .get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs.first.data() as Map<String, dynamic>;
-    } else {
-      return null;
-    }
-  } catch (e) {
-    print("Error getting user details by memberID: $e");
-    return null;
-  }
-}
-
-Future<void> updateUserPoints(String memberID, int newPoints) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
@@ -95,6 +76,24 @@ Future<void> updateUserPoints(String memberID, int newPoints) async {
           .limit(1)
           .get();
 
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.data() as Map<String, dynamic>;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error getting user details by memberID: $e");
+      return null;
+    }
+  }
+
+  Future<void> updateUserPoints(String memberID, int newPoints) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .where('memberID', isEqualTo: memberID)
+          .limit(1)
+          .get();
       if (querySnapshot.docs.isNotEmpty) {
         DocumentReference userRef = querySnapshot.docs.first.reference;
         await userRef.update({'points': newPoints});
@@ -106,9 +105,23 @@ Future<void> updateUserPoints(String memberID, int newPoints) async {
     } catch (e) {
       print('Error updating points: $e');
     }
-    
   }
 
+  Future<int> getUserPoints(String userID) async {
+  Map<String, dynamic>? userData = await UserService().getUserById(userID);
+  if (userData != null && userData.containsKey('points')) {
+    return userData['points'] as int;
+  } else {
+    return 0; 
+  }
+  }
+
+  Future<String> getUserMemberID(String userID) async {
+  Map<String, dynamic>? userData = await UserService().getUserById(userID);
+  if (userData != null && userData.containsKey('memberID')) {
+    return userData['memberID'] as String;
+  } else {
+    return ""; 
+  }
+  }
 }
-
-

@@ -6,10 +6,8 @@ class FormatUtils {
     if (phoneNumber.length != 10) {
       return 'Invalid phone number';
     }
-
     return '${phoneNumber.substring(0, 3)} ${phoneNumber.substring(3, 6)} ${phoneNumber.substring(6)}';
   }
-
 
   static String addSpaceToNumberString(String numberString) {
     String formattedNumber = '';
@@ -24,7 +22,7 @@ class FormatUtils {
     return formattedNumber;
   }
 
-    static String formatDate(Timestamp timestamp) {
+  static String formatDate(Timestamp timestamp) {
     DateTime date = timestamp.toDate();
     return DateFormat('dd MMM yyyy').format(date);
   }

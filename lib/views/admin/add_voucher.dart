@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:project/services/image_storage.dart';
 import 'package:project/services/voucher_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 
 class AddVoucher extends StatefulWidget {
   const AddVoucher({super.key});
@@ -97,13 +97,13 @@ class _AddVoucherState extends State<AddVoucher> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: AppTheme.primaryColor, // Head background
-            hintColor: AppTheme.secondaryColor, // Text on head
+            primaryColor: AppTheme.primaryColor, 
+            hintColor: AppTheme.secondaryColor, 
             colorScheme: const ColorScheme.light(
-                primary: AppTheme.primaryColor), // Text on days
+                primary: AppTheme.primaryColor), 
             buttonTheme: const ButtonThemeData(
                 textTheme:
-                    ButtonTextTheme.primary), // OK/Cancel button text color
+                    ButtonTextTheme.primary), 
           ),
           child: child!,
         );
@@ -124,13 +124,13 @@ class _AddVoucherState extends State<AddVoucher> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Add Voucher",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppTheme.primaryColor,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
@@ -182,7 +182,7 @@ class _AddVoucherState extends State<AddVoucher> {
                           ),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Select Image',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -301,37 +301,51 @@ class _AddVoucherState extends State<AddVoucher> {
   }
 
   Widget _buildTermsTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: TextFormField(
-        controller: _termsConditionController,
-        maxLines: 10,
-        maxLength: 1500,
-        decoration: const InputDecoration(
-          labelText: 'Terms & Condition',
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 12),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppTheme.primaryColor,
-              width: 2.0,
-            ),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20),
+    child: TextFormField(
+      controller: _termsConditionController,
+      maxLines: 10,
+      maxLength: 1500,
+      decoration: const InputDecoration(
+         hintText: 'Type terms & conditions as follows:\n-first term\n-second term...',
+        labelText: 'Terms & Condition',
+        labelStyle: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+        ),
+        contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 12),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppTheme.primaryColor,
+            width: 2.0,
           ),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter terms & conditions.';
-          }
-          return null;
-        },
       ),
-    );
-  }
+      onFieldSubmitted: (_) {
+        _insertNewLine();
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter terms & conditions.';
+        }
+        return null;
+      },
+    ),
+  );
+}
+
+void _insertNewLine() {
+  final text = _termsConditionController.text;
+  final newText = text + '-';
+  _termsConditionController.value = _termsConditionController.value.copyWith(
+    text: newText,
+    selection: TextSelection.collapsed(offset: newText.length),
+  );
+}
+
 
   Widget _buildVoucherType() {
   return DropdownButtonFormField<String>(
@@ -499,7 +513,10 @@ class _AddVoucherState extends State<AddVoucher> {
                       giftItem: selectedVoucherType == 'Gift'
                           ? _giftItemController.text
                           : null,
-                      imageUrl: imageUrl,
+                     imageUrl: imageUrl.isNotEmpty
+                                ? imageUrl
+                                : "https://firebasestorage.googleapis.com/v0/b/hotel-membership-2b18b.appspot.com/o/voucher_image%2Fdefault-voucher-image.png?alt=media&token=dc6c37c3-d22b-4597-8486-dfdb7443ffae",
+
                     );
                     Navigator.pop(context);
                   } catch (e) {

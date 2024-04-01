@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:project/services/voucher_service.dart';
-import 'package:project/theme.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/utils/format_string.dart';
 
 class VoucherListPage extends StatefulWidget {
@@ -29,7 +26,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Text('No vouchers available.');
+            return const Text('No vouchers available.');
           } else {
             var vouchers = snapshot.data!.docs
                 .where((doc) =>
@@ -48,6 +45,13 @@ class _VoucherListPageState extends State<VoucherListPage> {
                 itemCount: vouchers.length,
                 itemBuilder: (context, index) {
                   var voucher = vouchers[index];
+                  String name = voucher['name'];
+                  String displayName;
+                  if (name.length > 30) {
+                    displayName = '${name.substring(0, 30)}...';
+                  } else {
+                    displayName = name;
+                  }
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -92,51 +96,55 @@ class _VoucherListPageState extends State<VoucherListPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  voucher['name'],
+                                  displayName,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
                                 Text(
                                     'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
                                     style: TextStyle(
                                       color: Colors.white,
                                     )),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        '${voucher['points']} Points',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '${voucher['points']} Points',
+                                    style: TextStyle(
+                                      color: Colors.white,
                                     ),
-                                    Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          width: 40.0,
-                                          height: 40.0,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(Icons.delete,
-                                                color: Colors.black),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  voucher.id);
-                                            },
-                                          ),
-                                        )),
-                                  ],
+                                  ),
                                 ),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Container(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      child: IconButton(
+                                        icon: Icon(Icons.delete,
+                                            color: Colors.black),
+                                        onPressed: () {
+                                          _showDeleteConfirmationDialog(
+                                              voucher.id);
+                                        },
+                                      ),
+                                    )),
                               ],
                             ),
                           ),
@@ -257,46 +265,6 @@ class _VoucherListPageState extends State<VoucherListPage> {
             ),
           ],
         );
-      },
-    );
-  }
-
-  Widget _buildVouchersList() {
-    String selectedCategory = _categories[_selectedIndex];
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: _voucherService.getVoucherStreamByCategory(selectedCategory),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Text('No vouchers available.');
-        } else {
-          var vouchers = snapshot.data!.docs
-              .where((doc) => doc['onShop'] == true)
-              .toList();
-          return Expanded(
-            child: ListView.builder(
-              itemCount: vouchers.length,
-              itemBuilder: (context, index) {
-                var voucher = vouchers[index];
-                return ListTile(
-                  title: Text(voucher['name']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Points: ${voucher['points']}'),
-                      Text('Due Date: ${FormatUtils.formatDate(voucher['dueDate'])}'),
-                      Text('Voucher Type: ${voucher['voucherType']}'),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        }
       },
     );
   }
