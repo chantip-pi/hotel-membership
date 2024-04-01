@@ -267,8 +267,8 @@ class _HomePageState extends State<HomePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Please Present this member ID to the staff',style: TextStyle(fontSize: 12),),
-              content: Text(voucherID,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+              title: const Text('Please Present this member ID to the staff',style: TextStyle(fontSize: 16),),
+              content: Text(voucherID,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
               backgroundColor: Colors.white,
               actions: <Widget>[
                 TextButton(
@@ -277,7 +277,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.pushReplacementNamed(context,'/home-page');
                   },
                   child: const Text(
-                    'Back',
+                    'Done',
                     style: TextStyle(
                       color: Colors.black,
                     ),
