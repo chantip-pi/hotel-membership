@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/models/item.dart';
-import 'package:project/services/voucher_service.dart';
 
 class UserPurchaseService {
   final CollectionReference purchases =
