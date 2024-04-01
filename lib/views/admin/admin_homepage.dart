@@ -39,13 +39,6 @@ class AdminHomePage extends StatelessWidget {
                   routeName: '/admin-shop',
                 ),
               ),
-              Expanded(
-                child: AdminButton(
-                  iconPath: 'assets/icons/person.svg',
-                  label: 'ADD STAFF',
-                  routeName: '/staff-redeem',
-                ),
-              ),
             ],
           ),
         ),
