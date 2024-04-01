@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project/utils/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project/utils/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
 
@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
               Icons.notifications,
               color: Colors.white,
             ),
-            onPressed: () => {
-              Navigator.pushNamed(context, '/notifications'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/notifications');
             },
           )
         ],
@@ -68,89 +68,133 @@ class _HomePageState extends State<HomePage> {
                 memberID = currentUser['memberID'] as String;
                 points = currentUser['points'] as int?;
               }
-
-              return Column(
+              return SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Stack(
-                        children: <Widget>[
+                      children: <Widget>[
                         Column(
-                            children: <Widget>[
-                            Padding(padding: EdgeInsets.only(top: screenHeight * 0.023)),
+                          children: <Widget>[
+                            Padding(
+                                padding:
+                                    EdgeInsets.only(top: screenHeight * 0.023)),
                             Stack(
-                                children: [
+                              children: [
                                 Container(
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10)),
-                                      color: Colors.white,
+                                  alignment: Alignment.bottomCenter,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
                                     ),
-                                    height: screenHeight * 0.05,
-                                    width: screenWidth * 0.9,
-                                    child: const Text(
+                                    color: Colors.black87,
+                                  ),
+                                  height: screenHeight * 0.05,
+                                  width: screenWidth * 0.9,
+                                  child: const Text(
                                     'MILVERTON CLUB',
                                     style: TextStyle(
-                                        color: AppTheme.primaryColor,
+                                      color: AppTheme.primaryColor,
                                     ),
-                                    ),
+                                  ),
                                 ),
-                                ],
+                              ],
                             ),
                             Container(
-                                height: screenHeight * 0.25,
-                                width: screenWidth * 0.9,
-                                decoration: const BoxDecoration(
+                              height: screenHeight * 0.25,
+                              width: screenWidth * 0.9,
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10)),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                ),
                                 image: DecorationImage(
-                                    image: AssetImage('assets/images/member-background.png'),
-                                    fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      'assets/images/member-background.jpg'),
+                                  fit: BoxFit.cover,
                                 ),
-                                ),
-                                child: Stack(
+                              ),
+                              child: Stack(
                                 children: <Widget>[
-                                    Column(
+                                  Column(
                                     children: <Widget>[
-                                        _cardTextAlignment(Alignment.topCenter, EdgeInsets.only(top: screenHeight * 0.02), 'Your current points', FontWeight.bold, 20),
-                                        _cardTextAlignment(Alignment.topCenter, EdgeInsets.only(top: screenHeight * 0.005), '$points Points', FontWeight.bold, 20),
+                                      _cardTextAlignment(
+                                          Alignment.topCenter,
+                                          EdgeInsets.only(
+                                              top: screenHeight * 0.02),
+                                          'Your current points',
+                                          FontWeight.bold,
+                                          20),
+                                      _cardTextAlignment(
+                                          Alignment.topCenter,
+                                          EdgeInsets.only(
+                                              top: screenHeight * 0.005),
+                                          '$points Points',
+                                          FontWeight.bold,
+                                          20),
                                     ],
-                                    ),
-                                    Stack(
+                                  ),
+                                  Stack(
                                     children: <Widget>[
-                                        _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.045), FormatUtils.addSpaceToNumberString(memberID), FontWeight.normal, 16),
-                                        _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.02), '$name $surname', FontWeight.normal, 16)
+                                      _cardTextAlignment(
+                                          Alignment.bottomLeft,
+                                          EdgeInsets.fromLTRB(
+                                              screenWidth * 0.03,
+                                              0,
+                                              0,
+                                              screenHeight * 0.045),
+                                          FormatUtils.addSpaceToNumberString(
+                                              memberID),
+                                          FontWeight.normal,
+                                          16),
+                                      _cardTextAlignment(
+                                          Alignment.bottomLeft,
+                                          EdgeInsets.fromLTRB(
+                                              screenWidth * 0.03,
+                                              0,
+                                              0,
+                                              screenHeight * 0.02),
+                                          '$name $surname',
+                                          FontWeight.normal,
+                                          16)
                                     ],
-                                    ),
+                                  ),
                                 ],
-                                ),
+                              ),
                             ),
-                            ],
+                          ],
                         ),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(screenWidth * 0.41, screenHeight * 0.025, 0, 0),
-                            child: SvgPicture.asset(
+                          padding: EdgeInsets.fromLTRB(
+                              screenWidth * 0.41, screenHeight * 0.025, 0, 0),
+                          child: SvgPicture.asset(
                             'assets/icons/LOGO.svg',
                             height: screenHeight * 0.035,
-                            ),
+                          ),
                         ),
-                        ],
+                      ],
                     ),
                     Padding(padding: EdgeInsets.all(screenWidth * 0.02)),
                     _buildMyVouchersBlock(screenHeight, screenWidth),
                     Padding(padding: EdgeInsets.all(screenHeight * 0.01)),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                        _buildEarnPointsBlock(screenHeight, screenWidth),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02)),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        _buildEarnPointsBlock(
+                          screenHeight,
+                          screenWidth,
+                          FormatUtils.addSpaceToNumberString(memberID),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.02)),
                         _buildBenefitsBlock(screenHeight, screenWidth),
-                        ],
+                      ],
                     ),
-                    ],
-                );
+                  ],
+                ),
+              );
             }
           },
         ),
@@ -160,7 +204,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMyVouchersBlock(double screenHeight, double screenWidth) {
     return GestureDetector(
-      onTap: () {Navigator.pushNamed(context, '/my-voucher'); },
+      onTap: () {
+        Navigator.pushNamed(context, '/my-voucher');
+      },
       child: Stack(
         children: <Widget>[
           Container(
@@ -171,8 +217,9 @@ class _HomePageState extends State<HomePage> {
             height: screenHeight * 0.18,
             width: screenWidth * 0.9,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(screenWidth * 0.3, screenHeight * 0.13, 0, 0),
-              child: Text(
+              padding: EdgeInsets.fromLTRB(
+                  screenWidth * 0.3, screenHeight * 0.13, 0, 0),
+              child: const Text(
                 'MY VOUCHERS',
                 style: TextStyle(
                   fontSize: 20,
@@ -182,7 +229,8 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(padding: EdgeInsets.only(top: screenHeight * 0.05)),
           Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth * 0.33, screenHeight * 0.03, 0, 0),
+            padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.33, screenHeight * 0.03, 0, 0),
             child: SvgPicture.asset(
               'assets/icons/Ticket_use_light.svg',
               height: screenHeight * 0.09,
@@ -193,60 +241,52 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardTextAlignment(Alignment align, EdgeInsets padding, String str, FontWeight fontWeight, double fontSize) {
+  Widget _cardTextAlignment(Alignment align, EdgeInsets padding, String str,
+      FontWeight fontWeight, double fontSize) {
     return Align(
       alignment: align,
       child: Padding(
         padding: padding,
-          child: Text(
-            str,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: fontWeight,
-              fontSize: fontSize,
-            ),
+        child: Text(
+          str,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: fontWeight,
+            fontSize: fontSize,
           ),
         ),
-    );
-  }
-
-  Widget _buildEarnPointsBlock(double screenHeight, double screenWidth) {
-    return GestureDetector(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromRGBO(215, 191, 152, 1),
-            ),
-            height: screenHeight * 0.18,
-            width: screenWidth * 0.43,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(screenWidth * 0.065, screenHeight * 0.14, 0, 0),
-              child: const Text(
-                'EARN POINTS',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth * 0.13, screenHeight * 0.05, 0, 0),
-            child: SvgPicture.asset(
-              'assets/icons/qr.svg',
-              height: screenHeight * 0.07,
-            ),
-          ),
-        ],
       ),
     );
   }
-  
-  Widget _buildBenefitsBlock(double screenHeight, double screenWidth) {
+
+  Widget _buildEarnPointsBlock(
+      double screenHeight, double screenWidth, String voucherID) {
     return GestureDetector(
-      onTap: () => {
-        Navigator.pushNamed(context, '/benefits'),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Please Present this member ID to the staff',style: TextStyle(fontSize: 12),),
+              content: Text(voucherID,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+              backgroundColor: Colors.white,
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushReplacementNamed(context,'/home-page');
+                  },
+                  child: const Text(
+                    'Back',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       },
       child: Stack(
         children: <Widget>[
@@ -258,7 +298,46 @@ class _HomePageState extends State<HomePage> {
             height: screenHeight * 0.18,
             width: screenWidth * 0.43,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(screenWidth * 0.12, screenHeight * 0.14, 0, 0),
+              padding: EdgeInsets.fromLTRB(
+                  screenWidth * 0.065, screenHeight * 0.14, 0, 0),
+              child: const Text(
+                'EARN POINTS',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.13, screenHeight * 0.05, 0, 0),
+            child: SvgPicture.asset(
+              'assets/icons/qr.svg',
+              height: screenHeight * 0.07,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBenefitsBlock(double screenHeight, double screenWidth) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/benefits');
+      },
+      child: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: const Color.fromRGBO(215, 191, 152, 1),
+            ),
+            height: screenHeight * 0.18,
+            width: screenWidth * 0.43,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  screenWidth * 0.12, screenHeight * 0.14, 0, 0),
               child: const Text(
                 'BENEFITS',
                 style: TextStyle(
@@ -268,7 +347,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth * 0.15, screenHeight * 0.06, 0, 0),
+            padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.15, screenHeight * 0.06, 0, 0),
             child: SvgPicture.asset(
               'assets/icons/benefit.svg',
               height: screenHeight * 0.06,

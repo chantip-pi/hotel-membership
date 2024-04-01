@@ -79,7 +79,7 @@ class _ProfileState extends State<Profile> {
         body: Stack(
           children: [
             Image.asset(
-              'assets/images/member-background.png',
+              'assets/images/member-background.jpg',
               width: screenWidth,
               fit: BoxFit.cover,
               height: screenHeight * 0.25,
