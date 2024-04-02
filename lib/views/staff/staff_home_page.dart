@@ -12,7 +12,7 @@ class StaffHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Staff",style: TextStyle(color: Colors.white),),
+        title: const Text("Staff",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         actions: [

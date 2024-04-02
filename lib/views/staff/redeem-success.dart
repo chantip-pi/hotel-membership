@@ -51,10 +51,10 @@ class _RedeemSuccessState extends State<RedeemSuccess> {
               color: Colors.lightGreen, 
               size: MediaQuery.of(context).size.height * 0.1, 
             ),
-          Center(
+          const Center(
             child: Text(
               'Succesfully Redeem Voucher',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
                 fontSize: 18,
