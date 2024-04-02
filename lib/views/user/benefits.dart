@@ -93,13 +93,19 @@ class _BenefitsState extends State<Benefits> {
     List<String> itemList;
     switch (_selectedIndex) {
       case 0:
-        itemList = ['Item 1 (Discount)', 'Item 2 (Discount)', 'Item 3 (Discount)'];
+        itemList = ['• 30% off total food bill up to 10 persons valid at all participating restaurants and bars at restaurant',
+                    '• Discount for food at Sunday Brunch\n   2 persons 50% off on food\n   3 persons 33% off\n   4 person 25% off\n   5 persons & above 20% off', 
+                    '• 20% off food & beverage at participating restaurant'];
         break;
       case 1:
-        itemList = ['Item 1 (Cash)', 'Item 2 (Cash)', 'Item 3 (Cash)'];
+        itemList = ['• Earn 5% cash back for free after spending more than 10,000 baht at our hotel.',
+                    '• Earn 10% cash back for free after spending more than 25,000 baht at our hotel.',
+                    '• Receive 1,500 baht cash vouchers to be redeemed for future stays, dining, or other hotel amenities.'];
         break;
       case 2:
-        itemList = ['Item 1 (Gift)', 'Item 2 (Gift)', 'Item 3 (Gift)'];
+        itemList = ['• Upon arrival, guests will receive a complimentary gift basket filled with local snacks, fruits, and beverages.',
+                    '• First time guests will receive vouchers for complimentary spa treatments, such as massages, facials, or manicures.',
+                    '• After the accumulation of more than 5 nights stay (not necessarily consecutive), guests will be offered a courtesy upgrade to a superior room category.'];
         break;
       default:
         itemList = [];
@@ -109,21 +115,21 @@ class _BenefitsState extends State<Benefits> {
     return ListView.builder(
       itemCount: itemList.length,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-
-          },
-          child: Column(
-            children: [
-              ListTile(
-                title: Text(itemList[index]),
+        return Column(
+          children: [
+            ListTile(
+              title: Text(
+                itemList[index],
+                // style: const TextStyle(
+                //   fontWeight: FontWeight.bold,
+                // ),
               ),
-              Divider(
-                color: AppTheme.primaryColor,
-                thickness: 1.0,
-              ),
-            ],
-          ),
+            ),
+            Divider(
+              color: AppTheme.primaryColor,
+              thickness: 1.0,
+            ),
+          ],
         );
       },
     );
