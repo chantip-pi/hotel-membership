@@ -94,6 +94,7 @@ Widget _scanQRCodeText(){
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _memberIDController,
+          cursorColor: Colors.black,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             labelText: 'Member ID',

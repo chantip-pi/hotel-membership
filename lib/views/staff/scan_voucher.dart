@@ -100,6 +100,7 @@ Widget _scanQRCodeText(){
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _voucherIDController,
+          cursorColor: Colors.black,
           decoration: const InputDecoration(
             labelText: 'User Voucher ID',
             labelStyle: TextStyle(

@@ -95,6 +95,7 @@ class _SignInPageState extends State<SignInPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
         controller: _emailController,
+        cursorColor: Colors.black,
         decoration: const InputDecoration(
           labelText: 'Email',
           hintText: 'helloworld@gmail.com',
@@ -119,6 +120,7 @@ class _SignInPageState extends State<SignInPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextField(
         controller: _passwordController,
+        cursorColor: Colors.black,
         decoration: InputDecoration(
           labelText: 'Password',
           labelStyle: const TextStyle(fontSize: 18, color: Colors.black),
