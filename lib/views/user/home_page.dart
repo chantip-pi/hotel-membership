@@ -14,10 +14,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<Map<String, dynamic>?> _currentUserFuture;
-  late String? name;
-  late String? surname;
-  late String memberID;
-  late int? points;
+  late String? name = 'Loading..';
+  late String? surname = 'Loading..';
+  late String memberID = 'Loading..';
+  late int? points = 0;
 
   @override
   void initState() {
