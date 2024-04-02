@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:carousel_slider/carousel_slider.dart'; // Import carousel_slider package
-import 'package:project/utils/loading_page.dart';
+import 'package:carousel_slider/carousel_slider.dart'; 
 import 'package:project/utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:project/models/cart.dart';
