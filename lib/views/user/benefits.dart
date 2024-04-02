@@ -30,18 +30,15 @@ class _BenefitsState extends State<Benefits> {
       ),
       body: Container(
         color: AppTheme.backgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            color: AppTheme.backgroundColor,
-            child: Column(
-              children: [
-                _buildTabBar(),
-                Expanded(
-                  child: _buildListView(),
-                ),
-              ],
-            ),
+        child: Container(
+          color: AppTheme.backgroundColor,
+          child: Column(
+            children: [
+              _buildTabBar(),
+              Expanded(
+                child: _buildListView(),
+              ),
+            ],
           ),
         ),
       ),
