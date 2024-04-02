@@ -48,48 +48,51 @@ class _BenefitsState extends State<Benefits> {
     );
   }
 
-  Widget _buildTabBar() {
+  PreferredSizeWidget _buildTabBar() {
     double tabWidth = MediaQuery.of(context).size.width / _categories.length;
 
-    return Container(
-      height: 50,
-      color: AppTheme.backgroundColor,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(top: 15),
-        itemCount: _categories.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            child: Container(
-              width: tabWidth,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black,
-                    width: _selectedIndex == index ? 3.0 : 1.0,
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(50),
+      child: Container(
+        height: 50,
+        color: Colors.white,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.only(top: 15),
+          itemCount: _categories.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              child: Container(
+                width: tabWidth,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.black,
+                      width: _selectedIndex == index ? 3.0 : 1.0,
+                    ),
                   ),
                 ),
-              ),
-              child: Center(
-                child: Text(
-                  _categories[index],
-                  style: TextStyle(
-                    color: _selectedIndex == index
+                child: Center(
+                  child: Text(
+                    _categories[index],
+                    style: TextStyle(
+                      color: _selectedIndex == index
                           ? AppTheme.primaryColor
                           : Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

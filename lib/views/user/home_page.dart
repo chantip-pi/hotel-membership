@@ -197,7 +197,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: screenHeight * 0.025, bottom: 0.001),
+                padding: EdgeInsets.only(top: screenHeight * 0.025, bottom: 0.01),
                 child: SvgPicture.asset(
                   'assets/icons/Ticket_use_light.svg',
                   height: screenHeight * 0.09,
