@@ -67,7 +67,7 @@ class _VoucherItemState extends State<VoucherItem> {
           widget.voucherInfo['imageUrl'],
           height: double.infinity,
           width: double.infinity,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
       ),
     );

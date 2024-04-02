@@ -74,7 +74,7 @@ class _VoucherDisplayState extends State<VoucherDisplay> {
         voucherData['imageUrl'],
         height: 200,
         width: double.infinity,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       ),
     );
   }

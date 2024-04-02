@@ -96,7 +96,7 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
         voucherData['imageUrl'],
         height: 200,
         width: double.infinity,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       ),
     );
   }
