@@ -34,9 +34,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                     doc['onShop'] == true &&
                     doc['voucherType'] == _categories[_selectedIndex])
                 .toList();
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              child: GridView.builder(
+            return  GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8.0,
@@ -162,7 +160,6 @@ class _VoucherListPageState extends State<VoucherListPage> {
                     ),
                   );
                 },
-              ),
             );
           }
         },
