@@ -19,10 +19,10 @@ class _SignInPageState extends State<SignInPage> {
 
     var uid = credential.user?.uid;
     if (uid == "UQFYFsUXnLbxhLivf7X2XUhuQXC2") {
-       Navigator.pushNamed(context,"/staff-home-page");
+       Navigator.pushReplacementNamed(context,"/staff-home-page");
    
     } else if (uid == "gROiWhOTXxYtGgiIU2rJFz0HOYC3") {
-      Navigator.pushNamed(context,"/admin-home-page");
+      Navigator.pushReplacementNamed(context,"/admin-home-page");
     } else {
       Navigator.pushReplacementNamed(context,'/nav-bar');
     }
