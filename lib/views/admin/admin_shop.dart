@@ -56,7 +56,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    color: AppTheme.lightGoldColor, // Set background color
+                    color: AppTheme.lightGoldColor,
                     child: InkWell(
                       onTap: () {
                        Navigator.push(
@@ -73,7 +73,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                         children: [
                           if (voucher['imageUrl'] != null)
                             ClipRRect(
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(10.0),
                                 topRight: Radius.circular(10.0),
                               ),
@@ -86,7 +86,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                             ),
                           if (voucher['imageUrl'] == null)
                             ClipRRect(
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(10.0),
                                 topRight: Radius.circular(10.0),
                               ),
@@ -104,7 +104,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                               children: [
                                 Text(
                                   displayName,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -113,7 +113,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                                 ),
                                 Text(
                                     'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     )),
                               ],
@@ -129,7 +129,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     '${voucher['points']} Points',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),
@@ -139,19 +139,20 @@ class _VoucherListPageState extends State<VoucherListPage> {
                                     child: Container(
                                       width: 40.0,
                                       height: 40.0,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.white,
                                       ),
                                       child: IconButton(
-                                        icon: Icon(Icons.delete,
+                                        icon: const Icon(Icons.delete,
                                             color: Colors.black),
                                         onPressed: () {
                                           _showDeleteConfirmationDialog(
                                               voucher.id);
                                         },
                                       ),
-                                    )),
+                                    )
+                                ),
                               ],
                             ),
                           ),
@@ -178,7 +179,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: () {
                 Navigator.pushNamed(context, '/add-voucher');
               },
@@ -196,12 +197,12 @@ class _VoucherListPageState extends State<VoucherListPage> {
     double tabWidth = MediaQuery.of(context).size.width / _categories.length;
 
     return PreferredSize(
-      preferredSize: Size.fromHeight(50),
-      child: Container(
+      preferredSize: const Size.fromHeight(50),
+      child: SizedBox(
         height: 50,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.only(top: 15),
+          padding: const EdgeInsets.only(top: 15),
           itemCount: _categories.length,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -223,7 +224,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                 child: Center(
                   child: Text(
                     _categories[index],
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -243,10 +244,10 @@ class _VoucherListPageState extends State<VoucherListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.white, // Set background color
-          title: Text('Confirm Deletion',
-              style: TextStyle(color: Colors.black)), // Set title text color
-          content: Text(
+          backgroundColor: Colors.white, 
+          title: const Text('Confirm Deletion',
+              style: TextStyle(color: Colors.black)), 
+          content: const Text(
               'Do you really want to remove this voucher from the shop?',
               style: TextStyle(color: Colors.black)),
           actions: <Widget>[
@@ -254,7 +255,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel',
+              child: const Text('Cancel',
                   style:
                       TextStyle(color: Colors.black)), // Set button text color
             ),
@@ -264,7 +265,7 @@ class _VoucherListPageState extends State<VoucherListPage> {
                 _voucherService.deleteVoucher(voucherId);
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'Delete',
                 style: TextStyle(color: Colors.red),
               ),

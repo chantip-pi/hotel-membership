@@ -38,12 +38,12 @@ class _AddVoucherState extends State<AddVoucher> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Select Image Source', style: TextStyle(color: Colors.black)),
+        title: const Text('Select Image Source', style: TextStyle(color: Colors.black)),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
               ListTile(
-                title: Text('Gallery', style: TextStyle(color: Colors.black)),
+                title: const Text('Gallery', style: TextStyle(color: Colors.black)),
                 onTap: () async {
                   Navigator.of(context).pop();
                   try {
@@ -54,7 +54,7 @@ class _AddVoucherState extends State<AddVoucher> {
                 },
               ),
               ListTile(
-                title: Text('Camera', style: TextStyle(color: Colors.black)),
+                title: const Text('Camera', style: TextStyle(color: Colors.black)),
                 onTap: () async {
                   Navigator.of(context).pop();
                   try {
