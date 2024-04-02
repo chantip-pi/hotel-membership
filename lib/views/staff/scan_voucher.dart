@@ -27,7 +27,7 @@ class _ScanMemberState extends State<ScanVoucher> {
                 children: [
                   _scanQRCodeText(),
                   _buildVocuherIDTextField(),
-                  _buildButton()
+                  _buildButton(),
                 ],
               ),
             ),
@@ -68,20 +68,29 @@ class _ScanMemberState extends State<ScanVoucher> {
                 ),
               ),
               onPressed: () async {
-                try {
-                  await UserPurchaseService()
-                      .redeemVoucher(_voucherIDController.text);
-                  Navigator.pushNamed(context, '/redeem-success');
-                  _voucherIDController.clear();
-                } catch (e) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          RedeemFail(errorMessage: e.toString()),
+                String voucherID = _voucherIDController.text.trim();
+                if (voucherID.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Voucher ID cannot be empty.'),
                     ),
                   );
-                  _voucherIDController.clear();
+                } else {
+                  try {
+                    await UserPurchaseService()
+                        .redeemVoucher(_voucherIDController.text);
+                    Navigator.pushNamed(context, '/redeem-success');
+                    _voucherIDController.clear();
+                  } catch (e) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RedeemFail(errorMessage: e.toString()),
+                      ),
+                    );
+                    _voucherIDController.clear();
+                  }
                 }
               },
               child: const Center(
