@@ -70,15 +70,18 @@ class PageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    return Padding(
-      padding: EdgeInsets.only(bottom: screenHeight * 0.1),
-      child: Container(
-        color: Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            pageCount,
-            (index) => _buildIndicator(index),
+    return Container(
+      color: AppTheme.backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: screenHeight * 0.1),
+        child: Container(
+          color: Colors.transparent,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              pageCount,
+              (index) => _buildIndicator(index),
+            ),
           ),
         ),
       ),
