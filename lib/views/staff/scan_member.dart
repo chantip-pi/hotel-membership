@@ -69,7 +69,8 @@ Widget _scanQRCodeText(){
                 ),
               ),
               onPressed: () {
-              Navigator.pushNamed(context, '/add-point', arguments: _memberIDController.text);
+                print(_memberIDController.text);
+              Navigator.pushNamed(context, '/add-point', arguments: _memberIDController.text.replaceAll(' ', ''));
               _memberIDController.clear();
               },
               child: const Center(

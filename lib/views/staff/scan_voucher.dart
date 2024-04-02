@@ -68,7 +68,7 @@ class _ScanMemberState extends State<ScanVoucher> {
                 ),
               ),
               onPressed: () async {
-                String voucherID = _voucherIDController.text.trim();
+                String voucherID = _voucherIDController.text.trim().replaceAll(' ', '');
                 if (voucherID.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
