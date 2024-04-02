@@ -65,7 +65,7 @@ class AdminButton extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, routeName);
+        Navigator.pushReplacementNamed(context, routeName);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
