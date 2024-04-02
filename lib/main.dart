@@ -26,7 +26,6 @@ import 'package:project/views/staff/scan_member.dart';
 import 'package:project/views/staff/staff_home_page.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeFirebase();
@@ -46,41 +45,39 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-          ChangeNotifierProvider(create: (_) => Cart()),
+        ChangeNotifierProvider(create: (_) => Cart()),
       ],
       child: MaterialApp(
           title: 'Flutter Demo',
-         theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        useMaterial3: true,
-          textSelectionTheme: const TextSelectionThemeData(
-          selectionHandleColor: Colors.black,
-          cursorColor: Colors.black,
-        ),
-        appBarTheme: const AppBarTheme(
-          color: AppTheme.primaryColor,
-          iconTheme: IconThemeData(
-            color: Colors.white, 
+          theme: ThemeData(
+            textTheme: GoogleFonts.poppinsTextTheme(),
+            useMaterial3: true,
+            textSelectionTheme: const TextSelectionThemeData(
+              selectionHandleColor: Colors.black,
+              cursorColor: Colors.black,
+            ),
+            appBarTheme: const AppBarTheme(
+              color: AppTheme.primaryColor,
+              iconTheme: IconThemeData(
+                color: Colors.white,
+              ),
+            ),
+            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+              backgroundColor: Colors.black,
+              selectedItemColor: AppTheme.primaryColor,
+              unselectedItemColor: Colors.white,
+            ),
           ),
-        ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black,
-          selectedItemColor: AppTheme.primaryColor,
-          unselectedItemColor: Colors.white,
-        ),
-      ),
-          initialRoute: '/loading',
-          // initialRoute: determineInitialRoute(),
-      
+          initialRoute: determineInitialRoute(),
           routes: {
-            '/nav-bar':(context) => BottomNavBar(),
+            '/nav-bar': (context) => BottomNavBar(),
             '/sign-in': (context) => SignInPage(),
             '/sign-up': (context) => SignUpPage(),
-            '/introduction' : (context) => IntroductionPage(),
+            '/introduction': (context) => IntroductionPage(),
             '/home-page': (context) => HomePage(),
             '/benefits': (context) => Benefits(),
             '/profile': (context) => Profile(),
-            '/shop' : (context) => VoucherShop(),
+            '/shop': (context) => VoucherShop(),
             '/staff-home-page': (context) => StaffHomePage(),
             '/scan-member': (context) => ScanMember(),
             '/add-point': (context) => AddPoint(),
@@ -88,13 +85,12 @@ class MyApp extends StatelessWidget {
             '/scan-voucher': (context) => ScanVoucher(),
             '/redeem-success': (context) => RedeemSuccess(),
             '/admin-home-page': (context) => AdminHomePage(),
-            '/admin-shop' : (context) => VoucherListPage(),
+            '/admin-shop': (context) => VoucherListPage(),
             '/add-voucher': (context) => AddVoucher(),
-            '/my-voucher' : (context) => MyVoucher(),
-            '/cart' : (context) => MyCart(),
+            '/my-voucher': (context) => MyVoucher(),
+            '/cart': (context) => MyCart(),
             '/loading': (context) => LoadingPage()
-            }
-            ),
+          }),
     );
   }
 
@@ -145,7 +141,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined), label: 'SHOP'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_outlined), label: 'SHOP'),
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'HOME'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PROFILE'),
         ],
