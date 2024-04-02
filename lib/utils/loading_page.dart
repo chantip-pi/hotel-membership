@@ -8,30 +8,32 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/icons/LOGO.svg', 
-              width: 150, 
-              height: 150, 
-            ),
-            const SizedBox(height: 20), 
-            const Text(
-              'MILVERTON CLUB',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryColor
+    return  Scaffold(
+      body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/icons/LOGO.svg', 
+                width: 150, 
+                height: 150, 
               ),
-            ),
-            Lottie.asset(
-              'assets/animations/loading.json', 
-              height: 150
-            ),
-          ],
-        ),
+              const SizedBox(height: 20), 
+              const Text(
+                'MILVERTON CLUB',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primaryColor
+                ),
+              ),
+              Lottie.asset(
+                'assets/animations/loading.json', 
+                height: 150
+              ),
+            ],
+          ),
+      ),
     );
   }
 }

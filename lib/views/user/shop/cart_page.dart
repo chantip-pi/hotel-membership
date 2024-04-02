@@ -305,7 +305,7 @@ class _CartTotalState extends State<_CartTotal> {
                 // add to userPurcase firebase
                 UserPurchaseService().purchaseItems(userID, cart.cartItems);
                 // update points
-                if (userRemainPoints > 0) {
+                if (userRemainPoints >= 0) {
                   UserService()
                       .updateUserPoints(userMemberID, userRemainPoints);
                   //clear all items in the cart and notify

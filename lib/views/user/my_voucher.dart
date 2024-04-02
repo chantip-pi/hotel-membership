@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project/services/user_purchase.dart';
 import 'package:project/utils/format_string.dart';
+import 'package:project/utils/loading_page.dart';
 import 'package:project/utils/theme.dart';
 import 'package:project/views/user/vouhcer_item.dart';
 
@@ -49,19 +50,10 @@ class _MyVoucherState extends State<MyVoucher> {
         future: _userPurchasesWithVoucherInfo,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  AppTheme.primaryColor,
-                ),
-              ),
-            );
+            return const LoadingPage();
           }
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Text('No vouchers found');
           }
           List<Map<String, dynamic>> userPurchasesWithVoucherInfo =
               snapshot.data!;    

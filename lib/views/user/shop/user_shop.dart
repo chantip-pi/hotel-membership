@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart'; // Import carousel_slider package
+import 'package:project/utils/loading_page.dart';
 import 'package:project/utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:project/models/cart.dart';
@@ -26,11 +27,17 @@ class _VoucherShopState extends State<VoucherShop> {
         stream: _voucherService.getVoucherStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.primaryColor,
+                ),
+              ),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Text('No vouchers available.');
+            return const Text('No vouchers available.');
           } else {
             var vouchers = snapshot.data!.docs
                 .where((doc) =>
@@ -189,34 +196,32 @@ class _VoucherShopState extends State<VoucherShop> {
   }
 
   Widget _buildBannerCarousel() {
-
     List<String> bannerImages = [
       'assets/images/banner1.png',
-  'assets/images/banner2.jpg',
-  'assets/images/banner3.jpg',
+      'assets/images/banner2.jpg',
+      'assets/images/banner3.jpg',
     ];
 
     return CarouselSlider(
-  options: CarouselOptions(
-    autoPlay: true,
-    aspectRatio: 2.0,
-    enlargeCenterPage: true,
-  ),
-  items: bannerImages.map((item) {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Image.asset(
-          item,
-          fit: BoxFit.cover,
-          width: 1000.0,
-        ),
+      options: CarouselOptions(
+        autoPlay: true,
+        aspectRatio: 2.0,
+        enlargeCenterPage: true,
       ),
+      items: bannerImages.map((item) {
+        return Container(
+          margin: EdgeInsets.all(5.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Image.asset(
+              item,
+              fit: BoxFit.cover,
+              width: 1000.0,
+            ),
+          ),
+        );
+      }).toList(),
     );
-  }).toList(),
-);
-
   }
 
   PreferredSizeWidget _buildTabBar() {

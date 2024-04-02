@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project/utils/loading_page.dart';
 import 'package:project/utils/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
@@ -42,13 +43,7 @@ class _HomePageState extends State<HomePage> {
           future: _currentUserFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppTheme.primaryColor,
-                  ),
-                ),
-              );
+              return const LoadingPage();
             } else {
               if (snapshot.hasData && snapshot.data != null) {
                 final currentUser = snapshot.data!;
