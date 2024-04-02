@@ -56,105 +56,102 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Stack(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Stack(
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Stack(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.bottomCenter,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                        ),
+                                        color: Colors.black87,
                                       ),
-                                      color: Colors.black87,
-                                    ),
-                                    height: screenHeight * 0.05,
-                                    width: screenWidth * 0.9,
-                                    child: const Text(
-                                      'MILVERTON CLUB',
-                                      style: TextStyle(
-                                        color: AppTheme.primaryColor,
+                                      height: screenHeight * 0.05,
+                                      width: screenWidth * 0.9,
+                                      child: const Text(
+                                        'MILVERTON CLUB',
+                                        style: TextStyle(
+                                          color: AppTheme.primaryColor,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                height: screenHeight * 0.25,
-                                width: screenWidth * 0.9,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
-                                  ),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/member-background.jpg'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        _cardTextAlignment(
-                                            Alignment.topCenter,
-                                            EdgeInsets.only(
-                                                top: screenHeight * 0.02),
-                                            'Your current points',
-                                            FontWeight.bold,
-                                            20),
-                                        _cardTextAlignment(
-                                            Alignment.topCenter,
-                                            EdgeInsets.only(
-                                                top: screenHeight * 0.005),
-                                            '$points Points',
-                                            FontWeight.bold,
-                                            20),
-                                      ],
-                                    ),
-                                    Stack(
-                                      children: <Widget>[
-                                        _cardTextAlignment(
-                                            Alignment.bottomLeft,
-                                            EdgeInsets.fromLTRB(
-                                                screenWidth * 0.03,
-                                                0,
-                                                0,
-                                                screenHeight * 0.045),
-                                            FormatUtils.addSpaceToNumberString(
-                                                memberID),
-                                            FontWeight.normal,
-                                            16),
-                                        _cardTextAlignment(
-                                            Alignment.bottomLeft,
-                                            EdgeInsets.fromLTRB(
-                                                screenWidth * 0.03,
-                                                0,
-                                                0,
-                                                screenHeight * 0.02),
-                                            '$name $surname',
-                                            FontWeight.normal,
-                                            16)
-                                      ],
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                screenWidth * 0.41, screenHeight * 0.025, 0, 0),
-                            child: SvgPicture.asset(
-                              'assets/icons/LOGO.svg',
-                              height: screenHeight * 0.035,
+                                Container(
+                                  height: screenHeight * 0.25,
+                                  width: screenWidth * 0.9,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    ),
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/member-background.jpg'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          _cardTextAlignment(
+                                              Alignment.topCenter,
+                                              EdgeInsets.only(
+                                                  top: screenHeight * 0.02),
+                                              'Your current points',
+                                              FontWeight.bold,
+                                              20),
+                                          _cardTextAlignment(
+                                              Alignment.topCenter,
+                                              EdgeInsets.only(
+                                                  top: screenHeight * 0.005),
+                                              '$points Points',
+                                              FontWeight.bold,
+                                              20),
+                                        ],
+                                      ),
+                                      Stack(
+                                        children: <Widget>[
+                                          _cardTextAlignment(
+                                              Alignment.bottomLeft,
+                                              EdgeInsets.only(
+                                                  left: 16,
+                                                  bottom: screenHeight * 0.045),
+                                              FormatUtils.addSpaceToNumberString(
+                                                  memberID),
+                                              FontWeight.normal,
+                                              16),
+                                          _cardTextAlignment(
+                                              Alignment.bottomLeft,
+                                              EdgeInsets.only(
+                                                left: 16, bottom: screenHeight * 0.02
+                                              ),
+                                              '$name $surname',
+                                              FontWeight.normal,
+                                              16)
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            Center(
+                              child: SvgPicture.asset(
+                                'assets/icons/LOGO.svg',
+                                height: screenHeight * 0.035,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(padding: EdgeInsets.all(screenWidth * 0.02)),
                       _buildMyVouchersBlock(screenHeight, screenWidth),
@@ -189,43 +186,32 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         Navigator.pushNamed(context, '/my-voucher');
       },
-      child: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromRGBO(215, 191, 152, 1),
-            ),
-            height: screenHeight * 0.18,
-            width: screenWidth * 0.9,
-            child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: screenHeight * 0.13,
-                    ),
-                    const Text(
-                      'MY VOUCHERS',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: const Color.fromRGBO(215, 191, 152, 1),
+        ),
+        height: screenHeight * 0.18,
+        width: screenWidth * 0.9,
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: screenHeight * 0.025, bottom: 0.001),
+                child: SvgPicture.asset(
+                  'assets/icons/Ticket_use_light.svg',
+                  height: screenHeight * 0.09,
                 ),
-            ),
-          ),
-          Padding(padding: EdgeInsets.only(top: screenHeight * 0.05)),
-          SizedBox(
-            height: screenHeight * 0.18,
-            width: screenWidth * 0.9,
-            child: Center(
-              child: SvgPicture.asset(
-                'assets/icons/Ticket_use_light.svg',
-                height: screenHeight * 0.09,
               ),
-            ),
+              const Text(
+                'MY VOUCHERS',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -287,29 +273,32 @@ class _HomePageState extends State<HomePage> {
             height: screenHeight * 0.18,
             width: screenWidth * 0.43,
             child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: screenHeight * 0.13,
-                    ),
-                    const Text(
-                      'EARN POINTS',
-                      style: TextStyle(
-                        fontSize: 20,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.16,
+                    width: screenWidth * 0.43,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icons/qr.svg',
+                        height: screenHeight * 0.07,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
             ),
           ),
-          Container(
-            height: screenHeight * 0.18,
+          SizedBox(
+            height: screenHeight * 0.155,
             width: screenWidth * 0.43,
-            color: Colors.transparent,
-            child: Center(
-              child: SvgPicture.asset(
-                'assets/icons/qr.svg',
-                height: screenHeight * 0.07,
+            child: const Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                'EARN POINTS',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
@@ -333,28 +322,32 @@ class _HomePageState extends State<HomePage> {
             height: screenHeight * 0.18,
             width: screenWidth * 0.43,
             child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: screenHeight * 0.13,
-                    ),
-                    const Text(
-                      'BENEFITS',
-                      style: TextStyle(
-                        fontSize: 20,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.16,
+                    width: screenWidth * 0.43,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icons/benefit.svg',
+                        height: screenHeight * 0.06,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(
-            height: screenHeight * 0.18,
+            height: screenHeight * 0.155,
             width: screenWidth * 0.43,
-            child: Center(
-              child: SvgPicture.asset(
-                'assets/icons/benefit.svg',
-                height: screenHeight * 0.06,
+            child: const Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                'BENEFITS',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
