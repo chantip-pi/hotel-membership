@@ -162,6 +162,7 @@ class _AddPointState extends State<AddPoint> {
       child: Form(
         key: _formKey,
         child: TextFormField(
+          cursorColor: Colors.black,
             autofocus: true,
             controller: _addPointController,
             keyboardType: TextInputType.number,

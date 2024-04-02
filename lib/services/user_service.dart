@@ -108,20 +108,29 @@ class UserService {
   }
 
   Future<int> getUserPoints(String userID) async {
-  Map<String, dynamic>? userData = await UserService().getUserById(userID);
-  if (userData != null && userData.containsKey('points')) {
-    return userData['points'] as int;
-  } else {
-    return 0; 
-  }
+    Map<String, dynamic>? userData = await UserService().getUserById(userID);
+    if (userData != null && userData.containsKey('points')) {
+      return userData['points'] as int;
+    } else {
+      return 0;
+    }
   }
 
   Future<String> getUserMemberID(String userID) async {
-  Map<String, dynamic>? userData = await UserService().getUserById(userID);
-  if (userData != null && userData.containsKey('memberID')) {
-    return userData['memberID'] as String;
-  } else {
-    return ""; 
+    Map<String, dynamic>? userData = await UserService().getUserById(userID);
+    if (userData != null && userData.containsKey('memberID')) {
+      return userData['memberID'] as String;
+    } else {
+      return "";
+    }
   }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserStream(String userId) {
+    try {
+      return _firestore.collection('users').doc(userId).snapshots();
+    } catch (e) {
+      print("Error getting user stream: $e");
+      return Stream.empty();
+    }
   }
 }

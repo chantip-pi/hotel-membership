@@ -36,11 +36,11 @@ class _ScanMemberState extends State<ScanMember> {
   }
 
 Widget _scanQRCodeText(){
-    return  Padding(
+    return  const Padding(
       padding: EdgeInsets.only(bottom: 30, top: 30),
       child: Text(
         'Enter Member ID',
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w900,
           color: Colors.black,
           fontSize: 30,
@@ -94,6 +94,7 @@ Widget _scanQRCodeText(){
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _memberIDController,
+          cursorColor: Colors.black,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             labelText: 'Member ID',

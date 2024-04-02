@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project/utils/loading_page.dart';
 import 'package:project/utils/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
@@ -13,18 +15,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<Map<String, dynamic>?> _currentUserFuture;
-  late String? name;
-  late String? surname;
-  late String memberID;
-  late int? points;
+  late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
+  late String? name = 'Loading..';
+  late String? surname = 'Loading..';
+  late String memberID = 'Loading..';
+  late int? points = 0;
 
   @override
   void initState() {
     super.initState();
-
-    _currentUserFuture =
-        UserService().getUserById(FirebaseAuth.instance.currentUser!.uid);
+  _userStream = UserService().getUserStream(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override
@@ -35,31 +35,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.primaryColor,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/notifications');
-            },
-          )
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.016),
-        child: FutureBuilder<Map<String, dynamic>?>(
-          future: _currentUserFuture,
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: _userStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppTheme.primaryColor,
-                  ),
-                ),
-              );
+              return const LoadingPage();
             } else {
               if (snapshot.hasData && snapshot.data != null) {
                 final currentUser = snapshot.data!;
@@ -274,10 +257,10 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pushReplacementNamed(context,'/home-page');
+                    Navigator.pushReplacementNamed(context,'/nav-bar');
                   },
                   child: const Text(
-                    'Done',
+                    'Back',
                     style: TextStyle(
                       color: Colors.black,
                     ),

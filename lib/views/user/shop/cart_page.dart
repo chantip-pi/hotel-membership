@@ -305,13 +305,13 @@ class _CartTotalState extends State<_CartTotal> {
                 // add to userPurcase firebase
                 UserPurchaseService().purchaseItems(userID, cart.cartItems);
                 // update points
-                if (userRemainPoints > 0) {
+                if (userRemainPoints >= 0) {
                   UserService()
                       .updateUserPoints(userMemberID, userRemainPoints);
                   //clear all items in the cart and notify
                   cart.clearCart();
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/cart');
+                  Navigator.pushReplacementNamed(context, '/nav-bar');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Successfully claimed!'),
