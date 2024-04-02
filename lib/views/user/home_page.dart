@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<Map<String, dynamic>?> _currentUserFuture;
+  late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
   late String? name = 'Loading..';
   late String? surname = 'Loading..';
   late String memberID = 'Loading..';
@@ -23,9 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    _currentUserFuture =
-        UserService().getUserById(FirebaseAuth.instance.currentUser!.uid);
+  _userStream = UserService().getUserStream(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override
@@ -39,8 +38,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.016),
-        child: FutureBuilder<Map<String, dynamic>?>(
-          future: _currentUserFuture,
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: _userStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingPage();

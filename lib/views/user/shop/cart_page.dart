@@ -311,7 +311,7 @@ class _CartTotalState extends State<_CartTotal> {
                   //clear all items in the cart and notify
                   cart.clearCart();
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/cart');
+                  Navigator.pushReplacementNamed(context, '/nav-bar');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Successfully claimed!'),
