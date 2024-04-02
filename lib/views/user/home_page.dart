@@ -36,150 +36,152 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: AppTheme.primaryColor,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.016),
-        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: _userStream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingPage();
-            } else {
-              if (snapshot.hasData && snapshot.data != null) {
-                final currentUser = snapshot.data!;
-                name = currentUser['name'] as String?;
-                surname = currentUser['surname'] as String?;
-                memberID = currentUser['memberID'] as String;
-                points = currentUser['points'] as int?;
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Padding(
-                                padding:
-                                    EdgeInsets.only(top: screenHeight * 0.023)),
-                            Stack(
-                              children: [
-                                Container(
-                                  alignment: Alignment.bottomCenter,
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(screenWidth * 0.016),
+          child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: _userStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingPage();
+              } else {
+                if (snapshot.hasData && snapshot.data != null) {
+                  final currentUser = snapshot.data!;
+                  name = currentUser['name'] as String?;
+                  surname = currentUser['surname'] as String?;
+                  memberID = currentUser['memberID'] as String;
+                  points = currentUser['points'] as int?;
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(top: screenHeight * 0.023)),
+                              Stack(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.bottomCenter,
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
+                                      color: Colors.black87,
                                     ),
-                                    color: Colors.black87,
-                                  ),
-                                  height: screenHeight * 0.05,
-                                  width: screenWidth * 0.9,
-                                  child: const Text(
-                                    'MILVERTON CLUB',
-                                    style: TextStyle(
-                                      color: AppTheme.primaryColor,
+                                    height: screenHeight * 0.05,
+                                    width: screenWidth * 0.9,
+                                    child: const Text(
+                                      'MILVERTON CLUB',
+                                      style: TextStyle(
+                                        color: AppTheme.primaryColor,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: screenHeight * 0.25,
-                              width: screenWidth * 0.9,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                ),
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/member-background.jpg'),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              child: Stack(
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      _cardTextAlignment(
-                                          Alignment.topCenter,
-                                          EdgeInsets.only(
-                                              top: screenHeight * 0.02),
-                                          'Your current points',
-                                          FontWeight.bold,
-                                          20),
-                                      _cardTextAlignment(
-                                          Alignment.topCenter,
-                                          EdgeInsets.only(
-                                              top: screenHeight * 0.005),
-                                          '$points Points',
-                                          FontWeight.bold,
-                                          20),
-                                    ],
-                                  ),
-                                  Stack(
-                                    children: <Widget>[
-                                      _cardTextAlignment(
-                                          Alignment.bottomLeft,
-                                          EdgeInsets.fromLTRB(
-                                              screenWidth * 0.03,
-                                              0,
-                                              0,
-                                              screenHeight * 0.045),
-                                          FormatUtils.addSpaceToNumberString(
-                                              memberID),
-                                          FontWeight.normal,
-                                          16),
-                                      _cardTextAlignment(
-                                          Alignment.bottomLeft,
-                                          EdgeInsets.fromLTRB(
-                                              screenWidth * 0.03,
-                                              0,
-                                              0,
-                                              screenHeight * 0.02),
-                                          '$name $surname',
-                                          FontWeight.normal,
-                                          16)
-                                    ],
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              screenWidth * 0.41, screenHeight * 0.025, 0, 0),
-                          child: SvgPicture.asset(
-                            'assets/icons/LOGO.svg',
-                            height: screenHeight * 0.035,
+                              Container(
+                                height: screenHeight * 0.25,
+                                width: screenWidth * 0.9,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/member-background.jpg'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        _cardTextAlignment(
+                                            Alignment.topCenter,
+                                            EdgeInsets.only(
+                                                top: screenHeight * 0.02),
+                                            'Your current points',
+                                            FontWeight.bold,
+                                            20),
+                                        _cardTextAlignment(
+                                            Alignment.topCenter,
+                                            EdgeInsets.only(
+                                                top: screenHeight * 0.005),
+                                            '$points Points',
+                                            FontWeight.bold,
+                                            20),
+                                      ],
+                                    ),
+                                    Stack(
+                                      children: <Widget>[
+                                        _cardTextAlignment(
+                                            Alignment.bottomLeft,
+                                            EdgeInsets.fromLTRB(
+                                                screenWidth * 0.03,
+                                                0,
+                                                0,
+                                                screenHeight * 0.045),
+                                            FormatUtils.addSpaceToNumberString(
+                                                memberID),
+                                            FontWeight.normal,
+                                            16),
+                                        _cardTextAlignment(
+                                            Alignment.bottomLeft,
+                                            EdgeInsets.fromLTRB(
+                                                screenWidth * 0.03,
+                                                0,
+                                                0,
+                                                screenHeight * 0.02),
+                                            '$name $surname',
+                                            FontWeight.normal,
+                                            16)
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.all(screenWidth * 0.02)),
-                    _buildMyVouchersBlock(screenHeight, screenWidth),
-                    Padding(padding: EdgeInsets.all(screenHeight * 0.01)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _buildEarnPointsBlock(
-                          screenHeight,
-                          screenWidth,
-                          FormatUtils.addSpaceToNumberString(memberID),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 0.02)),
-                        _buildBenefitsBlock(screenHeight, screenWidth),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }
-          },
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                screenWidth * 0.41, screenHeight * 0.025, 0, 0),
+                            child: SvgPicture.asset(
+                              'assets/icons/LOGO.svg',
+                              height: screenHeight * 0.035,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(padding: EdgeInsets.all(screenWidth * 0.02)),
+                      _buildMyVouchersBlock(screenHeight, screenWidth),
+                      Padding(padding: EdgeInsets.all(screenHeight * 0.01)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _buildEarnPointsBlock(
+                            screenHeight,
+                            screenWidth,
+                            FormatUtils.addSpaceToNumberString(memberID),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenWidth * 0.02)),
+                          _buildBenefitsBlock(screenHeight, screenWidth),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+          ),
         ),
       ),
     );
