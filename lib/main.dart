@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project/utils/loading_page.dart';
 import 'package:project/views/admin/admin_homepage.dart';
 import 'package:project/views/admin/add_voucher.dart';
 import 'package:project/views/admin/admin_shop.dart';
@@ -11,7 +12,6 @@ import 'package:project/views/user/registeration/profile.dart';
 import 'package:project/views/user/registeration/sign_in.dart';
 import 'package:project/views/user/registeration/sign_up.dart';
 import 'package:project/models/cart.dart';
-import 'package:project/views/staff/redeem_fail.dart';
 import 'package:project/views/staff/scan_voucher.dart';
 import 'package:project/views/user/shop/cart_page.dart';
 import 'package:project/views/user/shop/user_shop.dart';
@@ -69,8 +69,8 @@ class MyApp extends StatelessWidget {
           unselectedItemColor: Colors.white,
         ),
       ),
-
-          initialRoute: determineInitialRoute(),
+          initialRoute: '/loading',
+          // initialRoute: determineInitialRoute(),
       
           routes: {
             '/nav-bar':(context) => BottomNavBar(),
@@ -92,6 +92,7 @@ class MyApp extends StatelessWidget {
             '/add-voucher': (context) => AddVoucher(),
             '/my-voucher' : (context) => MyVoucher(),
             '/cart' : (context) => MyCart(),
+            '/loading': (context) => LoadingPage()
             }
             ),
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/utils/theme.dart';
 
 class RedeemFail extends StatefulWidget {
-  final String errorMessage; // Add parameter for error message
+  final String errorMessage; 
 
   const RedeemFail({Key? key, required this.errorMessage}) : super(key: key);
 
@@ -11,12 +11,12 @@ class RedeemFail extends StatefulWidget {
 }
 
 class _RedeemFailState extends State<RedeemFail> {
-  late String errorMessage; // Initialize variable to store error message
+  late String errorMessage; 
 
   @override
   void initState() {
     super.initState();
-    errorMessage = widget.errorMessage; // Initialize error message from widget parameter
+    errorMessage = widget.errorMessage; 
   }
 
   @override
@@ -49,7 +49,7 @@ class _RedeemFailState extends State<RedeemFail> {
                       ),
                       Center(
                         child: Text(
-                          errorMessage, // Display error message
+                          errorMessage, 
                           style: const TextStyle(
                             fontWeight: FontWeight.w900,
                             color: Colors.black,
