@@ -75,7 +75,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 textTheme:
                     ButtonTextTheme.primary), // OK/Cancel button text color
           ),
-          child: child!,
+          child: SingleChildScrollView(
+            child: child!,
+          ),
         );
       },
     );
@@ -142,8 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Form(
               key: _formKey,
-              child: Column(
-                children: [
+              child: Column(children: [
                 _buildNameTextField(),
                 _buildSurnameTextField(),
                 _buildEmailTextField(),
@@ -168,6 +169,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _nameController,
+          cursorColor: Colors.black,
           decoration: const InputDecoration(
             labelText: 'Name',
             labelStyle: TextStyle(
@@ -197,6 +199,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _surnameController,
+          cursorColor: Colors.black,
           decoration: const InputDecoration(
             labelText: 'Surname',
             labelStyle: TextStyle(
@@ -226,6 +229,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         controller: _emailController,
+        cursorColor: Colors.black,
         keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           labelText: 'Email',
@@ -263,6 +267,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: _passwordController,
+        cursorColor: Colors.black,
         decoration: InputDecoration(
           labelText: 'Password',
           labelStyle: const TextStyle(fontSize: 18, color: Colors.black),
@@ -303,6 +308,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: _confirmPasswordController,
+        cursorColor: Colors.black,
         decoration: const InputDecoration(
           labelText: 'Confirm Password',
           labelStyle: TextStyle(fontSize: 18, color: Colors.black),
@@ -334,6 +340,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _phoneController,
+          cursorColor: Colors.black,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             labelText: 'Phone Number',
@@ -367,6 +374,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _birthdateController,
+          cursorColor: Colors.black,
           readOnly: true,
           onTap: () => _selectDate(context),
           decoration: const InputDecoration(
@@ -413,16 +421,31 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildSelectGender() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildGenderButton('Male'),
-          _buildGenderButton('Female'),
-          _buildGenderButton('Other'),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top:10,bottom: 8),
+          child: Text(
+            'Gender',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildGenderButton('Male'),
+              _buildGenderButton('Female'),
+              _buildGenderButton('Other'),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -431,6 +454,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         controller: citizenIDController,
+        cursorColor: Colors.black,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           labelText: 'Citizen ID',
@@ -468,6 +492,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
         controller: _addressController,
+        cursorColor: Colors.black,
         maxLines: 4,
         maxLength: 300,
         decoration: const InputDecoration(
@@ -520,9 +545,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     await _signUp(_emailController.text.trim(),
                         _passwordController.text.trim());
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: _emailController.text.trim(),
-                      password: _passwordController.text.trim()
-                    );
+                        email: _emailController.text.trim(),
+                        password: _passwordController.text.trim());
                     Navigator.pushReplacementNamed(context, '/introduction');
                   } catch (e) {
                     print('Signup failed: $e');

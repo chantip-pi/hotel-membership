@@ -191,6 +191,7 @@ class _VoucherItemState extends State<VoucherItem> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
+                                  Navigator.pop(context);
                                   Navigator.pushReplacementNamed(
                                       context, '/my-voucher');
                                 },

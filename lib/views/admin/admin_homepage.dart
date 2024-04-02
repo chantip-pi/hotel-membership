@@ -12,7 +12,7 @@ class AdminHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Admin",style: TextStyle(color: Colors.white),),
+        title: const Text("Admin",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         actions: [

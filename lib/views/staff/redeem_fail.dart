@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:project/utils/theme.dart';
 
-
 class RedeemFail extends StatefulWidget {
-  const RedeemFail({super.key});
+  final String errorMessage; 
+
+  const RedeemFail({Key? key, required this.errorMessage}) : super(key: key);
 
   @override
   State<RedeemFail> createState() => _RedeemFailState();
 }
 
 class _RedeemFailState extends State<RedeemFail> {
+  late String errorMessage; 
+
+  @override
+  void initState() {
+    super.initState();
+    errorMessage = widget.errorMessage; 
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
@@ -38,10 +47,10 @@ class _RedeemFailState extends State<RedeemFail> {
                           size: MediaQuery.of(context).size.height * 0.1,
                         ),
                       ),
-                      const Center(
+                      Center(
                         child: Text(
-                          'No voucher found. Please try again',
-                          style: TextStyle(
+                          errorMessage, 
+                          style: const TextStyle(
                             fontWeight: FontWeight.w900,
                             color: Colors.black,
                             fontSize: 18,

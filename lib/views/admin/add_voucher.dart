@@ -38,12 +38,12 @@ class _AddVoucherState extends State<AddVoucher> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Select Image Source', style: TextStyle(color: Colors.black)),
+        title: const Text('Select Image Source', style: TextStyle(color: Colors.black)),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
               ListTile(
-                title: Text('Gallery', style: TextStyle(color: Colors.black)),
+                title: const Text('Gallery', style: TextStyle(color: Colors.black)),
                 onTap: () async {
                   Navigator.of(context).pop();
                   try {
@@ -54,7 +54,7 @@ class _AddVoucherState extends State<AddVoucher> {
                 },
               ),
               ListTile(
-                title: Text('Camera', style: TextStyle(color: Colors.black)),
+                title: const Text('Camera', style: TextStyle(color: Colors.black)),
                 onTap: () async {
                   Navigator.of(context).pop();
                   try {
@@ -209,6 +209,7 @@ class _AddVoucherState extends State<AddVoucher> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         controller: _voucherNameController,
+        cursorColor: Colors.black,
         maxLength: 40,
         decoration: const InputDecoration(
           labelText: 'Voucher Name',
@@ -241,6 +242,7 @@ class _AddVoucherState extends State<AddVoucher> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _pointsController,
+          cursorColor: Colors.black,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             labelText: 'Points',
@@ -274,6 +276,7 @@ class _AddVoucherState extends State<AddVoucher> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
           controller: _dueDateController,
+          cursorColor: Colors.black,
           readOnly: true,
           onTap: () => _selectDate(context),
           decoration: const InputDecoration(
@@ -305,6 +308,7 @@ class _AddVoucherState extends State<AddVoucher> {
     padding: const EdgeInsets.symmetric(vertical: 20),
     child: TextFormField(
       controller: _termsConditionController,
+      cursorColor: Colors.black,
       maxLines: 10,
       maxLength: 1500,
       decoration: const InputDecoration(
@@ -387,6 +391,7 @@ void _insertNewLine() {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: TextFormField(
             controller: _cashValueController,
+            cursorColor: Colors.black,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               labelText: 'Cash Amount',
@@ -419,6 +424,7 @@ void _insertNewLine() {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: TextFormField(
             controller: _giftItemController,
+            cursorColor: Colors.black,
             decoration: const InputDecoration(
               labelText: 'Gift Description',
               labelStyle: TextStyle(
@@ -446,6 +452,7 @@ void _insertNewLine() {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: TextFormField(
             controller: _discountPercentageController,
+            cursorColor: Colors.black,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               labelText: 'Discount Percentage',
