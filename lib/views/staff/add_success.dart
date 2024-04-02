@@ -196,7 +196,8 @@ class _AddPointSuccessState extends State<AddPointSuccess> {
                 ),
               ),
               onPressed: () {
-              Navigator.pushNamed(context, '/staff-home-page');
+               Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: const Center(
                 child: Text(

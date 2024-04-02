@@ -87,7 +87,8 @@ class _RedeemSuccessState extends State<RedeemSuccess> {
                 ),
               ),
               onPressed: () {
-              Navigator.pushNamed(context, '/staff-home-page');
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: const Center(
                 child: Text(
