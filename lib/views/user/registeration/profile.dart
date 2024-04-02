@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project/models/cart.dart';
 import 'package:project/utils/theme.dart';
 import 'package:project/services/user_service.dart';
 import 'package:project/utils/format_string.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -119,6 +121,7 @@ class _ProfileState extends State<Profile> {
                         height: screenHeight * 0.06,
                         child: ElevatedButton(
                           onPressed: () {
+                            Provider.of<Cart>(context, listen: false).clearCart();
                             FirebaseAuth.instance.signOut();
                             Navigator.pushReplacementNamed(context, '/sign-in');
                           },
