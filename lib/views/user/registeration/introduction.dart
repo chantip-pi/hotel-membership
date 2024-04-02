@@ -63,7 +63,8 @@ class PageIndicator extends StatelessWidget {
   final int pageCount;
   final int currentPage;
 
-  const PageIndicator({Key? key, required this.pageCount, required this.currentPage})
+  const PageIndicator(
+      {Key? key, required this.pageCount, required this.currentPage})
       : super(key: key);
 
   @override
@@ -196,11 +197,12 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
     );
   }
 
-  Widget _buildContentWidget(Map<String, dynamic> currentUser, double screenHeight, double screenWidth) {
-    name = currentUser['name'] as String?;
-    surname = currentUser['surname'] as String?;
-    memberID = currentUser['memberID'] as String;
-    points = currentUser['points'] as int?;
+  Widget _buildContentWidget(Map<String, dynamic> currentUser,
+      double screenHeight, double screenWidth) {
+    late String? name = 'Loading..';
+    late String? surname = 'Loading..';
+    late String memberID = 'Loading..';
+    late int? points = 0;
 
     return Container(
       color: AppTheme.backgroundColor,
@@ -244,7 +246,8 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
                         bottomRight: Radius.circular(10),
                       ),
                       image: DecorationImage(
-                        image: AssetImage('assets/images/member-background.jpg'),
+                        image:
+                            AssetImage('assets/images/member-background.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -252,14 +255,36 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            _cardTextAlignment(Alignment.topCenter, EdgeInsets.only(top: screenHeight * 0.02), 'Your current points', FontWeight.bold, 20),
-                            _cardTextAlignment(Alignment.topCenter, EdgeInsets.only(top: screenHeight * 0.005), '$points Points', FontWeight.bold, 20),
+                            _cardTextAlignment(
+                                Alignment.topCenter,
+                                EdgeInsets.only(top: screenHeight * 0.02),
+                                'Your current points',
+                                FontWeight.bold,
+                                20),
+                            _cardTextAlignment(
+                                Alignment.topCenter,
+                                EdgeInsets.only(top: screenHeight * 0.005),
+                                '$points Points',
+                                FontWeight.bold,
+                                20),
                           ],
                         ),
                         Stack(
                           children: <Widget>[
-                            _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.045), FormatUtils.addSpaceToNumberString(memberID), FontWeight.normal, 16),
-                            _cardTextAlignment(Alignment.bottomLeft, EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0, screenHeight * 0.02), '$name $surname', FontWeight.normal, 16)
+                            _cardTextAlignment(
+                                Alignment.bottomLeft,
+                                EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0,
+                                    screenHeight * 0.045),
+                                FormatUtils.addSpaceToNumberString(memberID),
+                                FontWeight.normal,
+                                16),
+                            _cardTextAlignment(
+                                Alignment.bottomLeft,
+                                EdgeInsets.fromLTRB(screenWidth * 0.03, 0, 0,
+                                    screenHeight * 0.02),
+                                '$name $surname',
+                                FontWeight.normal,
+                                16)
                           ],
                         ),
                       ],
@@ -268,7 +293,8 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(screenWidth * 0.40, screenHeight * 0.098, 0, 0),
+                padding: EdgeInsets.fromLTRB(
+                    screenWidth * 0.40, screenHeight * 0.098, 0, 0),
                 child: SvgPicture.asset(
                   'assets/icons/LOGO.svg',
                   height: screenHeight * 0.035,
@@ -298,7 +324,6 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
     );
   }
 }
-
 
 class IntroPageThree extends StatelessWidget {
   @override
@@ -356,19 +381,20 @@ class IntroPageThree extends StatelessWidget {
   }
 }
 
-Widget _cardTextAlignment(Alignment align, EdgeInsets padding, String str, FontWeight fontWeight, double fontSize) {
-    return Align(
-      alignment: align,
-      child: Padding(
-        padding: padding,
-          child: Text(
-            str,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: fontWeight,
-              fontSize: fontSize,
-            ),
-          ),
+Widget _cardTextAlignment(Alignment align, EdgeInsets padding, String str,
+    FontWeight fontWeight, double fontSize) {
+  return Align(
+    alignment: align,
+    child: Padding(
+      padding: padding,
+      child: Text(
+        str,
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: fontWeight,
+          fontSize: fontSize,
         ),
-    );
-  }
+      ),
+    ),
+  );
+}
