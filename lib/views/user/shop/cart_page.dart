@@ -24,7 +24,11 @@ class MyCart extends StatelessWidget {
                 .getVoucherByID(cart.cartItems[index].voucherID),
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.primaryColor,
+                ),
+                ));
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
@@ -37,7 +41,7 @@ class MyCart extends StatelessWidget {
                   displayName = name;
                 }
                 return Card(
-                  elevation: 6,
+                  elevation: 3,
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -54,30 +58,31 @@ class MyCart extends StatelessWidget {
                           voucher['imageUrl'],
                           height: 150,
                           width: 150,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       Expanded(
                         flex: 2,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
                                   displayName,
-                                  style: const TextStyle(fontSize: 16,
-                                                          fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                child: Text("${voucher['points']} Points",
-                                       style: const TextStyle(fontSize: 12,
-                                                          fontWeight: FontWeight.bold),),
-                              ),
+                              Text("${voucher['points']} Points",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -268,7 +273,11 @@ class _CartTotalState extends State<_CartTotal> {
                 future: cart.getCartTotal(),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.primaryColor,
+                ),
+                    );
                   } else if (snapshot.hasError) {
                     return Text(
                       'Error: ${snapshot.error}',

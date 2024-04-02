@@ -3,6 +3,7 @@ import 'package:project/services/voucher_service.dart';
 import 'package:project/utils/format_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/models/cart.dart';
+import 'package:project/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 class PurchaseVoucher extends StatefulWidget {
@@ -54,7 +55,11 @@ class _PurchaseVoucherState extends State<PurchaseVoucher> {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.primaryColor,
+                ),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || !snapshot.data!.exists) {
