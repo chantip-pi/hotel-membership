@@ -118,10 +118,10 @@ class _AddPointSuccessState extends State<AddPointSuccess> {
               color: Colors.lightGreen, 
               size: MediaQuery.of(context).size.height * 0.1, 
             ),
-          Center(
+          const Center(
             child: Text(
               'Succesfully Add Points!',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
                 fontSize: 18,

@@ -37,11 +37,11 @@ class _ScanMemberState extends State<ScanVoucher> {
   }
 
 Widget _scanQRCodeText(){
-    return  Padding(
+    return  const Padding(
       padding: EdgeInsets.only(bottom: 30, top: 30),
       child: Text(
         'Enter User Voucher ID',
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w900,
           color: Colors.black,
           fontSize: 30,

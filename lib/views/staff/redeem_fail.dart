@@ -14,7 +14,7 @@ class _RedeemFailState extends State<RedeemFail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: true,
       ),
