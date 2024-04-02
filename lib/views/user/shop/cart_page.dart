@@ -60,12 +60,23 @@ class MyCart extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                displayName,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  displayName,
+                                  style: const TextStyle(fontSize: 16,
+                                                          fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: Text("${voucher['points']} Points",
+                                       style: const TextStyle(fontSize: 12,
+                                                          fontWeight: FontWeight.bold),),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
