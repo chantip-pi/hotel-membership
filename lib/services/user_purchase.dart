@@ -20,14 +20,20 @@ class UserPurchaseService {
 
   //add all purchase in cart
   Future<void> purchaseItems(String userID, List<Item> cartItems) async {
+    // Create a list to store all the futures
+    List<Future<void>> purchaseFutures = [];
+
     for (var cartItem in cartItems) {
       for (var i = 0; i < cartItem.quantity; i++) {
-        await addPurchase(
+        // Add each purchase operation to the list of futures
+        purchaseFutures.add(addPurchase(
           userID: userID,
           voucherID: cartItem.voucherID,
-        );
+        ));
       }
     }
+    // Await all the purchase operations concurrently
+    await Future.wait(purchaseFutures);
   }
 
   // Read
@@ -41,9 +47,9 @@ class UserPurchaseService {
   Future<void> redeemVoucher(String docID) async {
     DocumentSnapshot snapshot = await purchases.doc(docID).get();
 
-     if (!snapshot.exists) {
-    // Voucher document not found
-    return Future.error('Voucher not found');
+    if (!snapshot.exists) {
+      // Voucher document not found
+      return Future.error('Voucher not found');
     }
 
     if (snapshot.exists &&
