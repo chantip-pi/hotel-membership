@@ -202,10 +202,10 @@ class _IntroPageTwoState extends State<IntroPageTwo> {
 
   Widget _buildContentWidget(Map<String, dynamic> currentUser,
       double screenHeight, double screenWidth) {
-    late String? name = 'Loading..';
-    late String? surname = 'Loading..';
-    late String memberID = 'Loading..';
-    late int? points = 0;
+    late String? name = currentUser['name'];
+    late String? surname = currentUser['surname'];
+    late String memberID = currentUser['memberID'];
+    late int? points = currentUser['points'];
 
     return Container(
       color: AppTheme.backgroundColor,
