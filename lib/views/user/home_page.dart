@@ -35,17 +35,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.primaryColor,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/notifications');
-            },
-          )
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.016),
