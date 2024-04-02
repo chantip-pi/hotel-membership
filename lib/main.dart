@@ -53,10 +53,14 @@ class MyApp extends StatelessWidget {
          theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(),
         useMaterial3: true,
+          textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor: Colors.black,
+          cursorColor: Colors.black,
+        ),
         appBarTheme: const AppBarTheme(
           color: AppTheme.primaryColor,
           iconTheme: IconThemeData(
-            color: Colors.white, // Change icon color to white
+            color: Colors.white, 
           ),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
