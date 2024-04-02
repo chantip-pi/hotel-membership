@@ -24,7 +24,11 @@ class MyCart extends StatelessWidget {
                 .getVoucherByID(cart.cartItems[index].voucherID),
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.primaryColor,
+                ),
+                ));
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
@@ -269,7 +273,11 @@ class _CartTotalState extends State<_CartTotal> {
                 future: cart.getCartTotal(),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.primaryColor,
+                ),
+                    );
                   } else if (snapshot.hasError) {
                     return Text(
                       'Error: ${snapshot.error}',

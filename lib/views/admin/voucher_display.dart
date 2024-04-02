@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project/services/voucher_service.dart';
 import 'package:project/utils/format_string.dart';
+import 'package:project/utils/loading_page.dart';
 
 class VoucherDisplay extends StatefulWidget {
   final String voucherID;
@@ -38,7 +39,7 @@ class _VoucherDisplayState extends State<VoucherDisplay> {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return const LoadingPage();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || !snapshot.data!.exists) {
