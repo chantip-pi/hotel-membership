@@ -38,133 +38,137 @@ class _VoucherListPageState extends State<VoucherListPage> {
                     doc['onShop'] == true &&
                     doc['voucherType'] == _categories[_selectedIndex])
                 .toList();
-            return  GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: vouchers.length,
-                itemBuilder: (context, index) {
-                  var voucher = vouchers[index];
-                   var voucherID = voucher.id;
-                  String name = voucher['name'];
-                  String displayName;
-                  if (name.length > 30) {
-                    displayName = '${name.substring(0, 30)}...';
-                  } else {
-                    displayName = name;
-                  }
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: AppTheme.lightGoldColor,
-                    child: InkWell(
-                      onTap: () {
-                       Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VoucherDisplay(
-                                voucherID: voucherID,
-                              ),
-                            ),
-                          );
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (voucher['imageUrl'] != null)
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                              ),
-                              child: Image.network(
-                                voucher['imageUrl'],
-                                height: 100,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          if (voucher['imageUrl'] == null)
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                              ),
-                              child: Image.asset(
-                                'assets/images/default-voucher-image.png',
-                                height: 100,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  displayName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
+            return  Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    childAspectRatio: 0.7,
+                  ),
+                  itemCount: vouchers.length,
+                  itemBuilder: (context, index) {
+                    var voucher = vouchers[index];
+                     var voucherID = voucher.id;
+                    String name = voucher['name'];
+                    String displayName;
+                    if (name.length > 30) {
+                      displayName = '${name.substring(0, 30)}...';
+                    } else {
+                      displayName = name;
+                    }
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      color: AppTheme.lightGoldColor,
+                      child: InkWell(
+                        onTap: () {
+                         Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VoucherDisplay(
+                                  voucherID: voucherID,
                                 ),
-                                Text(
-                                    'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
+                              ),
+                            );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (voucher['imageUrl'] != null)
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                ),
+                                child: Image.network(
+                                  voucher['imageUrl'],
+                                  height: 100,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            if (voucher['imageUrl'] == null)
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                ),
+                                child: Image.asset(
+                                  'assets/images/default-voucher-image.png',
+                                  height: 100,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    displayName,
                                     style: const TextStyle(
+                                      fontSize: 14,
                                       color: Colors.white,
-                                    )),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${voucher['points']} Points',
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                                Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
+                                  Text(
+                                      'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '${voucher['points']} Points',
+                                      style: const TextStyle(
                                         color: Colors.white,
                                       ),
-                                      child: IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            color: Colors.black),
-                                        onPressed: () {
-                                          _showDeleteConfirmationDialog(
-                                              voucher.id);
-                                        },
-                                      ),
-                                    )
-                                ),
-                              ],
+                                    ),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        width: 40.0,
+                                        height: 40.0,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),
+                                        child: IconButton(
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.black),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                                voucher.id);
+                                          },
+                                        ),
+                                      )
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+              ),
             );
           }
         },

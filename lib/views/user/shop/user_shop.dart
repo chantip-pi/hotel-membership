@@ -43,119 +43,123 @@ class _VoucherShopState extends State<VoucherShop> {
                     doc['onShop'] == true &&
                     doc['voucherType'] == _categories[_selectedIndex])
                 .toList();
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 0.7,
-              ),
-              itemCount: vouchers.length,
-              itemBuilder: (context, index) {
-                return Builder(
-                  builder: (context) {
-                    var voucher = vouchers[index];
-                    var voucherID = voucher.id;
-                    var isInCart = context.select<Cart, bool>(
-                      (cart) => cart.cartItems
-                          .any((element) => element.voucherID == voucherID),
-                    );
-                    String name = voucher['name'];
-                    String displayName;
-                    if (name.length > 30) {
-                      displayName = '${name.substring(0, 30)}...';
-                    } else {
-                      displayName = name;
-                    }
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      color: AppTheme.lightGoldColor,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PurchaseVoucher(
-                                voucherID: voucherID,
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                  childAspectRatio: 0.7,
+                ),
+                itemCount: vouchers.length,
+                itemBuilder: (context, index) {
+                  return Builder(
+                    builder: (context) {
+                      var voucher = vouchers[index];
+                      var voucherID = voucher.id;
+                      var isInCart = context.select<Cart, bool>(
+                        (cart) => cart.cartItems
+                            .any((element) => element.voucherID == voucherID),
+                      );
+                      String name = voucher['name'];
+                      String displayName;
+                      if (name.length > 30) {
+                        displayName = '${name.substring(0, 30)}...';
+                      } else {
+                        displayName = name;
+                      }
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        color: AppTheme.lightGoldColor,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PurchaseVoucher(
+                                  voucherID: voucherID,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (voucher['imageUrl'] != null)
-                              Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(10.0),
-                                      topRight: Radius.circular(10.0),
+                            );
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (voucher['imageUrl'] != null)
+                                Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(10.0),
+                                        topRight: Radius.circular(10.0),
+                                      ),
+                                      child: Image.network(
+                                        voucher['imageUrl'],
+                                        height: 100,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    child: Image.network(
-                                      voucher['imageUrl'],
-                                      height: 100,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
+                                    Positioned(
+                                      top: 10.0,
+                                      right: 10.0,
+                                      child: InCartCircle(
+                                        isInCart: isInCart,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      displayName,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    top: 10.0,
-                                    right: 10.0,
-                                    child: InCartCircle(
-                                      isInCart: isInCart,
-                                    ),
-                                  )
-                                ],
+                                  ],
+                                ),
                               ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    displayName,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
                                     style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    )),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    '${voucher['points']} Points',
+                                    style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                  'Valid Until ${(FormatUtils.formatDate(voucher['dueDate']))}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  )),
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  '${voucher['points']} Points',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             );
           }
         },
