@@ -16,20 +16,20 @@ class _BenefitsState extends State<Benefits> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: Text(
+        title: const Text(
           'Membership Benefits',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         centerTitle: true,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, 
         ),
         backgroundColor: AppTheme.primaryColor,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
           color: AppTheme.backgroundColor,
           child: Column(
@@ -50,9 +50,10 @@ class _BenefitsState extends State<Benefits> {
 
     return Container(
       height: 50,
+      color: AppTheme.backgroundColor,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.only(top: 15),
         itemCount: _categories.length,
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -75,7 +76,9 @@ class _BenefitsState extends State<Benefits> {
                 child: Text(
                   _categories[index],
                   style: TextStyle(
-                    color: Colors.black,
+                    color: _selectedIndex == index
+                          ? AppTheme.primaryColor
+                          : Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -120,12 +123,9 @@ class _BenefitsState extends State<Benefits> {
             ListTile(
               title: Text(
                 itemList[index],
-                // style: const TextStyle(
-                //   fontWeight: FontWeight.bold,
-                // ),
               ),
             ),
-            Divider(
+            const Divider(
               color: AppTheme.primaryColor,
               thickness: 1.0,
             ),
