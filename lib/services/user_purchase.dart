@@ -9,8 +9,7 @@ class UserPurchaseService {
 
   // add single purchase
   Future<void> addPurchase(
-      {required String userID,
-      required String voucherID}) {
+      {required String userID, required String voucherID}) {
     return purchases.add({
       'userID': userID,
       'voucherID': voucherID,
@@ -39,11 +38,25 @@ class UserPurchaseService {
   }
 
   // Update Voucher to be redeem
-  Future<void> redeemVoucher(String docID) {
-    return purchases.doc(docID).update({
-      'isRedeem': true,
-      'timestamp': Timestamp.now(),
-    });
+  Future<void> redeemVoucher(String docID) async {
+    DocumentSnapshot snapshot = await purchases.doc(docID).get();
+
+     if (!snapshot.exists) {
+    // Voucher document not found
+    return Future.error('Voucher not found');
+    }
+
+    if (snapshot.exists &&
+        (snapshot.data() as Map<String, dynamic>)['isRedeem'] == true) {
+      // Voucher has already been redeemed
+      return Future.error('Voucher has already been redeemed');
+    } else {
+      // Update voucher to be redeemed
+      await purchases.doc(docID).update({
+        'isRedeem': true,
+        'timestamp': Timestamp.now(),
+      });
+    }
   }
 
   Future<List<String>> getAllVoucherIDsForUser(String userID) async {
@@ -169,11 +182,8 @@ class UserPurchaseService {
 
       return categorizedVouchers;
     } catch (e) {
-
       print('Error retrieving vouchers by category: $e');
       return {};
     }
   }
-
-  
 }

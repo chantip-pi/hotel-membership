@@ -87,7 +87,6 @@ class MyApp extends StatelessWidget {
             '/add-point-success': (context) => AddPointSuccess(),
             '/scan-voucher': (context) => ScanVoucher(),
             '/redeem-success': (context) => RedeemSuccess(),
-            '/redeem-fail': (context) => RedeemFail(),
             '/admin-home-page': (context) => AdminHomePage(),
             '/admin-shop' : (context) => VoucherListPage(),
             '/add-voucher': (context) => AddVoucher(),

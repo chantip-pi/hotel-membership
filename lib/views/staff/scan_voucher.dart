@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/utils/theme.dart';
 import 'package:project/services/user_purchase.dart';
+import 'package:project/views/staff/redeem_fail.dart';
 
 class ScanVoucher extends StatefulWidget {
   const ScanVoucher({super.key});
@@ -15,29 +16,27 @@ class _ScanMemberState extends State<ScanVoucher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-      ),
-      body:SingleChildScrollView(
-        child: Center(
-          child: 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              _scanQRCodeText(),
-              _buildVocuherIDTextField(),
-              _buildButton()
-            ],
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  _scanQRCodeText(),
+                  _buildVocuherIDTextField(),
+                  _buildButton()
+                ],
+              ),
+            ),
           ),
-        ),
-        ),
-      )
-    );
+        ));
   }
 
-Widget _scanQRCodeText(){
-    return  const Padding(
+  Widget _scanQRCodeText() {
+    return const Padding(
       padding: EdgeInsets.only(bottom: 30, top: 30),
       child: Text(
         'Enter User Voucher ID',
@@ -63,21 +62,27 @@ Widget _scanQRCodeText(){
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
                 fixedSize: MaterialStateProperty.all<Size>(
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: ()  async {
-              try {
-                await UserPurchaseService().redeemVoucher(_voucherIDController.text);
-                Navigator.pushNamed(context, '/redeem-success');
-                _voucherIDController.clear();
-              } catch (e) {
-                 Navigator.pushNamed(context, '/redeem-fail');
-                 _voucherIDController.clear();
-              }
+              onPressed: () async {
+                try {
+                  await UserPurchaseService()
+                      .redeemVoucher(_voucherIDController.text);
+                  Navigator.pushNamed(context, '/redeem-success');
+                  _voucherIDController.clear();
+                } catch (e) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          RedeemFail(errorMessage: e.toString()),
+                    ),
+                  );
+                  _voucherIDController.clear();
+                }
               },
               child: const Center(
                 child: Text(
@@ -124,7 +129,4 @@ Widget _scanQRCodeText(){
           }),
     );
   }
-
 }
-
- 
