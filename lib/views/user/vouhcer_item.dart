@@ -184,8 +184,8 @@ class _VoucherItemState extends State<VoucherItem> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text(
-                                'Please Present this code to the staff'),
-                            content: Text(widget.purchaseID),
+                                'Please Present this code to the staff',style: TextStyle(fontSize: 16)),
+                            content: Text(widget.purchaseID,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                             backgroundColor: Colors.white,
                             actions: <Widget>[
                               TextButton(
