@@ -28,17 +28,20 @@ class _BenefitsState extends State<Benefits> {
         ),
         backgroundColor: AppTheme.primaryColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Container(
-          color: AppTheme.backgroundColor,
-          child: Column(
-            children: [
-              _buildTabBar(),
-              Expanded(
-                child: _buildListView(),
-              ),
-            ],
+      body: Container(
+        color: AppTheme.backgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            color: AppTheme.backgroundColor,
+            child: Column(
+              children: [
+                _buildTabBar(),
+                Expanded(
+                  child: _buildListView(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
