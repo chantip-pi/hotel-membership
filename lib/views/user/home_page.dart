@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.016),
+          padding: EdgeInsets.symmetric(horizontal:screenWidth * 0.016),
           child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             stream: _userStream,
             builder: (context, snapshot) {
@@ -60,9 +60,6 @@ class _HomePageState extends State<HomePage> {
                         children: <Widget>[
                           Column(
                             children: <Widget>[
-                              Padding(
-                                  padding:
-                                      EdgeInsets.only(top: screenHeight * 0.023)),
                               Stack(
                                 children: [
                                   Container(
