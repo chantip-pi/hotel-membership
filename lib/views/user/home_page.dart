@@ -201,24 +201,31 @@ class _HomePageState extends State<HomePage> {
             ),
             height: screenHeight * 0.18,
             width: screenWidth * 0.9,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  screenWidth * 0.3, screenHeight * 0.13, 0, 0),
-              child: const Text(
-                'MY VOUCHERS',
-                style: TextStyle(
-                  fontSize: 20,
+            child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.13,
+                    ),
+                    const Text(
+                      'MY VOUCHERS',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
             ),
           ),
           Padding(padding: EdgeInsets.only(top: screenHeight * 0.05)),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-                screenWidth * 0.33, screenHeight * 0.03, 0, 0),
-            child: SvgPicture.asset(
-              'assets/icons/Ticket_use_light.svg',
-              height: screenHeight * 0.09,
+          SizedBox(
+            height: screenHeight * 0.18,
+            width: screenWidth * 0.9,
+            child: Center(
+              child: SvgPicture.asset(
+                'assets/icons/Ticket_use_light.svg',
+                height: screenHeight * 0.09,
+              ),
             ),
           ),
         ],
@@ -282,23 +289,31 @@ class _HomePageState extends State<HomePage> {
             ),
             height: screenHeight * 0.18,
             width: screenWidth * 0.43,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  screenWidth * 0.065, screenHeight * 0.14, 0, 0),
-              child: const Text(
-                'EARN POINTS',
-                style: TextStyle(
-                  fontSize: 20,
+            child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.13,
+                    ),
+                    const Text(
+                      'EARN POINTS',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-                screenWidth * 0.13, screenHeight * 0.05, 0, 0),
-            child: SvgPicture.asset(
-              'assets/icons/qr.svg',
-              height: screenHeight * 0.07,
+          Container(
+            height: screenHeight * 0.18,
+            width: screenWidth * 0.43,
+            color: Colors.transparent,
+            child: Center(
+              child: SvgPicture.asset(
+                'assets/icons/qr.svg',
+                height: screenHeight * 0.07,
+              ),
             ),
           ),
         ],
@@ -320,23 +335,30 @@ class _HomePageState extends State<HomePage> {
             ),
             height: screenHeight * 0.18,
             width: screenWidth * 0.43,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  screenWidth * 0.12, screenHeight * 0.14, 0, 0),
-              child: const Text(
-                'BENEFITS',
-                style: TextStyle(
-                  fontSize: 20,
+            child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.13,
+                    ),
+                    const Text(
+                      'BENEFITS',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-                screenWidth * 0.15, screenHeight * 0.06, 0, 0),
-            child: SvgPicture.asset(
-              'assets/icons/benefit.svg',
-              height: screenHeight * 0.06,
+          SizedBox(
+            height: screenHeight * 0.18,
+            width: screenWidth * 0.43,
+            child: Center(
+              child: SvgPicture.asset(
+                'assets/icons/benefit.svg',
+                height: screenHeight * 0.06,
+              ),
             ),
           ),
         ],
