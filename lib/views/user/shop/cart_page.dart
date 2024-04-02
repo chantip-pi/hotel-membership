@@ -237,7 +237,6 @@ class _CartTotalState extends State<_CartTotal> {
   late String userMemberID = "Loading..";
   late int userPoints = 0;
   late int cartTotal = 0;
-  late int userRemainPoints = 0;
 
   @override
   void initState() {
@@ -248,7 +247,6 @@ class _CartTotalState extends State<_CartTotal> {
   Future<void> _initializeData() async {
     userMemberID = await UserService().getUserMemberID(userID);
     userPoints = await UserService().getUserPoints(userID);
-    userRemainPoints = userPoints;
     setState(() {});
   }
 
@@ -284,7 +282,6 @@ class _CartTotalState extends State<_CartTotal> {
                       style: const TextStyle(color: Colors.white),
                     );
                   } else {
-                    userRemainPoints -= snapshot.data as int;
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
@@ -321,7 +318,9 @@ class _CartTotalState extends State<_CartTotal> {
                   const Size.fromHeight(56),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                int userRemainPoints = userPoints - await Provider.of<Cart>(context, listen: false).getCartTotal();
+                
                 // update points
                 if (userRemainPoints >= 0) {
                   // add to userPurcase firebase
