@@ -45,25 +45,33 @@ class UserPurchaseService {
 
   // Update Voucher to be redeem
   Future<void> redeemVoucher(String docID) async {
-    DocumentSnapshot snapshot = await purchases.doc(docID).get();
+    DocumentSnapshot voucherSnapshot = await vouchers.doc(docID).get();
 
-    if (!snapshot.exists) {
+    if (!voucherSnapshot.exists) {
       // Voucher document not found
-      return Future.error('Voucher not found');
+      throw Future.error('Voucher not found');
     }
 
-    if (snapshot.exists &&
-        (snapshot.data() as Map<String, dynamic>)['isRedeem'] == true) {
-      // Voucher has already been redeemed
-      return Future.error('Voucher has already been redeemed');
-    } else {
-      // Update voucher to be redeemed
-      await purchases.doc(docID).update({
-        'isRedeem': true,
-        'timestamp': Timestamp.now(),
-      });
+    Map<String, dynamic> voucherData = voucherSnapshot.data() as Map<String, dynamic>;
+
+    // Check if voucher has already been redeemed
+    if (voucherData['isRedeemed'] == true) {
+      throw Future.error('Voucher has already been redeemed');
     }
+
+    // Check if voucher is expired
+    Timestamp dueDate = voucherData['dueDate'];
+    if (dueDate.toDate().isBefore(DateTime.now())) {
+      throw Future.error('Voucher is expired');
+    }
+
+    // Update voucher to be redeemed
+    await vouchers.doc(docID).update({
+      'isRedeemed': true,
+      'redeemedAt': Timestamp.now(),
+    });
   }
+
 
   Future<List<String>> getAllVoucherIDsForUser(String userID) async {
     try {
